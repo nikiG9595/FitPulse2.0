@@ -14,7 +14,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**").permitAll()
-                        .requestMatchers("/progress/**").hasRole("MEMBER")
+                        .requestMatchers("/progress/**").hasAnyRole("MEMBER", "ADMIN")
                         .requestMatchers("/classes/create", "/classes/*/edit", "/classes/*/delete", "/memberships/create", "/memberships/*/edit", "/memberships/*/delete", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/dashboard", true).permitAll())

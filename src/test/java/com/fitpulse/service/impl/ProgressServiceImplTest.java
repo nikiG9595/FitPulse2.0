@@ -74,6 +74,28 @@ class ProgressServiceImplTest {
     }
 
     @Test
+    void viewingRecordRejectsRecordNotOwnedByAuthenticatedUser() {
+        UUID requestedId = UUID.randomUUID();
+        when(progressClient.getByUserId(currentUserId)).thenReturn(List.of(
+                response(UUID.randomUUID(), currentUserId)));
+
+        assertThrows(ProgressServiceException.class,
+                () -> progressService.getCurrentUserProgress(requestedId));
+    }
+
+    @Test
+    void deleteRejectsRecordNotOwnedByAuthenticatedUser() {
+        UUID requestedId = UUID.randomUUID();
+        when(progressClient.getByUserId(currentUserId)).thenReturn(List.of(
+                response(UUID.randomUUID(), currentUserId)));
+
+        assertThrows(ProgressServiceException.class,
+                () -> progressService.delete(requestedId));
+
+        verify(progressClient, never()).delete(org.mockito.ArgumentMatchers.any());
+    }
+
+    @Test
     void deleteCallsClientOnlyAfterOwnershipCheck() {
         UUID recordId = UUID.randomUUID();
         when(progressClient.getByUserId(currentUserId)).thenReturn(List.of(response(recordId, currentUserId)));

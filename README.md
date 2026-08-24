@@ -245,6 +245,8 @@ A member can:
 
 An administrator can perform the regular authenticated operations and additionally:
 
+- Manage their own personal fitness progress records and view their own progress history
+
 - Create membership plans
 - Edit membership plans
 - Delete membership plans
@@ -820,6 +822,8 @@ FitPulse има две роли:
 ### ADMIN
 
 Администраторът има достъп до стандартните позволени функционалности и допълнително може да:
+
+- Управлява собствените си progress записи и преглежда собствената си progress история
 
 - Създава membership планове
 - Редактира membership планове

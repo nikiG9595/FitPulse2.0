@@ -54,9 +54,37 @@ class ProgressControllerSecurityTest {
     }
 
     @Test
-    void adminCannotAccessMemberProgress() throws Exception {
+    void adminCanViewProgress() throws Exception {
+        when(progressService.getCurrentUserProgress()).thenReturn(List.of());
+
         mockMvc.perform(get("/progress").with(user("admin").roles("ADMIN")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void adminCanCreateEditAndDeleteOwnProgressWithCsrfToken() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(progressService.getCurrentUserProgress(id)).thenReturn(new ProgressResponse(
+                id, UUID.randomUUID(), new BigDecimal("75.5"), new BigDecimal("18.2"),
+                LocalDate.of(2020, 8, 20), "Steady improvement", null, null));
+
+        mockMvc.perform(post("/progress/create").with(user("admin").roles("ADMIN")).with(csrf())
+                        .param("weight", "75.5").param("recordedAt", "2020-08-20"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/progress"));
+        mockMvc.perform(get("/progress/{id}/edit", id).with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk());
+        mockMvc.perform(post("/progress/{id}/edit", id).with(user("admin").roles("ADMIN")).with(csrf())
+                        .param("weight", "75.5").param("recordedAt", "2020-08-20"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/progress"));
+        mockMvc.perform(post("/progress/{id}/delete", id)
+                        .with(user("admin").roles("ADMIN")).with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        verify(progressService).create(org.mockito.ArgumentMatchers.any());
+        verify(progressService).update(org.mockito.ArgumentMatchers.eq(id), org.mockito.ArgumentMatchers.any());
+        verify(progressService).delete(id);
     }
 
     @Test
