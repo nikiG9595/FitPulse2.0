@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.fitpulse</groupId>
-    <artifactId>fitpulse</artifactId>
+    <artifactId>fitpulse2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>FitPulse</name>
     <description>Fitness management system built with Spring MVC and Thymeleaf</description>
