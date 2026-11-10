@@ -11,7 +11,7 @@
     if (!toggle || !menu) return;
     const member = menu.closest('.fit-nav').classList.contains('nav-member');
     const wide = window.matchMedia('(min-width: 768px)');
-    const expanded = () => !member && wide.matches;
+    const expanded = () => !member;
     const layout = menu.closest('.nav-layout'), slogan = layout.querySelector('.nav-slogan'), identity = layout.querySelector('.nav-identity');
     function align() {
         const width = (expanded() ? menu : toggle).getBoundingClientRect().width;

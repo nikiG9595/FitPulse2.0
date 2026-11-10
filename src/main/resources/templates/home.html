@@ -6,8 +6,8 @@
 <main>
     <section class="home-intro">
         <div class="container home-intro-content">
-            <h1>Открий своя фитнес. Изгради своя <span>ритъм.</span></h1>
-            <p>Каталог с фитнеси, реални оценки, лични тренировки и прогрес на едно място.</p>
+            <h1>Открий своя режим. Изгради своя <span>ритъм.</span></h1>
+            <p>Каталог с фитнеси, хранителни режими, лични тренировки и прогрес на едно място.</p>
             <div class="home-actions home-actions-v12">
                 <a class="btn btn-outline-light btn-lg" th:href="@{/meal-plans}">Хранителни режими</a>
                 <a class="btn btn-outline-light btn-lg" sec:authorize="isAuthenticated()" th:href="@{/profile}">Моят профил</a>
@@ -22,10 +22,10 @@
     </figure>
     <section class="section section-soft home-section home-access-section" sec:authorize="isAnonymous()">
         <div class="container"><div class="row align-items-center g-5"><div class="col-lg-8">
-            <h2>Регистрирай се и получи безплатен достъп до тренировъчни програми и хранителни режими</h2>
+            <h2>Регистрирай се и получи достъп до тренировъчни програми и хранителни режими</h2>
             <p>След вход избираш сам от всички активни програми и режими и създаваш лично редактируемо копие.</p>
             <p class="small home-muted">Хранителните режими са общи образователни примери, а не медицински или индивидуални препоръки.</p>
-            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo=${authReturnTo})}">Безплатна регистрация</a>
+            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo=${authReturnTo})}">Регистрация</a>
         </div></div></div>
     </section>
 </main>

@@ -1,6 +1,12 @@
-.fit-nav .nav-slogan { font-size:clamp(20px,1.65vw,24px);font-weight:850;letter-spacing:.045em;color:#ff9b6d }
-.home-actions.home-actions-v12 { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1000px;margin-inline:auto }
-.home-actions-v12 > .btn { display:flex;align-items:center;justify-content:center;min-height:54px;background:rgba(17,22,31,.5);color:#f8f9fc;border:1px solid #c9cfd9;border-radius:12px;padding:13px 18px;font-weight:750;box-shadow:none }
+.fit-nav { padding-block:6px }
+.fit-nav .nav-layout { row-gap:4px }
+.fit-nav .nav-slogan { font-size:18px;line-height:1.3;font-weight:700;letter-spacing:.035em;color:#f3a078 }
+.fit-nav.nav-public .navbar-toggler { display:none!important }
+.fit-nav.nav-public .navbar-collapse { display:block!important;grid-column:3;grid-row:1;justify-self:end;width:max-content;max-width:none }
+.fit-nav.nav-public .navbar-nav { flex-direction:row;align-items:center;gap:8px;padding:0 }
+.fit-nav.nav-public .nav-link { padding:8px 10px;white-space:nowrap }
+.home-actions.home-actions-v12 { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:740px;margin-inline:auto }
+.home-actions-v12 > .btn { display:flex;align-items:center;justify-content:center;min-height:44px;background:rgba(17,22,31,.5);color:#f8f9fc;border:1px solid #c9cfd9;border-radius:10px;padding:9px 12px;font-size:.94rem;line-height:1.35;font-weight:700;box-shadow:none }
 .home-actions-v12 > .btn:hover { background:#303846;border-color:#fff;color:#fff }
 .page { padding-top:calc(var(--fitpulse-header-height,96px) + 24px) }
 .home-intro { padding-top:calc(var(--fitpulse-header-height,80px) + 25px) }
@@ -14,7 +20,12 @@
 .personal-remove { margin-top:16px }
 .personal-remove .btn { border-color:#9c663d;color:#efb27c;background:transparent }
 .personal-remove .btn:hover { background:#5a3924;color:#ffe4cb }
+.personal-program-actions { display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px }
+.personal-program-actions .personal-remove { margin:0 }
+.personal-program-actions .btn { font-size:.85rem;padding:9px 12px }
+.anatomy-svg .muscle-zone,.anatomy-svg .muscle-zone path { transition:fill .16s ease }
 .exercise-video .video-action { display:inline-flex;align-items:center;gap:9px }
 .video-action svg { width:20px;height:20px;fill:currentColor }
 .anatomy-scroll:focus-visible,.video-action:focus-visible { outline:3px solid #ff9b6d;outline-offset:4px }
-@media(max-width:767px) { .fit-nav .nav-slogan { font-size:clamp(11px,3.1vw,14px);letter-spacing:.02em }.home-actions.home-actions-v12 { grid-template-columns:1fr;max-width:420px;gap:10px }.home-actions-v12 > .btn { min-height:48px }.anatomy-subgroups button { font-size:.73rem } }
+@media(max-width:767px) { .fit-nav .nav-slogan { font-size:clamp(11px,3.1vw,13px);letter-spacing:.02em }.fit-nav.nav-public .navbar-nav .btn,.fit-nav.nav-public .nav-link { font-size:.82rem;padding:8px }.home-actions.home-actions-v12 { grid-template-columns:1fr;max-width:300px;gap:8px }.home-actions-v12 > .btn { min-height:44px }.anatomy-subgroups button { font-size:.73rem } }
+@media(prefers-reduced-motion:reduce) { .anatomy-svg .muscle-zone,.anatomy-svg .muscle-zone path { transition:none } }

@@ -10,10 +10,10 @@
         </button>
         <div class="collapse navbar-collapse" id="fitpulse-menu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" th:href="@{/gyms}">Разгледай фитнесите</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/gyms}">Разгледай фитнесите</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">Тренировъчни програми</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">Хранителни режими</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/suggest-gym}">Предложи фитнес</a></li><li class="nav-item"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/suggest-gym}">Предложи фитнес</a></li><li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>Профил</a></li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">Администрация</a></li>
                 <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login(returnTo=${authReturnTo})}">Вход</a></li>
