@@ -1,0 +1,22 @@
+.program-header-actions { display:flex;flex-wrap:wrap;gap:10px;align-items:center }
+.navigator-action { display:inline-flex;align-items:center;justify-content:center;gap:9px }
+.navigator-action .ui-icon,.favorite-shortcut .ui-icon { width:20px;height:20px;flex-shrink:0 }
+.profile-tools.profile-tools-four { grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch }
+.profile-tools-four .profile-tool { background:#202631;border-color:#3d4655;color:#f4f6fa;min-height:155px;align-items:center }
+.profile-tools-four .profile-tool h3 { color:#f4f6fa }
+.profile-tools-four .profile-tool p { color:#bdc6d4 }
+.profile-tools-four .profile-tool:hover { background:#272e3b;border-color:#ff7a3d }
+.profile-tools-four .tool-icon { color:#ff915e;background:#ff793d18 }
+.profile-small-actions { display:flex;justify-content:flex-end;margin:18px 0 8px }
+.favorite-shortcut { display:inline-flex;align-items:center;gap:8px;border:1px solid #a44f29;background:#252b35;color:#ffad85;border-radius:10px;padding:9px 14px }
+.favorite-shortcut:hover { background:#34303a;color:#ffc7ac;border-color:#ff8b53 }
+.meal-catalog-description { color:#adb9ca;font-size:.85rem;line-height:1.6 }
+.anatomy-svg .body-outline { fill:#252c37;stroke:#8290a4;stroke-width:3 }
+.anatomy-svg [data-zone],.anatomy-svg [data-zone] path { fill:var(--muscle-fill,#596779) !important;stroke:#b0baca;stroke-width:2.6;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .15s,stroke .15s }
+.anatomy-svg [data-zone]:hover,.anatomy-svg [data-zone]:focus-visible { --muscle-fill:#ff995d !important;stroke:#fff4ec;outline:none }
+.anatomy-svg [data-zone].is-primary,.anatomy-svg [data-zone].is-selected { --muscle-fill:#ff681f }
+.anatomy-svg [data-zone].is-secondary { --muscle-fill:#ffd3ac }
+.anatomy-pair { gap:18px }
+.anatomy-svg svg { height:440px;max-width:100%;overflow:visible }
+@media(max-width:767px) { .profile-tools.profile-tools-four { grid-template-columns:minmax(0,1fr) }.profile-tools-four .profile-tool { min-height:130px }.program-header-actions { width:100% }.navigator-action { flex:1 }.anatomy-svg svg { height:340px }.anatomy-pair { gap:8px } }
+@media(prefers-reduced-motion:reduce) { .anatomy-svg [data-zone],.anatomy-svg [data-zone] path { transition:none } }

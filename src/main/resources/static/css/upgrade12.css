@@ -1,0 +1,20 @@
+.fit-nav .nav-slogan { font-size:clamp(20px,1.65vw,24px);font-weight:850;letter-spacing:.045em;color:#ff9b6d }
+.home-actions.home-actions-v12 { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1000px;margin-inline:auto }
+.home-actions-v12 > .btn { display:flex;align-items:center;justify-content:center;min-height:54px;background:rgba(17,22,31,.5);color:#f8f9fc;border:1px solid #c9cfd9;border-radius:12px;padding:13px 18px;font-weight:750;box-shadow:none }
+.home-actions-v12 > .btn:hover { background:#303846;border-color:#fff;color:#fff }
+.page { padding-top:calc(var(--fitpulse-header-height,96px) + 24px) }
+.home-intro { padding-top:calc(var(--fitpulse-header-height,80px) + 25px) }
+#exercise-results,.nutrition-meal,.interactive-day { scroll-margin-top:calc(var(--fitpulse-header-height,100px) + 22px) }
+.anatomy-subgroups { border-top:1px solid #475064;padding-top:16px;margin-top:14px;gap:8px }
+.anatomy-subgroups button { font-size:.78rem }
+.anatomy-subgroups[hidden] { display:none!important }
+.anatomy-scroll { display:inline-flex;align-items:center;gap:10px;color:#ffb68f;border:1px solid #ff8c514d;border-radius:10px;padding:10px 13px;margin:8px 0 18px;text-decoration:none;font-weight:700;font-size:.85rem }
+.anatomy-scroll:hover { color:#ffd5bd;background:#ff8c5114 }
+.anatomy-scroll > span { font-size:1.4rem }
+.personal-remove { margin-top:16px }
+.personal-remove .btn { border-color:#9c663d;color:#efb27c;background:transparent }
+.personal-remove .btn:hover { background:#5a3924;color:#ffe4cb }
+.exercise-video .video-action { display:inline-flex;align-items:center;gap:9px }
+.video-action svg { width:20px;height:20px;fill:currentColor }
+.anatomy-scroll:focus-visible,.video-action:focus-visible { outline:3px solid #ff9b6d;outline-offset:4px }
+@media(max-width:767px) { .fit-nav .nav-slogan { font-size:clamp(11px,3.1vw,14px);letter-spacing:.02em }.home-actions.home-actions-v12 { grid-template-columns:1fr;max-width:420px;gap:10px }.home-actions-v12 > .btn { min-height:48px }.anatomy-subgroups button { font-size:.73rem } }

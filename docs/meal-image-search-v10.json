@@ -1,0 +1,618 @@
+[
+  {
+    "recipeCode": "recipe-001",
+    "name": "Овесена купа с банан",
+    "ingredients": [
+      "Овесени ядки",
+      "Кисело мляко 2%",
+      "Банан",
+      "Орехи"
+    ],
+    "query": "oatmeal banana yogurt walnuts photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/oats-banana-dimitris.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-002",
+    "name": "Извара и ябълка",
+    "ingredients": [
+      "Извара 5%",
+      "Ябълка"
+    ],
+    "query": "cottage cheese apple photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-002.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-003",
+    "name": "Пилешко с ориз и салата",
+    "ingredients": [
+      "Пилешко филе",
+      "Ориз",
+      "Домати",
+      "Краставица",
+      "Зехтин"
+    ],
+    "query": "chicken rice tomato cucumber salad photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/chicken-rice-salad-change-cc.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-004",
+    "name": "Кисело мляко с бадеми",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Бадеми"
+    ],
+    "query": "yogurt almonds bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-004.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-005",
+    "name": "Хек с картофи и броколи",
+    "ingredients": [
+      "Хек",
+      "Картофи",
+      "Броколи",
+      "Зехтин"
+    ],
+    "query": "hake potatoes broccoli meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-005.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-006",
+    "name": "Омлет със спанак и хляб",
+    "ingredients": [
+      "Яйца",
+      "Пълнозърнест хляб",
+      "Спанак",
+      "Домати",
+      "Зехтин"
+    ],
+    "query": "spinach omelette bread tomatoes photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/spinach-omelette-kurt-kaiser.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-007",
+    "name": "Кисело мляко и портокал",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Портокал"
+    ],
+    "query": "yogurt orange photo free",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-007.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-008",
+    "name": "Пуешко с булгур и чушки",
+    "ingredients": [
+      "Пуешко филе",
+      "Булгур",
+      "Червена чушка",
+      "Зехтин"
+    ],
+    "query": "turkey bulgur peppers photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-008.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-009",
+    "name": "Извара с круша и орехи",
+    "ingredients": [
+      "Извара 5%",
+      "Круша",
+      "Орехи"
+    ],
+    "query": "cottage cheese pear walnuts photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-009.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-010",
+    "name": "Леща с моркови и сирене",
+    "ingredients": [
+      "Леща",
+      "Моркови",
+      "Домати",
+      "Бяло сирене",
+      "Пълнозърнест хляб",
+      "Зехтин"
+    ],
+    "query": "lentil carrot tomato feta cheese stew photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-010.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-011",
+    "name": "Тост с извара и домат",
+    "ingredients": [
+      "Пълнозърнест хляб",
+      "Извара 5%",
+      "Домати",
+      "Зехтин"
+    ],
+    "query": "cottage cheese tomato toast photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/cottage-tomato-toast-kaboompics.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-012",
+    "name": "Банан и бадеми",
+    "ingredients": [
+      "Банан",
+      "Бадеми"
+    ],
+    "query": "banana almonds snack photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-012.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-013",
+    "name": "Паста с риба тон",
+    "ingredients": [
+      "Пълнозърнеста паста",
+      "Риба тон в собствен сос",
+      "Домати",
+      "Спанак",
+      "Зехтин"
+    ],
+    "query": "tuna pasta photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-013.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-014",
+    "name": "Мляко с овес и плодове",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Овесени ядки",
+      "Горски плодове"
+    ],
+    "query": "yogurt oats berries bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/yogurt-oats-blackberry-micheile.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-015",
+    "name": "Пуешко с печени зеленчуци",
+    "ingredients": [
+      "Пуешко филе",
+      "Картофи",
+      "Тиквички",
+      "Моркови",
+      "Зехтин"
+    ],
+    "query": "roast turkey potatoes zucchini carrots meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-015.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-016",
+    "name": "Овес с мляко и ябълка",
+    "ingredients": [
+      "Овесени ядки",
+      "Прясно мляко 1.5%",
+      "Ябълка",
+      "Фъстъчено масло без захар"
+    ],
+    "query": "oatmeal milk apple peanut butter bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/oats-apple-peanut-idil.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-017",
+    "name": "Извара с горски плодове",
+    "ingredients": [
+      "Извара 5%",
+      "Горски плодове"
+    ],
+    "query": "cottage cheese berries bowl photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/cottage-berries-serghey.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-018",
+    "name": "Бонфиле с картофи и салата",
+    "ingredients": [
+      "Свинско бонфиле",
+      "Картофи",
+      "Краставица",
+      "Домати",
+      "Зехтин"
+    ],
+    "query": "pork tenderloin potatoes tomato cucumber salad photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-018.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-019",
+    "name": "Кисело мляко с орехи",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Орехи"
+    ],
+    "query": "yogurt walnuts bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-019.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-020",
+    "name": "Нахут с яйца и зеленчуци",
+    "ingredients": [
+      "Нахут",
+      "Яйца",
+      "Червена чушка",
+      "Спанак",
+      "Зехтин"
+    ],
+    "query": "chickpea eggs spinach peppers meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-020.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-021",
+    "name": "Яйца, хляб и краставица",
+    "ingredients": [
+      "Яйца",
+      "Пълнозърнест хляб",
+      "Краставица",
+      "Бяло сирене"
+    ],
+    "query": "eggs wholegrain bread cucumber feta breakfast photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/eggs-cucumber-bread-yuliya.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-022",
+    "name": "Мляко с банан",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Банан"
+    ],
+    "query": "yogurt banana bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-022.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-023",
+    "name": "Пъстърва с ориз и броколи",
+    "ingredients": [
+      "Пъстърва",
+      "Ориз",
+      "Броколи",
+      "Зехтин"
+    ],
+    "query": "trout rice broccoli plate photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-023.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-024",
+    "name": "Ябълка, извара и бадеми",
+    "ingredients": [
+      "Ябълка",
+      "Извара 5%",
+      "Бадеми"
+    ],
+    "query": "apple cottage cheese almonds snack photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-024.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-025",
+    "name": "Бобена салата с риба тон",
+    "ingredients": [
+      "Бял боб",
+      "Риба тон в собствен сос",
+      "Домати",
+      "Червена чушка",
+      "Пълнозърнест хляб",
+      "Зехтин"
+    ],
+    "query": "white bean tuna tomato pepper salad photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-025.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-026",
+    "name": "Овесени палачинки",
+    "ingredients": [
+      "Овесени ядки",
+      "Яйца",
+      "Прясно мляко 1.5%",
+      "Горски плодове",
+      "Зехтин"
+    ],
+    "query": "oat pancakes berries photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/pancakes-berries-polina.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-027",
+    "name": "Круша и кисело мляко",
+    "ingredients": [
+      "Круша",
+      "Кисело мляко 2%"
+    ],
+    "query": "pear yogurt photo bowl",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-027.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-028",
+    "name": "Пилешко с пълнозърнеста паста",
+    "ingredients": [
+      "Пилешко филе",
+      "Пълнозърнеста паста",
+      "Домати",
+      "Тиквички",
+      "Зехтин"
+    ],
+    "query": "chicken whole wheat pasta zucchini tomatoes photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-028.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-029",
+    "name": "Извара и орехи",
+    "ingredients": [
+      "Извара 5%",
+      "Орехи",
+      "Портокал"
+    ],
+    "query": "cottage cheese walnuts orange photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-029.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-030",
+    "name": "Леща с ориз и зеленчуци",
+    "ingredients": [
+      "Леща",
+      "Ориз",
+      "Моркови",
+      "Червена чушка",
+      "Бяло сирене",
+      "Зехтин"
+    ],
+    "query": "lentil rice carrots peppers feta meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-030.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-031",
+    "name": "Купа с мляко, овес и круша",
+    "ingredients": [
+      "Кисело мляко 2%",
+      "Овесени ядки",
+      "Круша",
+      "Бадеми"
+    ],
+    "query": "yogurt oats pear almonds bowl photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-031.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-032",
+    "name": "Тост с извара",
+    "ingredients": [
+      "Пълнозърнест хляб",
+      "Извара 5%",
+      "Домати"
+    ],
+    "query": "cottage cheese tomato toast photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/cottage-tomato-toast-kaboompics.jpg",
+    "result": "Снимка с разрешена употреба"
+  },
+  {
+    "recipeCode": "recipe-033",
+    "name": "Пуешко с картофи и моркови",
+    "ingredients": [
+      "Пуешко филе",
+      "Картофи",
+      "Моркови",
+      "Зехтин"
+    ],
+    "query": "turkey breast potatoes carrots meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-033.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-034",
+    "name": "Плод и орехи",
+    "ingredients": [
+      "Ябълка",
+      "Орехи",
+      "Кисело мляко 2%"
+    ],
+    "query": "apple walnuts yogurt snack photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-034.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-035",
+    "name": "Хек с булгур и зеленчуци",
+    "ingredients": [
+      "Хек",
+      "Булгур",
+      "Броколи",
+      "Тиквички",
+      "Зехтин"
+    ],
+    "query": "hake bulgur broccoli zucchini photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-035.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-036",
+    "name": "Леща с ориз и сезонни зеленчуци",
+    "ingredients": [
+      "Леща",
+      "Ориз",
+      "Домати",
+      "Краставица",
+      "Зехтин"
+    ],
+    "query": "lentils rice tomato cucumber meal photograph",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-036.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-037",
+    "name": "Леща с картофи и сезонни зеленчуци",
+    "ingredients": [
+      "Леща",
+      "Картофи",
+      "Броколи",
+      "Зехтин"
+    ],
+    "query": "lentils potatoes broccoli photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-037.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-038",
+    "name": "Нахут с булгур и сезонни зеленчуци",
+    "ingredients": [
+      "Нахут",
+      "Булгур",
+      "Червена чушка",
+      "Зехтин"
+    ],
+    "query": "chickpeas bulgur red peppers photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-038.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-039",
+    "name": "Бял боб с паста и сезонни зеленчуци",
+    "ingredients": [
+      "Пълнозърнеста паста",
+      "Бял боб",
+      "Домати",
+      "Спанак",
+      "Зехтин"
+    ],
+    "query": "white beans pasta tomato spinach photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-039.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-040",
+    "name": "Бял боб с картофи и сезонни зеленчуци",
+    "ingredients": [
+      "Бял боб",
+      "Картофи",
+      "Тиквички",
+      "Моркови",
+      "Зехтин"
+    ],
+    "query": "white beans potatoes zucchini carrots dish photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-040.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-041",
+    "name": "Нахут с ориз и сезонни зеленчуци",
+    "ingredients": [
+      "Нахут",
+      "Ориз",
+      "Броколи",
+      "Зехтин"
+    ],
+    "query": "chickpea rice broccoli meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-041.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-042",
+    "name": "Бял боб с зеленчуци и сезонни зеленчуци",
+    "ingredients": [
+      "Бял боб",
+      "Нахут",
+      "Домати",
+      "Червена чушка",
+      "Пълнозърнест хляб",
+      "Зехтин"
+    ],
+    "query": "white bean chickpea tomato red pepper salad photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-042.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-043",
+    "name": "Леща с булгур и сезонни зеленчуци",
+    "ingredients": [
+      "Леща",
+      "Булгур",
+      "Броколи",
+      "Тиквички",
+      "Зехтин"
+    ],
+    "query": "lentils bulgur broccoli zucchini meal photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-043.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  },
+  {
+    "recipeCode": "recipe-044",
+    "name": "Пуешко с картофи и свежа салата",
+    "ingredients": [
+      "Пуешко филе",
+      "Картофи",
+      "Краставица",
+      "Домати",
+      "Зехтин"
+    ],
+    "query": "turkey potatoes cucumber tomato salad photo",
+    "checkedOn": "2026-11-10",
+    "localImage": "/images/meals/recipes/recipe-044.svg",
+    "result": "Запазена индивидуална илюстрация: не е намерена достатъчно подходяща фотография с проверена свободна употреба."
+  }
+]
