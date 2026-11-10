@@ -1,0 +1,1 @@
+package com.fitpulse.model.enums; public enum WorkoutStatus {PLANNED("Планирана"),COMPLETED("Завършена"),CANCELLED("Отказана");private final String displayName;WorkoutStatus(String n){displayName=n;}public String getDisplayName(){return displayName;}}

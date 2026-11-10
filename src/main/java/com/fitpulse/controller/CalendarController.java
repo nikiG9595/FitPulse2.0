@@ -1,0 +1,13 @@
+package com.fitpulse.controller;
+import com.fitpulse.model.dto.WorkoutEventForm; import com.fitpulse.model.enums.WorkoutStatus; import com.fitpulse.service.*; import jakarta.validation.Valid; import org.springframework.stereotype.Controller; import org.springframework.ui.Model; import org.springframework.validation.BindingResult; import org.springframework.web.bind.annotation.*;
+@Controller @RequestMapping("/calendar") public class CalendarController {private final WellnessService wellness;private final GymDirectoryService gyms;public CalendarController(WellnessService w,GymDirectoryService g){wellness=w;gyms=g;}
+ @GetMapping public String list(Model m){m.addAttribute("events",wellness.calendar());m.addAttribute("reminders",wellness.reminders());return "calendar/list";}
+ @GetMapping("/create") public String create(@RequestParam(required=false) Long programId,@RequestParam(required=false) Long mealPlanId,Model m){WorkoutEventForm form=new WorkoutEventForm();if(programId!=null)form.setProgramId(wellness.ownedProgram(programId).getId());if(mealPlanId!=null)form.setMealPlanId(wellness.ownedMeal(mealPlanId).getId());prepare(m,form,null);return "calendar/form";}
+ @PostMapping("/create") public String createPost(@Valid @ModelAttribute WorkoutEventForm workoutEventForm,BindingResult e,Model m){if(e.hasErrors()){prepare(m,workoutEventForm,null);return "calendar/form";}wellness.saveEvent(null,workoutEventForm);return "redirect:/calendar";}
+ @GetMapping("/{id}/edit") public String edit(@PathVariable Long id,Model m){prepare(m,wellness.eventForm(id),id);return "calendar/form";}
+ @PostMapping("/{id}/edit") public String editPost(@PathVariable Long id,@Valid @ModelAttribute WorkoutEventForm workoutEventForm,BindingResult e,Model m){if(e.hasErrors()){prepare(m,workoutEventForm,id);return "calendar/form";}wellness.saveEvent(id,workoutEventForm);return "redirect:/calendar";}
+ @PostMapping("/{id}/status") public String status(@PathVariable Long id,@RequestParam WorkoutStatus status){wellness.eventStatus(id,status);return "redirect:/calendar";}
+ @PostMapping("/{id}/delete") public String delete(@PathVariable Long id){wellness.deleteEvent(id);return "redirect:/calendar";}
+ @PostMapping("/{id}/dismiss-reminder") public String dismiss(@PathVariable Long id){wellness.dismissReminder(id);return "redirect:/calendar";}
+ private void prepare(Model m,WorkoutEventForm f,Long id){m.addAttribute("workoutEventForm",f);m.addAttribute("eventId",id);m.addAttribute("programs",wellness.myPrograms());m.addAttribute("mealPlans",wellness.myMeals());m.addAttribute("gyms",gyms.allGyms().stream().filter(g->g.getStatus().name().equals("PUBLISHED")).toList());}
+}

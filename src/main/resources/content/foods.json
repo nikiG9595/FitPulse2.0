@@ -1,0 +1,362 @@
+[
+  {
+    "code": "food-001",
+    "name": "Овесени ядки",
+    "state": "сухи",
+    "category": "Зърнени и нишестени",
+    "protein": 13,
+    "fat": 7,
+    "carbs": 60
+  },
+  {
+    "code": "food-002",
+    "name": "Кисело мляко 2%",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 4,
+    "fat": 2,
+    "carbs": 4.5
+  },
+  {
+    "code": "food-003",
+    "name": "Банан",
+    "state": "суров, обелен",
+    "category": "Плодове",
+    "protein": 1.1,
+    "fat": 0.3,
+    "carbs": 23
+  },
+  {
+    "code": "food-004",
+    "name": "Орехи",
+    "state": "сурови ядки без черупки",
+    "category": "Ядки и семена",
+    "protein": 15,
+    "fat": 65,
+    "carbs": 7
+  },
+  {
+    "code": "food-005",
+    "name": "Извара 5%",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 17,
+    "fat": 5,
+    "carbs": 3
+  },
+  {
+    "code": "food-006",
+    "name": "Ябълка",
+    "state": "сурова, без сърцевината",
+    "category": "Плодове",
+    "protein": 0.3,
+    "fat": 0.2,
+    "carbs": 14
+  },
+  {
+    "code": "food-007",
+    "name": "Пилешко филе",
+    "state": "сурово, без кожа",
+    "category": "Месо и риба",
+    "protein": 23,
+    "fat": 2,
+    "carbs": 0
+  },
+  {
+    "code": "food-008",
+    "name": "Ориз",
+    "state": "сух, преди варене",
+    "category": "Зърнени и нишестени",
+    "protein": 7,
+    "fat": 1,
+    "carbs": 78
+  },
+  {
+    "code": "food-009",
+    "name": "Домати",
+    "state": "сурови",
+    "category": "Зеленчуци",
+    "protein": 0.9,
+    "fat": 0.2,
+    "carbs": 3.9
+  },
+  {
+    "code": "food-010",
+    "name": "Краставица",
+    "state": "сурова",
+    "category": "Зеленчуци",
+    "protein": 0.7,
+    "fat": 0.1,
+    "carbs": 3.6
+  },
+  {
+    "code": "food-011",
+    "name": "Зехтин",
+    "state": "претеглен преди добавяне",
+    "category": "Мазнини",
+    "protein": 0,
+    "fat": 100,
+    "carbs": 0
+  },
+  {
+    "code": "food-012",
+    "name": "Бадеми",
+    "state": "сурови ядки",
+    "category": "Ядки и семена",
+    "protein": 21,
+    "fat": 50,
+    "carbs": 10
+  },
+  {
+    "code": "food-013",
+    "name": "Хек",
+    "state": "сурово филе",
+    "category": "Месо и риба",
+    "protein": 18,
+    "fat": 1.5,
+    "carbs": 0
+  },
+  {
+    "code": "food-014",
+    "name": "Картофи",
+    "state": "сурови, обелени",
+    "category": "Зърнени и нишестени",
+    "protein": 2,
+    "fat": 0.1,
+    "carbs": 17
+  },
+  {
+    "code": "food-015",
+    "name": "Броколи",
+    "state": "сурови",
+    "category": "Зеленчуци",
+    "protein": 2.8,
+    "fat": 0.4,
+    "carbs": 7
+  },
+  {
+    "code": "food-016",
+    "name": "Яйца",
+    "state": "сурова ядлива част, без черупки",
+    "category": "Яйца",
+    "protein": 12.6,
+    "fat": 10.6,
+    "carbs": 1.1
+  },
+  {
+    "code": "food-017",
+    "name": "Пълнозърнест хляб",
+    "state": "готов продукт",
+    "category": "Зърнени и нишестени",
+    "protein": 9,
+    "fat": 3.5,
+    "carbs": 43
+  },
+  {
+    "code": "food-018",
+    "name": "Спанак",
+    "state": "суров",
+    "category": "Зеленчуци",
+    "protein": 2.9,
+    "fat": 0.4,
+    "carbs": 3.6
+  },
+  {
+    "code": "food-019",
+    "name": "Портокал",
+    "state": "суров, обелен",
+    "category": "Плодове",
+    "protein": 0.9,
+    "fat": 0.1,
+    "carbs": 12
+  },
+  {
+    "code": "food-020",
+    "name": "Пуешко филе",
+    "state": "сурово, без кожа",
+    "category": "Месо и риба",
+    "protein": 24,
+    "fat": 1.5,
+    "carbs": 0
+  },
+  {
+    "code": "food-021",
+    "name": "Булгур",
+    "state": "сух, преди варене",
+    "category": "Зърнени и нишестени",
+    "protein": 12,
+    "fat": 1.5,
+    "carbs": 70
+  },
+  {
+    "code": "food-022",
+    "name": "Червена чушка",
+    "state": "сурова",
+    "category": "Зеленчуци",
+    "protein": 1,
+    "fat": 0.3,
+    "carbs": 6
+  },
+  {
+    "code": "food-023",
+    "name": "Круша",
+    "state": "сурова, без сърцевината",
+    "category": "Плодове",
+    "protein": 0.4,
+    "fat": 0.1,
+    "carbs": 15
+  },
+  {
+    "code": "food-024",
+    "name": "Леща",
+    "state": "сварена и отцедена",
+    "category": "Бобови",
+    "protein": 9,
+    "fat": 0.4,
+    "carbs": 20
+  },
+  {
+    "code": "food-025",
+    "name": "Моркови",
+    "state": "сурови",
+    "category": "Зеленчуци",
+    "protein": 0.9,
+    "fat": 0.2,
+    "carbs": 10
+  },
+  {
+    "code": "food-026",
+    "name": "Бяло сирене",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 16,
+    "fat": 22,
+    "carbs": 2
+  },
+  {
+    "code": "food-027",
+    "name": "Пълнозърнеста паста",
+    "state": "суха, преди варене",
+    "category": "Зърнени и нишестени",
+    "protein": 13,
+    "fat": 2.5,
+    "carbs": 65
+  },
+  {
+    "code": "food-028",
+    "name": "Риба тон в собствен сос",
+    "state": "отцедена",
+    "category": "Месо и риба",
+    "protein": 25,
+    "fat": 1,
+    "carbs": 0
+  },
+  {
+    "code": "food-029",
+    "name": "Горски плодове",
+    "state": "сурови или размразени",
+    "category": "Плодове",
+    "protein": 0.8,
+    "fat": 0.4,
+    "carbs": 10
+  },
+  {
+    "code": "food-030",
+    "name": "Тиквички",
+    "state": "сурови",
+    "category": "Зеленчуци",
+    "protein": 1.2,
+    "fat": 0.3,
+    "carbs": 3.1
+  },
+  {
+    "code": "food-031",
+    "name": "Прясно мляко 1.5%",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 3.4,
+    "fat": 1.5,
+    "carbs": 4.8
+  },
+  {
+    "code": "food-032",
+    "name": "Фъстъчено масло без захар",
+    "state": "готов продукт",
+    "category": "Ядки и семена",
+    "protein": 25,
+    "fat": 50,
+    "carbs": 12
+  },
+  {
+    "code": "food-033",
+    "name": "Свинско бонфиле",
+    "state": "сурово, без видима мазнина",
+    "category": "Месо и риба",
+    "protein": 22,
+    "fat": 4,
+    "carbs": 0
+  },
+  {
+    "code": "food-034",
+    "name": "Нахут",
+    "state": "сварен и отцеден",
+    "category": "Бобови",
+    "protein": 8.9,
+    "fat": 2.6,
+    "carbs": 27
+  },
+  {
+    "code": "food-035",
+    "name": "Пъстърва",
+    "state": "сурово филе",
+    "category": "Месо и риба",
+    "protein": 20,
+    "fat": 6,
+    "carbs": 0
+  },
+  {
+    "code": "food-036",
+    "name": "Бял боб",
+    "state": "сварен и отцеден",
+    "category": "Бобови",
+    "protein": 8,
+    "fat": 0.5,
+    "carbs": 21
+  },
+  {
+    "code": "food-037",
+    "name": "Слънчогледово олио",
+    "state": "претеглено преди добавяне",
+    "category": "Мазнини",
+    "protein": 0,
+    "fat": 100,
+    "carbs": 0
+  },
+  {
+    "code": "food-038",
+    "name": "Белтъци от яйце",
+    "state": "сурови, без черупки",
+    "category": "Яйца",
+    "protein": 10.9,
+    "fat": 0.2,
+    "carbs": 0.7
+  },
+  {
+    "code": "food-039",
+    "name": "Гръцко кисело мляко 2%",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 8,
+    "fat": 2,
+    "carbs": 4
+  },
+  {
+    "code": "food-040",
+    "name": "Обезмаслена извара",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 18,
+    "fat": 0.5,
+    "carbs": 3
+  }
+]

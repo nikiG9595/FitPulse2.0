@@ -1,0 +1,2421 @@
+[
+  {
+    "code": "recipe-001",
+    "name": "Овесена купа с банан",
+    "label": "Закуска",
+    "imagePath": "/images/meals/oats-banana-dimitris.jpg",
+    "preparationMinutes": 10,
+    "steps": [
+      "Смеси овеса и млякото, остави 15 минути и добави банана и орехите."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Овесена купа с банан",
+      "ingredients": [
+        {
+          "name": "Овесени ядки",
+          "grams": 70,
+          "state": "сухи",
+          "proteinPer100": 13,
+          "fatPer100": 7,
+          "carbsPer100": 60,
+          "foodCode": "food-001"
+        },
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Банан",
+          "grams": 115,
+          "state": "суров, обелен",
+          "proteinPer100": 1.1,
+          "fatPer100": 0.3,
+          "carbsPer100": 23,
+          "foodCode": "food-003"
+        },
+        {
+          "name": "Орехи",
+          "grams": 10,
+          "state": "сурови ядки без черупки",
+          "proteinPer100": 15,
+          "fatPer100": 65,
+          "carbsPer100": 7,
+          "foodCode": "food-004"
+        }
+      ],
+      "preparation": "Смеси овеса и млякото, остави 15 минути и добави банана и орехите.",
+      "substitution": "Замени банана със 150 г ябълка; хранителните стойности се променят."
+    }
+  },
+  {
+    "code": "recipe-002",
+    "name": "Извара и ябълка",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-002.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Нарежи ябълката и поднеси отделно от изварата."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Извара и ябълка",
+      "ingredients": [
+        {
+          "name": "Извара 5%",
+          "grams": 115,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Ябълка",
+          "grams": 170,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.3,
+          "fatPer100": 0.2,
+          "carbsPer100": 14,
+          "foodCode": "food-006"
+        }
+      ],
+      "preparation": "Нарежи ябълката и поднеси отделно от изварата.",
+      "substitution": "100 г извара могат да се заменят със 170 г кисело мляко; белтъчините ще са по-малко."
+    }
+  },
+  {
+    "code": "recipe-003",
+    "name": "Пилешко с ориз и салата",
+    "label": "Обяд",
+    "imagePath": "/images/meals/chicken-rice-khloe-arledge.jpg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари ориза.",
+      "Изпечи пилешкото до пълна готовност.",
+      "Добави зехтина към салатата."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пилешко с ориз и салата",
+      "ingredients": [
+        {
+          "name": "Пилешко филе",
+          "grams": 185,
+          "state": "сурово, без кожа",
+          "proteinPer100": 23,
+          "fatPer100": 2,
+          "carbsPer100": 0,
+          "foodCode": "food-007"
+        },
+        {
+          "name": "Ориз",
+          "grams": 80,
+          "state": "сух, преди варене",
+          "proteinPer100": 7,
+          "fatPer100": 1,
+          "carbsPer100": 78,
+          "foodCode": "food-008"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Краставица",
+          "grams": 115,
+          "state": "сурова",
+          "proteinPer100": 0.7,
+          "fatPer100": 0.1,
+          "carbsPer100": 3.6,
+          "foodCode": "food-010"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари ориза. Изпечи пилешкото до пълна готовност. Добави зехтина към салатата.",
+      "substitution": "Смени пилешкото с равно сурово количество пуешко."
+    }
+  },
+  {
+    "code": "recipe-004",
+    "name": "Кисело мляко с бадеми",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-004.svg",
+    "preparationMinutes": 3,
+    "steps": [
+      "Разбъркай ядките в млякото непосредствено преди хранене."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Кисело мляко с бадеми",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Бадеми",
+          "grams": 15,
+          "state": "сурови ядки",
+          "proteinPer100": 21,
+          "fatPer100": 50,
+          "carbsPer100": 10,
+          "foodCode": "food-012"
+        }
+      ],
+      "preparation": "Разбъркай ядките в млякото непосредствено преди хранене.",
+      "substitution": "Замени бадемите със същите грамове орехи; мазнините ще са различни."
+    }
+  },
+  {
+    "code": "recipe-005",
+    "name": "Хек с картофи и броколи",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-005.svg",
+    "preparationMinutes": 40,
+    "steps": [
+      "Изпечи рибата и картофите със зехтина.",
+      "задуши броколите с вода."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Хек с картофи и броколи",
+      "ingredients": [
+        {
+          "name": "Хек",
+          "grams": 205,
+          "state": "сурово филе",
+          "proteinPer100": 18,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-013"
+        },
+        {
+          "name": "Картофи",
+          "grams": 290,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Броколи",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изпечи рибата и картофите със зехтина; задуши броколите с вода.",
+      "substitution": "Хекът може да се замени с друга бяла риба без панировка."
+    }
+  },
+  {
+    "code": "recipe-006",
+    "name": "Омлет със спанак и хляб",
+    "label": "Закуска",
+    "imagePath": "/images/meals/omelette-igor-miske.jpg",
+    "preparationMinutes": 15,
+    "steps": [
+      "Около 100 г ядлива част са две средни яйца.",
+      "Изпечи омлета със спанака и премерения зехтин."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Омлет със спанак и хляб",
+      "ingredients": [
+        {
+          "name": "Яйца",
+          "grams": 100,
+          "state": "сурова ядлива част, без черупки",
+          "proteinPer100": 12.6,
+          "fatPer100": 10.6,
+          "carbsPer100": 1.1,
+          "foodCode": "food-016"
+        },
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 90,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Спанак",
+          "grams": 90,
+          "state": "суров",
+          "proteinPer100": 2.9,
+          "fatPer100": 0.4,
+          "carbsPer100": 3.6,
+          "foodCode": "food-018"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Около 100 г ядлива част са две средни яйца. Изпечи омлета със спанака и премерения зехтин.",
+      "substitution": "Спанакът може да се замени с тиквичка в същото сурово количество."
+    }
+  },
+  {
+    "code": "recipe-007",
+    "name": "Кисело мляко и портокал",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-007.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Поднеси портокала на резени с млякото."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Кисело мляко и портокал",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Портокал",
+          "grams": 205,
+          "state": "суров, обелен",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.1,
+          "carbsPer100": 12,
+          "foodCode": "food-019"
+        }
+      ],
+      "preparation": "Поднеси портокала на резени с млякото.",
+      "substitution": "Използвай същото количество ябълка вместо портокал."
+    }
+  },
+  {
+    "code": "recipe-008",
+    "name": "Пуешко с булгур и чушки",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-008.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари булгура.",
+      "задуши чушките и пуешкото с малко вода и зехтина до готовност."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пуешко с булгур и чушки",
+      "ingredients": [
+        {
+          "name": "Пуешко филе",
+          "grams": 195,
+          "state": "сурово, без кожа",
+          "proteinPer100": 24,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-020"
+        },
+        {
+          "name": "Булгур",
+          "grams": 85,
+          "state": "сух, преди варене",
+          "proteinPer100": 12,
+          "fatPer100": 1.5,
+          "carbsPer100": 70,
+          "foodCode": "food-021"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 205,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари булгура; задуши чушките и пуешкото с малко вода и зехтина до готовност.",
+      "substitution": "Замени булгура със същото сухо количество ориз; стойностите ще се променят."
+    }
+  },
+  {
+    "code": "recipe-009",
+    "name": "Извара с круша и орехи",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-009.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Нарежи крушата и добави натрошените орехи."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Извара с круша и орехи",
+      "ingredients": [
+        {
+          "name": "Извара 5%",
+          "grams": 115,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Круша",
+          "grams": 185,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.4,
+          "fatPer100": 0.1,
+          "carbsPer100": 15,
+          "foodCode": "food-023"
+        },
+        {
+          "name": "Орехи",
+          "grams": 10,
+          "state": "сурови ядки без черупки",
+          "proteinPer100": 15,
+          "fatPer100": 65,
+          "carbsPer100": 7,
+          "foodCode": "food-004"
+        }
+      ],
+      "preparation": "Нарежи крушата и добави натрошените орехи.",
+      "substitution": "Крушата може да се замени с ябълка със същото тегло."
+    }
+  },
+  {
+    "code": "recipe-010",
+    "name": "Леща с моркови и сирене",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-010.svg",
+    "preparationMinutes": 25,
+    "steps": [
+      "Задуши моркова, добави сварената леща и домата.",
+      "Поднеси със сирене и хляб."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Леща с моркови и сирене",
+      "ingredients": [
+        {
+          "name": "Леща",
+          "grams": 255,
+          "state": "сварена и отцедена",
+          "proteinPer100": 9,
+          "fatPer100": 0.4,
+          "carbsPer100": 20,
+          "foodCode": "food-024"
+        },
+        {
+          "name": "Моркови",
+          "grams": 140,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 10,
+          "foodCode": "food-025"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Бяло сирене",
+          "grams": 45,
+          "state": "готов продукт",
+          "proteinPer100": 16,
+          "fatPer100": 22,
+          "carbsPer100": 2,
+          "foodCode": "food-026"
+        },
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 45,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Задуши моркова, добави сварената леща и домата. Поднеси със сирене и хляб.",
+      "substitution": "Лещата може да се замени със сварен боб; стойностите са различни."
+    }
+  },
+  {
+    "code": "recipe-011",
+    "name": "Тост с извара и домат",
+    "label": "Закуска",
+    "imagePath": "/images/meals/recipes/recipe-011.svg",
+    "preparationMinutes": 10,
+    "steps": [
+      "Препечи хляба, добави изварата, домата и претегления зехтин."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Тост с извара и домат",
+      "ingredients": [
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 105,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Извара 5%",
+          "grams": 150,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Домати",
+          "grams": 205,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Препечи хляба, добави изварата, домата и претегления зехтин.",
+      "substitution": "Изварата може да се замени с 80 г бяло сирене, но мазнините ще се повишат."
+    }
+  },
+  {
+    "code": "recipe-012",
+    "name": "Банан и бадеми",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-012.svg",
+    "preparationMinutes": 3,
+    "steps": [
+      "Поднеси банана с отделно премерени ядки."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Банан и бадеми",
+      "ingredients": [
+        {
+          "name": "Банан",
+          "grams": 140,
+          "state": "суров, обелен",
+          "proteinPer100": 1.1,
+          "fatPer100": 0.3,
+          "carbsPer100": 23,
+          "foodCode": "food-003"
+        },
+        {
+          "name": "Бадеми",
+          "grams": 25,
+          "state": "сурови ядки",
+          "proteinPer100": 21,
+          "fatPer100": 50,
+          "carbsPer100": 10,
+          "foodCode": "food-012"
+        }
+      ],
+      "preparation": "Поднеси банана с отделно премерени ядки.",
+      "substitution": "Вместо банан използвай 180 г ябълка."
+    }
+  },
+  {
+    "code": "recipe-013",
+    "name": "Паста с риба тон",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-013.svg",
+    "preparationMinutes": 25,
+    "steps": [
+      "Свари пастата, задуши домата и спанака, после добави отцедената риба и зехтина."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Паста с риба тон",
+      "ingredients": [
+        {
+          "name": "Пълнозърнеста паста",
+          "grams": 90,
+          "state": "суха, преди варене",
+          "proteinPer100": 13,
+          "fatPer100": 2.5,
+          "carbsPer100": 65,
+          "foodCode": "food-027"
+        },
+        {
+          "name": "Риба тон в собствен сос",
+          "grams": 150,
+          "state": "отцедена",
+          "proteinPer100": 25,
+          "fatPer100": 1,
+          "carbsPer100": 0,
+          "foodCode": "food-028"
+        },
+        {
+          "name": "Домати",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Спанак",
+          "grams": 90,
+          "state": "суров",
+          "proteinPer100": 2.9,
+          "fatPer100": 0.4,
+          "carbsPer100": 3.6,
+          "foodCode": "food-018"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари пастата, задуши домата и спанака, после добави отцедената риба и зехтина.",
+      "substitution": "Рибата може да се замени със 150 г сурово пилешко, предварително изпечено."
+    }
+  },
+  {
+    "code": "recipe-014",
+    "name": "Мляко с овес и плодове",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/oats-fruit-brooke-lark.jpg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Остави овеса да омекне в млякото и добави плодовете."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Мляко с овес и плодове",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Овесени ядки",
+          "grams": 30,
+          "state": "сухи",
+          "proteinPer100": 13,
+          "fatPer100": 7,
+          "carbsPer100": 60,
+          "foodCode": "food-001"
+        },
+        {
+          "name": "Горски плодове",
+          "grams": 115,
+          "state": "сурови или размразени",
+          "proteinPer100": 0.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 10,
+          "foodCode": "food-029"
+        }
+      ],
+      "preparation": "Остави овеса да омекне в млякото и добави плодовете.",
+      "substitution": "Използвай пресен сезонен плод със същото тегло."
+    }
+  },
+  {
+    "code": "recipe-015",
+    "name": "Пуешко с печени зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-015.svg",
+    "preparationMinutes": 40,
+    "steps": [
+      "Нарежи всичко на сходни парчета и изпечи до пълна готовност на месото."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Пуешко с печени зеленчуци",
+      "ingredients": [
+        {
+          "name": "Пуешко филе",
+          "grams": 195,
+          "state": "сурово, без кожа",
+          "proteinPer100": 24,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-020"
+        },
+        {
+          "name": "Картофи",
+          "grams": 255,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Тиквички",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 1.2,
+          "fatPer100": 0.3,
+          "carbsPer100": 3.1,
+          "foodCode": "food-030"
+        },
+        {
+          "name": "Моркови",
+          "grams": 115,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 10,
+          "foodCode": "food-025"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Нарежи всичко на сходни парчета и изпечи до пълна готовност на месото.",
+      "substitution": "Замени пуешкото с пилешко при същото сурово тегло."
+    }
+  },
+  {
+    "code": "recipe-016",
+    "name": "Овес с мляко и ябълка",
+    "label": "Закуска",
+    "imagePath": "/images/meals/recipes/recipe-016.svg",
+    "preparationMinutes": 15,
+    "steps": [
+      "Свари овеса в млякото, добави ябълката и фъстъченото масло."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Овес с мляко и ябълка",
+      "ingredients": [
+        {
+          "name": "Овесени ядки",
+          "grams": 75,
+          "state": "сухи",
+          "proteinPer100": 13,
+          "fatPer100": 7,
+          "carbsPer100": 60,
+          "foodCode": "food-001"
+        },
+        {
+          "name": "Прясно мляко 1.5%",
+          "grams": 290,
+          "state": "готов продукт",
+          "proteinPer100": 3.4,
+          "fatPer100": 1.5,
+          "carbsPer100": 4.8,
+          "foodCode": "food-031"
+        },
+        {
+          "name": "Ябълка",
+          "grams": 170,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.3,
+          "fatPer100": 0.2,
+          "carbsPer100": 14,
+          "foodCode": "food-006"
+        },
+        {
+          "name": "Фъстъчено масло без захар",
+          "grams": 15,
+          "state": "готов продукт",
+          "proteinPer100": 25,
+          "fatPer100": 50,
+          "carbsPer100": 12,
+          "foodCode": "food-032"
+        }
+      ],
+      "preparation": "Свари овеса в млякото, добави ябълката и фъстъченото масло.",
+      "substitution": "При алергия към фъстъци използвай 10 г зехтин в друго хранене, а не ядково масло."
+    }
+  },
+  {
+    "code": "recipe-017",
+    "name": "Извара с горски плодове",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/cottage-berries-serghey.jpg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Разбъркай плодовете с изварата."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Извара с горски плодове",
+      "ingredients": [
+        {
+          "name": "Извара 5%",
+          "grams": 140,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Горски плодове",
+          "grams": 170,
+          "state": "сурови или размразени",
+          "proteinPer100": 0.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 10,
+          "foodCode": "food-029"
+        }
+      ],
+      "preparation": "Разбъркай плодовете с изварата.",
+      "substitution": "Замени плодовете със 150 г портокал."
+    }
+  },
+  {
+    "code": "recipe-018",
+    "name": "Бонфиле с картофи и салата",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-018.svg",
+    "preparationMinutes": 40,
+    "steps": [
+      "Изпечи месото до пълна готовност и картофите.",
+      "зехтинът е общото количество за готвене и салатата."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Бонфиле с картофи и салата",
+      "ingredients": [
+        {
+          "name": "Свинско бонфиле",
+          "grams": 195,
+          "state": "сурово, без видима мазнина",
+          "proteinPer100": 22,
+          "fatPer100": 4,
+          "carbsPer100": 0,
+          "foodCode": "food-033"
+        },
+        {
+          "name": "Картофи",
+          "grams": 320,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Краставица",
+          "grams": 170,
+          "state": "сурова",
+          "proteinPer100": 0.7,
+          "fatPer100": 0.1,
+          "carbsPer100": 3.6,
+          "foodCode": "food-010"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изпечи месото до пълна готовност и картофите; зехтинът е общото количество за готвене и салатата.",
+      "substitution": "Замени бонфилето със същото сурово количество пуешко."
+    }
+  },
+  {
+    "code": "recipe-019",
+    "name": "Кисело мляко с орехи",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-019.svg",
+    "preparationMinutes": 3,
+    "steps": [
+      "Премери орехите и ги добави към млякото."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Кисело мляко с орехи",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Орехи",
+          "grams": 15,
+          "state": "сурови ядки без черупки",
+          "proteinPer100": 15,
+          "fatPer100": 65,
+          "carbsPer100": 7,
+          "foodCode": "food-004"
+        }
+      ],
+      "preparation": "Премери орехите и ги добави към млякото.",
+      "substitution": "Използвай 15 г бадеми вместо орехи."
+    }
+  },
+  {
+    "code": "recipe-020",
+    "name": "Нахут с яйца и зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-020.svg",
+    "preparationMinutes": 25,
+    "steps": [
+      "Задуши чушката и спанака.",
+      "добави нахута и яйцата и готви до стягане."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Нахут с яйца и зеленчуци",
+      "ingredients": [
+        {
+          "name": "Нахут",
+          "grams": 195,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8.9,
+          "fatPer100": 2.6,
+          "carbsPer100": 27,
+          "foodCode": "food-034"
+        },
+        {
+          "name": "Яйца",
+          "grams": 100,
+          "state": "сурова ядлива част, без черупки",
+          "proteinPer100": 12.6,
+          "fatPer100": 10.6,
+          "carbsPer100": 1.1,
+          "foodCode": "food-016"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 170,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Спанак",
+          "grams": 90,
+          "state": "суров",
+          "proteinPer100": 2.9,
+          "fatPer100": 0.4,
+          "carbsPer100": 3.6,
+          "foodCode": "food-018"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Задуши чушката и спанака; добави нахута и яйцата и готви до стягане.",
+      "substitution": "Замени нахута със същите грамове сварен боб."
+    }
+  },
+  {
+    "code": "recipe-021",
+    "name": "Яйца, хляб и краставица",
+    "label": "Закуска",
+    "imagePath": "/images/meals/recipes/recipe-021.svg",
+    "preparationMinutes": 15,
+    "steps": [
+      "Свари яйцата.",
+      "поднеси ги с хляба, сиренето и краставицата."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Яйца, хляб и краставица",
+      "ingredients": [
+        {
+          "name": "Яйца",
+          "grams": 100,
+          "state": "сурова ядлива част, без черупки",
+          "proteinPer100": 12.6,
+          "fatPer100": 10.6,
+          "carbsPer100": 1.1,
+          "foodCode": "food-016"
+        },
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 90,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Краставица",
+          "grams": 205,
+          "state": "сурова",
+          "proteinPer100": 0.7,
+          "fatPer100": 0.1,
+          "carbsPer100": 3.6,
+          "foodCode": "food-010"
+        },
+        {
+          "name": "Бяло сирене",
+          "grams": 35,
+          "state": "готов продукт",
+          "proteinPer100": 16,
+          "fatPer100": 22,
+          "carbsPer100": 2,
+          "foodCode": "food-026"
+        }
+      ],
+      "preparation": "Свари яйцата; поднеси ги с хляба, сиренето и краставицата.",
+      "substitution": "Сиренето може да се замени с 50 г извара."
+    }
+  },
+  {
+    "code": "recipe-022",
+    "name": "Мляко с банан",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-022.svg",
+    "preparationMinutes": 3,
+    "steps": [
+      "Нарежи банана в млякото."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Мляко с банан",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Банан",
+          "grams": 115,
+          "state": "суров, обелен",
+          "proteinPer100": 1.1,
+          "fatPer100": 0.3,
+          "carbsPer100": 23,
+          "foodCode": "food-003"
+        }
+      ],
+      "preparation": "Нарежи банана в млякото.",
+      "substitution": "Замени банана със 150 г круша."
+    }
+  },
+  {
+    "code": "recipe-023",
+    "name": "Пъстърва с ориз и броколи",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-023.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Изпечи рибата, свари ориза и задуши броколите.",
+      "не добавяй непремерена мазнина."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пъстърва с ориз и броколи",
+      "ingredients": [
+        {
+          "name": "Пъстърва",
+          "grams": 205,
+          "state": "сурово филе",
+          "proteinPer100": 20,
+          "fatPer100": 6,
+          "carbsPer100": 0,
+          "foodCode": "food-035"
+        },
+        {
+          "name": "Ориз",
+          "grams": 80,
+          "state": "сух, преди варене",
+          "proteinPer100": 7,
+          "fatPer100": 1,
+          "carbsPer100": 78,
+          "foodCode": "food-008"
+        },
+        {
+          "name": "Броколи",
+          "grams": 255,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изпечи рибата, свари ориза и задуши броколите; не добавяй непремерена мазнина.",
+      "substitution": "С бяла риба вместо пъстърва мазнините и калориите ще са по-ниски."
+    }
+  },
+  {
+    "code": "recipe-024",
+    "name": "Ябълка, извара и бадеми",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-024.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Поднеси продуктите отделно или като купа с нарязана ябълка."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Ябълка, извара и бадеми",
+      "ingredients": [
+        {
+          "name": "Ябълка",
+          "grams": 170,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.3,
+          "fatPer100": 0.2,
+          "carbsPer100": 14,
+          "foodCode": "food-006"
+        },
+        {
+          "name": "Извара 5%",
+          "grams": 115,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Бадеми",
+          "grams": 15,
+          "state": "сурови ядки",
+          "proteinPer100": 21,
+          "fatPer100": 50,
+          "carbsPer100": 10,
+          "foodCode": "food-012"
+        }
+      ],
+      "preparation": "Поднеси продуктите отделно или като купа с нарязана ябълка.",
+      "substitution": "Ябълката може да се замени с портокал със същото ядливо тегло."
+    }
+  },
+  {
+    "code": "recipe-025",
+    "name": "Бобена салата с риба тон",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-025.svg",
+    "preparationMinutes": 10,
+    "steps": [
+      "Изплакни и отцеди боба и рибата, смеси със зеленчуците и зехтина."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Бобена салата с риба тон",
+      "ingredients": [
+        {
+          "name": "Бял боб",
+          "grams": 230,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8,
+          "fatPer100": 0.5,
+          "carbsPer100": 21,
+          "foodCode": "food-036"
+        },
+        {
+          "name": "Риба тон в собствен сос",
+          "grams": 115,
+          "state": "отцедена",
+          "proteinPer100": 25,
+          "fatPer100": 1,
+          "carbsPer100": 0,
+          "foodCode": "food-028"
+        },
+        {
+          "name": "Домати",
+          "grams": 205,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 115,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 45,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изплакни и отцеди боба и рибата, смеси със зеленчуците и зехтина.",
+      "substitution": "Замени рибата с две сварени яйца; стойностите ще се променят."
+    }
+  },
+  {
+    "code": "recipe-026",
+    "name": "Овесени палачинки",
+    "label": "Закуска",
+    "imagePath": "/images/meals/recipes/recipe-026.svg",
+    "preparationMinutes": 20,
+    "steps": [
+      "Смели овеса, смеси с яйцата и млякото.",
+      "изпечи с премерения зехтин и добави плодовете."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Овесени палачинки",
+      "ingredients": [
+        {
+          "name": "Овесени ядки",
+          "grams": 70,
+          "state": "сухи",
+          "proteinPer100": 13,
+          "fatPer100": 7,
+          "carbsPer100": 60,
+          "foodCode": "food-001"
+        },
+        {
+          "name": "Яйца",
+          "grams": 100,
+          "state": "сурова ядлива част, без черупки",
+          "proteinPer100": 12.6,
+          "fatPer100": 10.6,
+          "carbsPer100": 1.1,
+          "foodCode": "food-016"
+        },
+        {
+          "name": "Прясно мляко 1.5%",
+          "grams": 115,
+          "state": "готов продукт",
+          "proteinPer100": 3.4,
+          "fatPer100": 1.5,
+          "carbsPer100": 4.8,
+          "foodCode": "food-031"
+        },
+        {
+          "name": "Горски плодове",
+          "grams": 140,
+          "state": "сурови или размразени",
+          "proteinPer100": 0.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 10,
+          "foodCode": "food-029"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Смели овеса, смеси с яйцата и млякото; изпечи с премерения зехтин и добави плодовете.",
+      "substitution": "Плодовете могат да се заменят със 100 г банан."
+    }
+  },
+  {
+    "code": "recipe-027",
+    "name": "Круша и кисело мляко",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-027.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Измий и нарежи крушата, поднеси с млякото."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Круша и кисело мляко",
+      "ingredients": [
+        {
+          "name": "Круша",
+          "grams": 205,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.4,
+          "fatPer100": 0.1,
+          "carbsPer100": 15,
+          "foodCode": "food-023"
+        },
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 230,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        }
+      ],
+      "preparation": "Измий и нарежи крушата, поднеси с млякото.",
+      "substitution": "Използвай ябълка със същото ядливо тегло."
+    }
+  },
+  {
+    "code": "recipe-028",
+    "name": "Пилешко с пълнозърнеста паста",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-028.svg",
+    "preparationMinutes": 30,
+    "steps": [
+      "Свари пастата.",
+      "Сготви пилешкото с домата и тиквичката до пълна готовност."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пилешко с пълнозърнеста паста",
+      "ingredients": [
+        {
+          "name": "Пилешко филе",
+          "grams": 195,
+          "state": "сурово, без кожа",
+          "proteinPer100": 23,
+          "fatPer100": 2,
+          "carbsPer100": 0,
+          "foodCode": "food-007"
+        },
+        {
+          "name": "Пълнозърнеста паста",
+          "grams": 90,
+          "state": "суха, преди варене",
+          "proteinPer100": 13,
+          "fatPer100": 2.5,
+          "carbsPer100": 65,
+          "foodCode": "food-027"
+        },
+        {
+          "name": "Домати",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Тиквички",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 1.2,
+          "fatPer100": 0.3,
+          "carbsPer100": 3.1,
+          "foodCode": "food-030"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари пастата. Сготви пилешкото с домата и тиквичката до пълна готовност.",
+      "substitution": "Смени пастата с 75 г сух булгур; стойностите ще се променят."
+    }
+  },
+  {
+    "code": "recipe-029",
+    "name": "Извара и орехи",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-029.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Премери ядките и поднеси с изварата и портокала."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Извара и орехи",
+      "ingredients": [
+        {
+          "name": "Извара 5%",
+          "grams": 140,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Орехи",
+          "grams": 15,
+          "state": "сурови ядки без черупки",
+          "proteinPer100": 15,
+          "fatPer100": 65,
+          "carbsPer100": 7,
+          "foodCode": "food-004"
+        },
+        {
+          "name": "Портокал",
+          "grams": 170,
+          "state": "суров, обелен",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.1,
+          "carbsPer100": 12,
+          "foodCode": "food-019"
+        }
+      ],
+      "preparation": "Премери ядките и поднеси с изварата и портокала.",
+      "substitution": "Орехите могат да се заменят със същото количество бадеми."
+    }
+  },
+  {
+    "code": "recipe-030",
+    "name": "Леща с ориз и зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-030.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари ориза отделно.",
+      "смеси със сварената леща и задушените зеленчуци, добави сиренето."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Леща с ориз и зеленчуци",
+      "ingredients": [
+        {
+          "name": "Леща",
+          "grams": 230,
+          "state": "сварена и отцедена",
+          "proteinPer100": 9,
+          "fatPer100": 0.4,
+          "carbsPer100": 20,
+          "foodCode": "food-024"
+        },
+        {
+          "name": "Ориз",
+          "grams": 45,
+          "state": "сух, преди варене",
+          "proteinPer100": 7,
+          "fatPer100": 1,
+          "carbsPer100": 78,
+          "foodCode": "food-008"
+        },
+        {
+          "name": "Моркови",
+          "grams": 140,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 10,
+          "foodCode": "food-025"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 170,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Бяло сирене",
+          "grams": 35,
+          "state": "готов продукт",
+          "proteinPer100": 16,
+          "fatPer100": 22,
+          "carbsPer100": 2,
+          "foodCode": "food-026"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари ориза отделно; смеси със сварената леща и задушените зеленчуци, добави сиренето.",
+      "substitution": "Вместо леща използвай сварен боб със същото тегло."
+    }
+  },
+  {
+    "code": "recipe-031",
+    "name": "Купа с мляко, овес и круша",
+    "label": "Закуска",
+    "imagePath": "/images/meals/recipes/recipe-031.svg",
+    "preparationMinutes": 10,
+    "steps": [
+      "Остави овеса в млякото за 15 минути и добави крушата и ядките."
+    ],
+    "meal": {
+      "label": "Закуска",
+      "name": "Купа с мляко, овес и круша",
+      "ingredients": [
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 290,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        },
+        {
+          "name": "Овесени ядки",
+          "grams": 65,
+          "state": "сухи",
+          "proteinPer100": 13,
+          "fatPer100": 7,
+          "carbsPer100": 60,
+          "foodCode": "food-001"
+        },
+        {
+          "name": "Круша",
+          "grams": 170,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.4,
+          "fatPer100": 0.1,
+          "carbsPer100": 15,
+          "foodCode": "food-023"
+        },
+        {
+          "name": "Бадеми",
+          "grams": 15,
+          "state": "сурови ядки",
+          "proteinPer100": 21,
+          "fatPer100": 50,
+          "carbsPer100": 10,
+          "foodCode": "food-012"
+        }
+      ],
+      "preparation": "Остави овеса в млякото за 15 минути и добави крушата и ядките.",
+      "substitution": "Крушата може да се замени със сезонна ябълка."
+    }
+  },
+  {
+    "code": "recipe-032",
+    "name": "Тост с извара",
+    "label": "Междинно хранене",
+    "imagePath": "/images/meals/recipes/recipe-032.svg",
+    "preparationMinutes": 5,
+    "steps": [
+      "Препечи хляба и добави изварата и домата."
+    ],
+    "meal": {
+      "label": "Междинно хранене",
+      "name": "Тост с извара",
+      "ingredients": [
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 55,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Извара 5%",
+          "grams": 115,
+          "state": "готов продукт",
+          "proteinPer100": 17,
+          "fatPer100": 5,
+          "carbsPer100": 3,
+          "foodCode": "food-005"
+        },
+        {
+          "name": "Домати",
+          "grams": 140,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        }
+      ],
+      "preparation": "Препечи хляба и добави изварата и домата.",
+      "substitution": "Доматът може да се замени със сурова краставица."
+    }
+  },
+  {
+    "code": "recipe-033",
+    "name": "Пуешко с картофи и моркови",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-033.svg",
+    "preparationMinutes": 40,
+    "steps": [
+      "Изпечи месото и зеленчуците със зехтина до пълна готовност."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пуешко с картофи и моркови",
+      "ingredients": [
+        {
+          "name": "Пуешко филе",
+          "grams": 195,
+          "state": "сурово, без кожа",
+          "proteinPer100": 24,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-020"
+        },
+        {
+          "name": "Картофи",
+          "grams": 320,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Моркови",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 10,
+          "foodCode": "food-025"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изпечи месото и зеленчуците със зехтина до пълна готовност.",
+      "substitution": "Замени пуешкото със същото сурово количество пилешко."
+    }
+  },
+  {
+    "code": "recipe-034",
+    "name": "Плод и орехи",
+    "label": "Следобедно хранене",
+    "imagePath": "/images/meals/recipes/recipe-034.svg",
+    "preparationMinutes": 3,
+    "steps": [
+      "Премери орехите и поднеси с плода и млякото."
+    ],
+    "meal": {
+      "label": "Следобедно хранене",
+      "name": "Плод и орехи",
+      "ingredients": [
+        {
+          "name": "Ябълка",
+          "grams": 205,
+          "state": "сурова, без сърцевината",
+          "proteinPer100": 0.3,
+          "fatPer100": 0.2,
+          "carbsPer100": 14,
+          "foodCode": "food-006"
+        },
+        {
+          "name": "Орехи",
+          "grams": 25,
+          "state": "сурови ядки без черупки",
+          "proteinPer100": 15,
+          "fatPer100": 65,
+          "carbsPer100": 7,
+          "foodCode": "food-004"
+        },
+        {
+          "name": "Кисело мляко 2%",
+          "grams": 170,
+          "state": "готов продукт",
+          "proteinPer100": 4,
+          "fatPer100": 2,
+          "carbsPer100": 4.5,
+          "foodCode": "food-002"
+        }
+      ],
+      "preparation": "Премери орехите и поднеси с плода и млякото.",
+      "substitution": "Използвай круша вместо ябълка със същото тегло."
+    }
+  },
+  {
+    "code": "recipe-035",
+    "name": "Хек с булгур и зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-035.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари булгура, изпечи рибата и задуши зеленчуците.",
+      "разпредели зехтина между тях."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Хек с булгур и зеленчуци",
+      "ingredients": [
+        {
+          "name": "Хек",
+          "grams": 205,
+          "state": "сурово филе",
+          "proteinPer100": 18,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-013"
+        },
+        {
+          "name": "Булгур",
+          "grams": 75,
+          "state": "сух, преди варене",
+          "proteinPer100": 12,
+          "fatPer100": 1.5,
+          "carbsPer100": 70,
+          "foodCode": "food-021"
+        },
+        {
+          "name": "Броколи",
+          "grams": 205,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Тиквички",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 1.2,
+          "fatPer100": 0.3,
+          "carbsPer100": 3.1,
+          "foodCode": "food-030"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари булгура, изпечи рибата и задуши зеленчуците; разпредели зехтина между тях.",
+      "substitution": "Използвай друга бяла риба; при замяна с мазна риба стойностите ще се повишат."
+    }
+  },
+  {
+    "code": "recipe-036",
+    "name": "Леща с ориз и сезонни зеленчуци",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-036.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Леща с ориз и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Леща",
+          "grams": 280,
+          "state": "сварена и отцедена",
+          "proteinPer100": 9,
+          "fatPer100": 0.4,
+          "carbsPer100": 20,
+          "foodCode": "food-024"
+        },
+        {
+          "name": "Ориз",
+          "grams": 80,
+          "state": "сух, преди варене",
+          "proteinPer100": 7,
+          "fatPer100": 1,
+          "carbsPer100": 78,
+          "foodCode": "food-008"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Краставица",
+          "grams": 115,
+          "state": "сурова",
+          "proteinPer100": 0.7,
+          "fatPer100": 0.1,
+          "carbsPer100": 3.6,
+          "foodCode": "food-010"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-036"
+    }
+  },
+  {
+    "code": "recipe-037",
+    "name": "Леща с картофи и сезонни зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-037.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Нарежи суровите обелени картофи и ги изпечи на 200°C за около 25–35 минути до омекване, с част от премерения зехтин.",
+      "Накъсай броколите и ги задуши с малко вода до омекване.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Леща с картофи и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Леща",
+          "grams": 310,
+          "state": "сварена и отцедена",
+          "proteinPer100": 9,
+          "fatPer100": 0.4,
+          "carbsPer100": 20,
+          "foodCode": "food-024"
+        },
+        {
+          "name": "Картофи",
+          "grams": 290,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Броколи",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Нарежи суровите обелени картофи и ги изпечи на 200°C за около 25–35 минути до омекване, с част от премерения зехтин. Накъсай броколите и ги задуши с малко вода до омекване. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-037"
+    }
+  },
+  {
+    "code": "recipe-038",
+    "name": "Нахут с булгур и сезонни зеленчуци",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-038.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Нахут с булгур и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Нахут",
+          "grams": 290,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8.9,
+          "fatPer100": 2.6,
+          "carbsPer100": 27,
+          "foodCode": "food-034"
+        },
+        {
+          "name": "Булгур",
+          "grams": 85,
+          "state": "сух, преди варене",
+          "proteinPer100": 12,
+          "fatPer100": 1.5,
+          "carbsPer100": 70,
+          "foodCode": "food-021"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 205,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-038"
+    }
+  },
+  {
+    "code": "recipe-039",
+    "name": "Бял боб с паста и сезонни зеленчуци",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-039.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Бял боб с паста и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Пълнозърнеста паста",
+          "grams": 90,
+          "state": "суха, преди варене",
+          "proteinPer100": 13,
+          "fatPer100": 2.5,
+          "carbsPer100": 65,
+          "foodCode": "food-027"
+        },
+        {
+          "name": "Бял боб",
+          "grams": 225,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8,
+          "fatPer100": 0.5,
+          "carbsPer100": 21,
+          "foodCode": "food-036"
+        },
+        {
+          "name": "Домати",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Спанак",
+          "grams": 90,
+          "state": "суров",
+          "proteinPer100": 2.9,
+          "fatPer100": 0.4,
+          "carbsPer100": 3.6,
+          "foodCode": "food-018"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-039"
+    }
+  },
+  {
+    "code": "recipe-040",
+    "name": "Бял боб с картофи и сезонни зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-040.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Нарежи суровите обелени картофи и ги изпечи на 200°C за около 25–35 минути до омекване, с част от премерения зехтин.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Бял боб с картофи и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Бял боб",
+          "grams": 290,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8,
+          "fatPer100": 0.5,
+          "carbsPer100": 21,
+          "foodCode": "food-036"
+        },
+        {
+          "name": "Картофи",
+          "grams": 255,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Тиквички",
+          "grams": 230,
+          "state": "сурови",
+          "proteinPer100": 1.2,
+          "fatPer100": 0.3,
+          "carbsPer100": 3.1,
+          "foodCode": "food-030"
+        },
+        {
+          "name": "Моркови",
+          "grams": 115,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 10,
+          "foodCode": "food-025"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Нарежи суровите обелени картофи и ги изпечи на 200°C за около 25–35 минути до омекване, с част от премерения зехтин. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-040"
+    }
+  },
+  {
+    "code": "recipe-041",
+    "name": "Нахут с ориз и сезонни зеленчуци",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-041.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост.",
+      "Накъсай броколите и ги задуши с малко вода до омекване.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Нахут с ориз и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Нахут",
+          "grams": 310,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8.9,
+          "fatPer100": 2.6,
+          "carbsPer100": 27,
+          "foodCode": "food-034"
+        },
+        {
+          "name": "Ориз",
+          "grams": 80,
+          "state": "сух, преди варене",
+          "proteinPer100": 7,
+          "fatPer100": 1,
+          "carbsPer100": 78,
+          "foodCode": "food-008"
+        },
+        {
+          "name": "Броколи",
+          "grams": 255,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 5,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост. Накъсай броколите и ги задуши с малко вода до омекване. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-041"
+    }
+  },
+  {
+    "code": "recipe-042",
+    "name": "Бял боб с зеленчуци и сезонни зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-042.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Бял боб с зеленчуци и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Бял боб",
+          "grams": 230,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8,
+          "fatPer100": 0.5,
+          "carbsPer100": 21,
+          "foodCode": "food-036"
+        },
+        {
+          "name": "Нахут",
+          "grams": 170,
+          "state": "сварен и отцеден",
+          "proteinPer100": 8.9,
+          "fatPer100": 2.6,
+          "carbsPer100": 27,
+          "foodCode": "food-034"
+        },
+        {
+          "name": "Домати",
+          "grams": 205,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Червена чушка",
+          "grams": 115,
+          "state": "сурова",
+          "proteinPer100": 1,
+          "fatPer100": 0.3,
+          "carbsPer100": 6,
+          "foodCode": "food-022"
+        },
+        {
+          "name": "Пълнозърнест хляб",
+          "grams": 45,
+          "state": "готов продукт",
+          "proteinPer100": 9,
+          "fatPer100": 3.5,
+          "carbsPer100": 43,
+          "foodCode": "food-017"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-042"
+    }
+  },
+  {
+    "code": "recipe-043",
+    "name": "Леща с булгур и сезонни зеленчуци",
+    "label": "Вечеря",
+    "imagePath": "/images/meals/recipes/recipe-043.svg",
+    "preparationMinutes": 35,
+    "steps": [
+      "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост.",
+      "Накъсай броколите и ги задуши с малко вода до омекване.",
+      "Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина.",
+      "Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин."
+    ],
+    "meal": {
+      "label": "Вечеря",
+      "name": "Леща с булгур и сезонни зеленчуци",
+      "ingredients": [
+        {
+          "name": "Леща",
+          "grams": 310,
+          "state": "сварена и отцедена",
+          "proteinPer100": 9,
+          "fatPer100": 0.4,
+          "carbsPer100": 20,
+          "foodCode": "food-024"
+        },
+        {
+          "name": "Булгур",
+          "grams": 75,
+          "state": "сух, преди варене",
+          "proteinPer100": 12,
+          "fatPer100": 1.5,
+          "carbsPer100": 70,
+          "foodCode": "food-021"
+        },
+        {
+          "name": "Броколи",
+          "grams": 205,
+          "state": "сурови",
+          "proteinPer100": 2.8,
+          "fatPer100": 0.4,
+          "carbsPer100": 7,
+          "foodCode": "food-015"
+        },
+        {
+          "name": "Тиквички",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 1.2,
+          "fatPer100": 0.3,
+          "carbsPer100": 3.1,
+          "foodCode": "food-030"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Свари сухата гарнитура според опаковката, без допълнителна мазнина. Отцеди при необходимост. Накъсай броколите и ги задуши с малко вода до омекване. Използвай вече сварените и отцедени бобови в посоченото количество. Затопли ги с малко вода, без да добавяш непремерена мазнина. Измий и нарежи останалите зеленчуци. Смеси с бобовите и гарнитурата и добави останалия премерен зехтин.",
+      "substitution": "Може да избереш друг сварен и отцеден бобов продукт. Калориите и макросите ще се променят.",
+      "recipeCode": "recipe-043"
+    }
+  },
+  {
+    "code": "recipe-044",
+    "name": "Пуешко с картофи и свежа салата",
+    "label": "Обяд",
+    "imagePath": "/images/meals/recipes/recipe-044.svg",
+    "preparationMinutes": 40,
+    "steps": [
+      "Изпечи суровото пуешко до пълна готовност и картофите до омекване",
+      "Нарежи домата и краставицата",
+      "Разпредели общото посочено количество зехтин между готвенето и салатата."
+    ],
+    "meal": {
+      "label": "Обяд",
+      "name": "Пуешко с картофи и свежа салата",
+      "ingredients": [
+        {
+          "name": "Пуешко филе",
+          "grams": 195,
+          "state": "сурово, без кожа",
+          "proteinPer100": 24,
+          "fatPer100": 1.5,
+          "carbsPer100": 0,
+          "foodCode": "food-020"
+        },
+        {
+          "name": "Картофи",
+          "grams": 320,
+          "state": "сурови, обелени",
+          "proteinPer100": 2,
+          "fatPer100": 0.1,
+          "carbsPer100": 17,
+          "foodCode": "food-014"
+        },
+        {
+          "name": "Краставица",
+          "grams": 170,
+          "state": "сурова",
+          "proteinPer100": 0.7,
+          "fatPer100": 0.1,
+          "carbsPer100": 3.6,
+          "foodCode": "food-010"
+        },
+        {
+          "name": "Домати",
+          "grams": 170,
+          "state": "сурови",
+          "proteinPer100": 0.9,
+          "fatPer100": 0.2,
+          "carbsPer100": 3.9,
+          "foodCode": "food-009"
+        },
+        {
+          "name": "Зехтин",
+          "grams": 10,
+          "state": "претеглен преди добавяне",
+          "proteinPer100": 0,
+          "fatPer100": 100,
+          "carbsPer100": 0,
+          "foodCode": "food-011"
+        }
+      ],
+      "preparation": "Изпечи суровото пуешко до пълна готовност и картофите до омекване. Нарежи домата и краставицата. Разпредели общото посочено количество зехтин между готвенето и салатата.",
+      "substitution": "Замени бонфилето със същото сурово количество пуешко.",
+      "recipeCode": "recipe-044"
+    }
+  }
+]

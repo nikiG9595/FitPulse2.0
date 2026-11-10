@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface WorkoutEventRepository extends JpaRepository<WorkoutEvent,Long>{List<WorkoutEvent> findAllByUserOrderByStartsAt(User user); Optional<WorkoutEvent> findByIdAndUser(Long id,User user);}

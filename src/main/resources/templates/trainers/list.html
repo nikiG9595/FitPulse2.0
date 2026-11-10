@@ -1,0 +1,11 @@
+<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Треньори във FitPulse')}"></head>
+<body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page library-page">
+    <header class="library-header"><div><span class="eyebrow">Опитът зад движението</span><h1>Треньори</h1><p>Запознай се с треньорите във FitPulse. Разгледай опита и представянето им в техните публични профили.</p></div></header>
+    <div class="empty-state fit-card" th:if="${#lists.isEmpty(trainers)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></span><h2>Подготвяме треньорските профили</h2><p>Все още няма публикувани треньори. Междувременно можеш да откриеш фитнес за следващата си тренировка.</p><a class="btn btn-pulse" th:href="@{/gyms}">Разгледай фитнесите</a></div>
+    <section class="trainer-grid" aria-label="Публични профили на треньори"><article class="trainer-card" th:each="t:${trainers}">
+        <a class="trainer-card-image" th:href="@{/trainers/{id}(id=${t.id})}"><img th:src="${t.photoUrl}" th:alt="'Профилна снимка на '+${t.name}" loading="lazy"><span class="trainer-experience" th:text="${t.experienceYears}+' години опит'"></span></a>
+        <div class="trainer-card-body"><span class="eyebrow" th:text="${t.country}"></span><h2><a th:href="@{/trainers/{id}(id=${t.id})}" th:text="${t.name}"></a></h2><p class="trainer-bio-preview" th:text="${t.bio}"></p><a class="btn btn-outline-dark" th:href="@{/trainers/{id}(id=${t.id})}">Виж профила <span aria-hidden="true">↗</span></a></div>
+    </article></section>
+</main></body></html>

@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.GymPhoto; import org.springframework.data.jpa.repository.JpaRepository; public interface GymPhotoRepository extends JpaRepository<GymPhoto,Long>{}

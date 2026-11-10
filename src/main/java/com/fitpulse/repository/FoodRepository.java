@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface FoodRepository extends JpaRepository<Food,Long>{Optional<Food> findByCode(String code); List<Food> findAllByOrderByCategoryAscNameAsc();}

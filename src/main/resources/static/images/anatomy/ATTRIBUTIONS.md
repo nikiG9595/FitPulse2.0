@@ -1,0 +1,12 @@
+# Анатомични SVG контури
+
+- Източник: [Jsplice / MuscleMap](https://github.com/Jsplice/MuscleMap).
+- Оригинали: `packages/assets/src/male-front.ts` и `male-back.ts`.
+- Лиценз: MIT, Copyright (c) 2026 Jsplice / MuscleMap contributors. Пълният текст е в `LICENSE.txt` и в metadata на двата SVG файла.
+- Проверка на произхода: https://github.com/Jsplice/MuscleMap/blob/main/ASSET_PROVENANCE.md
+- Оригинален лиценз: https://github.com/Jsplice/MuscleMap/blob/main/LICENSE
+- Локални копия на изходните контури и описанието на произхода: `docs/anatomy-source/`.
+
+Използвани са само отделните векторни контури, които проектът описва като собствена ръчно трасирана работа с Inkscape. Не са използвани растерните тела, React компонентите или интерфейсът на MuscleMap. Данните са преобразувани до самостоятелни SVG с FitPulse цветове, български достъпни имена, интерактивни зони и собствен JavaScript.
+
+Включени са 28 мускулни контура отпред и 30 отзад. Групирането и цветовете във FitPulse са образователна визуализация, без претенции за медицинска точност. Първичните и вторичните зони се определят от данните на конкретното упражнение.

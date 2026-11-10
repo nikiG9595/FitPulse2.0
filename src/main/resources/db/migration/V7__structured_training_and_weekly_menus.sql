@@ -1,0 +1,15 @@
+ALTER TABLE program_template_items ADD COLUMN session_title VARCHAR(100) NOT NULL DEFAULT '';
+ALTER TABLE program_template_items ADD COLUMN rest_seconds INT NOT NULL DEFAULT 90;
+ALTER TABLE program_template_items ADD COLUMN instructions VARCHAR(500) NOT NULL DEFAULT 'Движи се контролирано и остави 2 повторения в резерв.';
+ALTER TABLE user_program_items ADD COLUMN session_title VARCHAR(100) NOT NULL DEFAULT '';
+ALTER TABLE user_program_items ADD COLUMN rest_seconds INT NOT NULL DEFAULT 90;
+ALTER TABLE user_program_items ADD COLUMN instructions VARCHAR(500) NOT NULL DEFAULT 'Движи се контролирано и остави 2 повторения в резерв.';
+ALTER TABLE program_templates ADD COLUMN author_id BIGINT NULL;
+ALTER TABLE program_templates ADD CONSTRAINT fk_program_author FOREIGN KEY(author_id) REFERENCES trainers(id) ON DELETE SET NULL;
+ALTER TABLE meal_plan_templates ADD COLUMN author_id BIGINT NULL;
+ALTER TABLE meal_plan_templates ADD CONSTRAINT fk_meal_author FOREIGN KEY(author_id) REFERENCES trainers(id) ON DELETE SET NULL;
+ALTER TABLE meal_plan_templates ADD COLUMN demo_code VARCHAR(40) NULL;
+ALTER TABLE meal_plan_templates ADD CONSTRAINT uk_meal_demo_code UNIQUE(demo_code);
+ALTER TABLE meal_plan_templates ADD COLUMN weekly_menu LONGTEXT NULL;
+ALTER TABLE meal_plan_templates MODIFY meals LONGTEXT NOT NULL;
+ALTER TABLE user_meal_plans MODIFY meals LONGTEXT NOT NULL;

@@ -1,0 +1,20 @@
+<section th:fragment="weekly(menu,personal,ownerId)" class="compact-week interactive-menu" xmlns:th="http://www.thymeleaf.org">
+    <p class="weekly-legend">Б — белтъчини · М — мазнини · В — въглехидрати. Изображенията са илюстративни.</p>
+    <details class="interactive-day compact-day" th:each="d:${menu.days}" th:id="'menu-day-'+${dStat.index}" th:open="${dStat.first}" name="fitpulse-week">
+        <summary><h2 th:text="${d.title}"></h2><div class="day-macros" aria-live="polite"><strong data-day-calories th:text="'≈ '+${d.calories}+' ккал'"></strong><span data-day-protein th:text="'Б '+${d.protein}+' г'"></span><span data-day-fat th:text="'М '+${d.fat}+' г'"></span><span data-day-carbs th:text="'В '+${d.carbs}+' г'"></span></div></summary>
+        <div class="weekly-day-content">
+            <details class="nutrition-meal compact-meal" th:each="m:${d.meals}">
+                <summary><img class="dish-thumb" th:src="@{${m.image}}" th:alt="'Илюстрация на '+${m.name}" loading="lazy"><div class="dish-overview"><span class="eyebrow" th:text="${m.label}"></span><h3 th:text="${m.name}"></h3><div class="meal-macro-line"><strong data-meal-calories th:text="${m.calories}+' ккал'"></strong><span data-meal-protein th:text="'Б '+${m.protein}+' г'"></span><span data-meal-fat th:text="'М '+${m.fat}+' г'"></span><span data-meal-carbs th:text="'В '+${m.carbs}+' г'"></span><span th:text="'≈ '+${m.preparationMinutes}+' мин.'"></span></div></div></summary>
+                <div class="compact-meal-content"><p class="small module-muted" th:text="${m.description}"></p>
+                    <div th:each="i:${m.ingredients}" th:class="${personal?'interactive-ingredient':'readonly-ingredient'}" th:data-protein="${i.proteinPer100}" th:data-fat="${i.fatPer100}" th:data-carbs="${i.carbsPer100}">
+                        <div><strong th:text="${i.name}"></strong><small th:text="${i.state}"></small></div>
+                        <form th:if="${personal}" method="post" th:action="@{/meal-plans/my/{id}/ingredients/{day}/{meal}/{item}(id=${ownerId},day=${dStat.index},meal=${mStat.index},item=${iStat.index})}"><label class="visually-hidden" th:for="'grams-'+${dStat.index}+'-'+${mStat.index}+'-'+${iStat.index}">Грамове</label><input class="form-control grams-input" type="number" name="grams" min="1" max="2000" step="0.01" th:value="${i.grams}" th:id="'grams-'+${dStat.index}+'-'+${mStat.index}+'-'+${iStat.index}" required><span>г</span><button class="btn btn-sm btn-pulse" type="submit">Запази</button></form>
+                        <b th:unless="${personal}" th:text="${i.quantity}"></b><a th:if="${personal}" class="ingredient-swap" th:href="@{/meal-plans/my/{id}/substitutions(id=${ownerId},day=${dStat.index},meal=${mStat.index},item=${iStat.index})}">Замени</a>
+                    </div>
+                    <p class="unsaved-note" hidden aria-live="polite">Промените още не са запазени.</p><details class="quick-recipe"><summary>Начин на приготвяне</summary><ol><li th:each="step:${m.cookingSteps}" th:text="${step}"></li></ol><p class="small module-muted" th:if="${#strings.startsWith(m.name,'Личен вариант на ')}">Това е първоначалната рецепта. Съобрази обработката с заменените продукти и актуалния списък.</p></details>
+                    <div class="dish-actions"><a class="btn btn-sm btn-outline-light" th:href="${personal}?@{/meal-plans/my/{id}/recipe(id=${ownerId},day=${dStat.index},meal=${mStat.index})}:@{/meal-plans/{id}/recipe(id=${ownerId},day=${dStat.index},meal=${mStat.index})}">Приготви това ястие</a><a class="btn btn-sm btn-pulse" th:if="${personal}" th:href="@{/meal-plans/my/{id}/meal-replacements(id=${ownerId},day=${dStat.index},meal=${mStat.index})}">Замени хранене</a></div>
+                </div>
+            </details>
+        </div>
+    </details>
+</section>

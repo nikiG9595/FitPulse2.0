@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.MealPlanTemplate; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface MealPlanTemplateRepository extends JpaRepository<MealPlanTemplate,Long>{List<MealPlanTemplate> findAllByActiveTrueOrderByName(); Optional<MealPlanTemplate> findByDemoCode(String code);}

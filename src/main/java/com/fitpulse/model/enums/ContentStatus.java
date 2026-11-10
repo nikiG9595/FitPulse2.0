@@ -1,0 +1,1 @@
+package com.fitpulse.model.enums; public enum ContentStatus {DRAFT("Чернова"),PENDING("Изчаква"),PUBLISHED("Публикувано"),APPROVED("Одобрено"),REJECTED("Отхвърлено"),HIDDEN("Скрито"),ARCHIVED("Архивирано"),OPEN("Отворено"),RESOLVED("Приключено");private final String displayName;ContentStatus(String n){displayName=n;}public String getDisplayName(){return displayName;}}

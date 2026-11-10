@@ -1,0 +1,1 @@
+package com.fitpulse.model.dto; import jakarta.validation.constraints.*; public class ReviewForm { @Min(1) @Max(5) private int rating; @Size(max=2000) private String comment; public int getRating(){return rating;} public void setRating(int v){rating=v;} public String getComment(){return comment;} public void setComment(String v){comment=v;} }

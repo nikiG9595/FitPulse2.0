@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface ExerciseRepository extends JpaRepository<Exercise,Long>{Optional<Exercise> findByCode(String code); List<Exercise> findAllByOrderByName();}

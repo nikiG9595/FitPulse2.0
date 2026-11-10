@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.*; import com.fitpulse.model.enums.ContentStatus; import org.springframework.data.jpa.repository.JpaRepository; public interface ReviewReportRepository extends JpaRepository<ReviewReport,Long>{boolean existsByReviewAndReporter(Review r,User u); long countByStatus(ContentStatus status);}

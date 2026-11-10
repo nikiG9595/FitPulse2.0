@@ -1,0 +1,3 @@
+package com.fitpulse.model.entity;
+import jakarta.persistence.*; import java.time.LocalDateTime;
+@Entity @Table(name="favorite_gyms",uniqueConstraints=@UniqueConstraint(columnNames={"user_id","gym_id"})) public class FavoriteGym { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @ManyToOne(optional=false) private User user; @ManyToOne(optional=false) private Gym gym; @Column(nullable=false) private LocalDateTime createdAt; @PrePersist void create(){createdAt=LocalDateTime.now();} public Long getId(){return id;} public User getUser(){return user;} public void setUser(User v){user=v;} public Gym getGym(){return gym;} public void setGym(Gym v){gym=v;} }

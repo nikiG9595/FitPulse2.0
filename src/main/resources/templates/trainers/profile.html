@@ -1,0 +1,14 @@
+<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(${trainer.name})}"></head>
+<body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page trainer-profile-page">
+    <a class="back-link" th:href="@{/trainers}">← Всички треньори</a>
+    <article class="trainer-profile">
+        <div class="trainer-portrait"><img th:src="${trainer.photoUrl}" th:alt="'Профилна снимка на '+${trainer.name}"></div>
+        <div class="trainer-profile-content"><span class="eyebrow">Профил на треньор</span><h1 th:text="${trainer.name}"></h1>
+            <dl class="trainer-facts"><div><dt>Възраст</dt><dd th:text="${trainer.age}+' г.'"></dd></div><div><dt>Държава</dt><dd th:text="${trainer.country}"></dd></div><div><dt>Опит</dt><dd th:text="${trainer.experienceYears}+' г.'"></dd></div></dl>
+            <section class="trainer-about"><h2>За треньора</h2><p class="preserve-lines" th:text="${trainer.bio}"></p></section>
+            <div class="trainer-next-step"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span><div><h2>Готов ли си за следващата стъпка?</h2><p>Разгледай библиотеката и избери програма за своята цел.</p><a class="btn btn-pulse" th:href="@{/programs}">Тренировъчни програми</a></div></div>
+        </div>
+    </article>
+</main></body></html>

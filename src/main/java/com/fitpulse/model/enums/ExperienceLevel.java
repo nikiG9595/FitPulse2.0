@@ -1,0 +1,1 @@
+package com.fitpulse.model.enums; public enum ExperienceLevel {BEGINNER("Начинаещ"),INTERMEDIATE("Средно напреднал"),ADVANCED("Напреднал");private final String displayName;ExperienceLevel(String n){displayName=n;}public String getDisplayName(){return displayName;}}

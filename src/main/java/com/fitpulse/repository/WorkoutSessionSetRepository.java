@@ -1,0 +1,2 @@
+package com.fitpulse.repository;import com.fitpulse.model.entity.*;import org.springframework.data.jpa.repository.JpaRepository;import java.util.*;
+public interface WorkoutSessionSetRepository extends JpaRepository<WorkoutSessionSet,Long>{List<WorkoutSessionSet> findAllBySessionOrderByExerciseOrderAscSetNumberAsc(WorkoutSession session);Optional<WorkoutSessionSet> findByIdAndSession(Long id,WorkoutSession session);}

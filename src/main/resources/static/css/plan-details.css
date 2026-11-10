@@ -1,0 +1,93 @@
+/* Scoped to plan detail pages and navigation; the home artwork and palette stay intact. */
+.fit-nav .navbar-collapse { display:none }
+.fit-nav .navbar-collapse.show { display:block }
+.fit-nav .navbar-toggler { display:block }
+@media(min-width:768px) {
+    .nav-public .navbar-toggler { display:none }
+    .nav-public .navbar-collapse { display:flex; grid-column:3;grid-row:1;justify-self:end;width:max-content;max-width:calc(100vw - 160px) }
+    .nav-public .navbar-nav { flex-direction:row;align-items:center;gap:10px;padding:0 }
+    .nav-public .nav-link { white-space:nowrap;padding:10px 8px }
+}
+@media(min-width:1200px) {
+    .nav-member .navbar-toggler { display:none }
+    .nav-member .navbar-collapse { display:flex;grid-column:3;grid-row:1;justify-self:end;width:max-content;max-width:calc(100vw - 160px) }
+    .nav-member .navbar-nav { flex-direction:row;align-items:center;gap:7px;padding:0 }
+    .nav-member .nav-link { white-space:nowrap;padding:10px 6px;font-size:.86rem }
+}
+.plan-page { --ink:#191d27;--line:#e5e9ef;color:var(--ink) }
+.plan-intro { display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:30px;border-radius:20px;background:radial-gradient(circle at 95% 0,#75391e88,transparent 55%),#191d27;color:#fff;margin-bottom:24px }
+.plan-intro h1 { font-size:clamp(1.9rem,3.4vw,2.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin:0 0 14px;overflow-wrap:anywhere }
+.plan-intro > div { max-width:850px;min-width:0 }
+.plan-intro p { color:#c7cbd4;line-height:1.75;font-size:.92rem;margin:14px 0 0 }
+.plan-intro .eyebrow { color:#ff9b6d }
+.plan-intro form { flex-shrink:0 }
+.plan-intro .btn { padding:12px 30px }
+.plan-tags { display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 }
+.plan-tags span { border:1px solid #ffffff25;border-radius:30px;padding:5px 10px;color:#e7e9ed;font-size:.75rem }
+.plan-author { color:#ffbe9f!important;font-size:.78rem!important }
+.plan-author a { color:inherit;text-underline-offset:3px }
+.plan-subheading { display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin:26px 0 16px }
+.plan-subheading h2 { font-size:1.35rem;font-weight:800;margin:0 }
+.plan-subheading p { color:#7a8493;font-size:.8rem;margin:0 }
+.session-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start }
+.session-card { border:1px solid var(--line);border-radius:18px;background:#fff;overflow:hidden;min-width:0 }
+.session-card > summary { cursor:pointer;display:flex;align-items:center;gap:14px;padding:22px;list-style:none }
+.session-card > summary::-webkit-details-marker,.menu-day > summary::-webkit-details-marker { display:none }
+.session-card > summary::after,.menu-day > summary::after { content:'+';font-size:1.5rem;color:var(--pulse);margin-left:auto;flex-shrink:0 }
+.session-card[open] > summary::after,.menu-day[open] > summary::after { content:'−' }
+.session-card summary .tool-icon { background:#fff0e9 }
+.session-card h3 { font-size:1.05rem;line-height:1.5;font-weight:800;margin:0 0 5px }
+.session-card summary p { font-size:.76rem;color:#7b8494;margin:0 }
+.session-exercises { padding:0 22px 8px;border-top:1px solid #edf0f5 }
+.exercise-detail { padding:18px 0;border-bottom:1px solid #edf0f5 }
+.exercise-detail:last-child { border-bottom:0 }
+.exercise-detail h4 { font-size:.95rem;font-weight:750;line-height:1.5;margin:0 0 10px }
+.exercise-prescription { display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px }
+.exercise-prescription span { background:#f4f6fa;color:#536073;border-radius:7px;padding:5px 8px;font-size:.73rem }
+.exercise-detail > p { font-size:.83rem;line-height:1.8;color:#737d8d;margin:0 }
+.recovery-note { padding:18px 20px;border-left:3px solid var(--pulse);background:#fff3eb;border-radius:0 12px 12px 0;margin:24px 0;font-size:.85rem;line-height:1.8;color:#765b4a }
+.recovery-note strong { color:#392c23 }
+.menu-days { display:grid;gap:16px }
+.menu-day { background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden }
+.menu-day > summary { cursor:pointer;display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;list-style:none;padding:20px 24px }
+.menu-day > summary h2 { font-size:1.1rem;font-weight:800;margin:0 }
+.day-macros { display:flex;gap:8px;flex-wrap:wrap;font-size:.75rem;align-items:center }
+.day-macros span { background:#f4f6fa;border-radius:7px;padding:5px 9px;color:#687487 }
+.day-macros strong { color:var(--pulse);margin-right:6px }
+.menu-meals { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 22px 22px }
+.menu-meal { border:1px solid #e8ecf2;background:#fafbfd;border-radius:14px;padding:20px;min-width:0 }
+.menu-meal .eyebrow { font-size:.66rem;margin-bottom:6px }
+.menu-meal h3 { font-size:1rem;line-height:1.5;font-weight:800;margin:0 0 14px }
+.ingredient-list { list-style:none;padding:0;margin:0 0 16px }
+.ingredient-list li { display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #edf0f5;align-items:flex-start;font-size:.8rem }
+.ingredient-list small { display:block;color:#87909d;font-size:.69rem;margin-top:3px }
+.ingredient-list b { white-space:nowrap;color:#3d485a;font-size:.78rem }
+.meal-instructions { font-size:.76rem;line-height:1.8;color:#747f8e;margin:10px 0 0 }
+.meal-instructions strong { color:#455063 }
+.meal-energy { color:#b36a40;font-size:.72rem;margin:8px 0 0 }
+.menu-method { margin-top:24px;padding:22px;border:1px solid #e2e6ee;border-radius:16px;background:#fff }
+.menu-method h2 { font-size:1rem;font-weight:800 }
+.menu-method p { font-size:.8rem;line-height:1.9;color:#768091;margin:10px 0 0 }
+.meal-catalog-card { padding:24px;gap:12px;align-items:flex-start }
+.meal-catalog-card .eyebrow { margin:0 }
+.meal-catalog-card h2 { margin:0;font-size:1.2rem }
+.meal-catalog-card .plan-author { color:#8b735f!important;margin:0 0 10px }
+.meal-catalog-card > .btn { margin-top:auto }
+.personal-exercise-form { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px }
+.personal-exercise-form .wide { grid-column:1/-1 }
+.personal-exercise-form label { font-size:.75rem;margin:0 0 5px;color:#7a8291 }
+.personal-exercise-form .form-control,.personal-exercise-form .form-select { font-size:.85rem }
+.session-edit-footer { padding:0 22px 22px }
+.plan-controls { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:24px 0 }
+.plan-controls .fit-card { padding:22px }
+.plan-controls h2 { font-size:1.05rem;font-weight:800 }
+@media(max-width:767.98px) {
+    .session-grid,.menu-meals,.plan-controls { grid-template-columns:minmax(0,1fr) }
+    .plan-intro { padding:24px;flex-direction:column;gap:16px }
+    .plan-intro form,.plan-intro form .btn { width:100% }
+    .plan-subheading { align-items:flex-start;flex-direction:column;gap:10px }
+    .menu-day > summary { padding:18px }
+    .menu-meals { padding:0 14px 14px }
+    .day-macros { width:calc(100% - 35px);order:3 }
+    .menu-meal { padding:16px }
+}

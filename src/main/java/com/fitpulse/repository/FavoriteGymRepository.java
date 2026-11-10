@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.*; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface FavoriteGymRepository extends JpaRepository<FavoriteGym,Long>{Optional<FavoriteGym> findByUserAndGym(User user,Gym gym); List<FavoriteGym> findAllByUserOrderByCreatedAtDesc(User user);}

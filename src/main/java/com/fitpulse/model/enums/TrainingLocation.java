@@ -1,0 +1,1 @@
+package com.fitpulse.model.enums; public enum TrainingLocation {HOME("У дома"),GYM("Във фитнес");private final String displayName;TrainingLocation(String n){displayName=n;}public String getDisplayName(){return displayName;}}

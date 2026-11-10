@@ -1,0 +1,1 @@
+package com.fitpulse.model.enums; public enum FitnessGoal {GENERAL("Обща форма"),FAT_LOSS("Намаляване на тегло"),STRENGTH("Сила"),MUSCLE("Мускулна маса"),MOBILITY("Мобилност"),PERFORMANCE("Спортно представяне"),ENDURANCE("Издръжливост");private final String displayName;FitnessGoal(String n){displayName=n;}public String getDisplayName(){return displayName;}}

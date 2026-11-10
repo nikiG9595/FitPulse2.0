@@ -1,0 +1,1 @@
+package com.fitpulse.repository; import com.fitpulse.model.entity.UserProgramItem; import org.springframework.data.jpa.repository.JpaRepository; public interface UserProgramItemRepository extends JpaRepository<UserProgramItem,Long>{}
