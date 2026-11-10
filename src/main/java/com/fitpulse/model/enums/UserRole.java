@@ -1,3 +1,1 @@
-package com.fitpulse.model.enums;
-
-public enum UserRole {ADMIN, MEMBER}
+package com.fitpulse.model.enums; public enum UserRole {ADMIN("Администратор"),MEMBER("Потребител");private final String displayName;UserRole(String n){displayName=n;}public String getDisplayName(){return displayName;}}

@@ -34,7 +34,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/test/fitpulse"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/custom-error"))
-                .andExpect(model().attribute("message", "Membership not found"));
+                .andExpect(model().attribute("message", "Ресурсът не е намерен."));
     }
 
     @Test
@@ -60,7 +60,7 @@ class GlobalExceptionHandlerTest {
 
         @GetMapping("/test/fitpulse")
         String fitPulseException() {
-            throw new FitPulseException("Membership not found");
+            throw new FitPulseException("Ресурсът не е намерен.");
         }
 
         @GetMapping("/test/uuid/{id}")

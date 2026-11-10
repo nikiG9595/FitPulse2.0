@@ -5,7 +5,9 @@ import com.fitpulse.exception.FitPulseException;
 import com.fitpulse.model.entity.User;
 import com.fitpulse.model.dto.ProfileUpdateRequest;
 import com.fitpulse.service.UserService;
-import com.fitpulse.service.WorkoutBookingService;
+import com.fitpulse.repository.UserRepository;
+import com.fitpulse.repository.FavoriteGymRepository;
+import com.fitpulse.repository.ProgressRecordRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,9 @@ class ProfileControllerSecurityTest {
     @MockitoBean
     private UserService userService;
 
-    @MockitoBean
-    private WorkoutBookingService bookingService;
+    @MockitoBean private UserRepository userRepository;
+    @MockitoBean private FavoriteGymRepository favoriteGymRepository;
+    @MockitoBean private ProgressRecordRepository progressRecordRepository;
 
     @Test
     void authenticatedUserCanOpenEditProfilePage() throws Exception {
@@ -89,14 +92,13 @@ class ProfileControllerSecurityTest {
     }
 
     @Test
-    void profilePageDisplaysCurrentUserAndBookings() throws Exception {
+    void profilePageDisplaysCurrentUser() throws Exception {
         User currentUser = new User();
+        currentUser.setRole(com.fitpulse.model.enums.UserRole.MEMBER);
         when(userService.getCurrentUser()).thenReturn(currentUser);
-        when(bookingService.getCurrentUserBookings()).thenReturn(java.util.List.of());
         mockMvc.perform(get("/profile").with(user("member").roles("MEMBER")))
                 .andExpect(status().isOk()).andExpect(view().name("profile"))
-                .andExpect(model().attribute("user", currentUser))
-                .andExpect(model().attributeExists("bookings"));
+                .andExpect(model().attribute("user", currentUser));
     }
 
     @Test

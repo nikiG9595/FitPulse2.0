@@ -26,13 +26,13 @@ class UserRegistrationAndDetailsTest {
     @Test
     void registrationValidatesPasswordsUsernameAndEmail() {
         RegisterRequest request = request(); request.setConfirmPassword("different");
-        assertMessage("Passwords do not match", () -> service.register(request));
+        assertMessage("Паролите не съвпадат.", () -> service.register(request));
         request.setConfirmPassword("secret1");
         when(repository.existsByUsername("newuser")).thenReturn(true);
-        assertMessage("Username already exists", () -> service.register(request));
+        assertMessage("Потребителското име вече е заето.", () -> service.register(request));
         when(repository.existsByUsername("newuser")).thenReturn(false);
         when(repository.existsByEmail("new@example.com")).thenReturn(true);
-        assertMessage("Email already exists", () -> service.register(request));
+        assertMessage("Имейл адресът вече е регистриран.", () -> service.register(request));
     }
 
     @Test

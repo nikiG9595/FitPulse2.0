@@ -1,31 +1,29 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top fit-nav">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/">FitPulse</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span
-                class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                <li class="nav-item"><a class="nav-link" href="/classes">Classes</a></li>
-                <li class="nav-item"><a class="nav-link" href="/memberships">Memberships</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/bookings">My
-                    Bookings</a></li>
-                <li class="nav-item" sec:authorize="hasAnyRole('MEMBER', 'ADMIN')"><a class="nav-link" href="/progress">My
-                    Progress</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/profile">Profile</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" href="/admin/users">Users</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="btn btn-pulse btn-sm"
-                                                                         href="/classes/create">Add Class</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" href="/login">Login</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" href="/register">Create
-                    Account</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post">
-                        <button class="btn btn-outline-light btn-sm">Logout</button>
-                    </form>
-                </li>
+<nav class="navbar navbar-dark fixed-top fit-nav" th:classappend="${#authorization.expression('isAnonymous()') ? 'nav-public' : 'nav-member'}" aria-label="Основна навигация"
+     xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container nav-layout">
+        <div class="nav-identity">
+            <a class="navbar-brand fw-bold" th:href="@{/}">FitPulse</a>
+        </div>
+        <span class="nav-slogan">Откривай. Планирай. Напредвай.</span>
+        <button class="navbar-toggler" type="button" aria-controls="fitpulse-menu" aria-expanded="false" aria-label="Отвори менюто" id="fitpulse-menu-toggle">
+            <span class="navbar-toggler-icon" aria-hidden="true"></span><span class="menu-button-text">Меню</span>
+        </button>
+        <div class="collapse navbar-collapse" id="fitpulse-menu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/gyms}">Фитнеси</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">Тренировъчни програми</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">Хранителни режими</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>Профил</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">Администрация</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login}">Вход</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register}">Регистрация</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button class="btn btn-outline-light btn-sm" type="submit">Изход</button></form></li>
             </ul>
         </div>
     </div>
+    <aside id="workout-reminders" class="workout-reminders alert alert-warning" hidden role="status" aria-live="polite" sec:authorize="isAuthenticated()" th:data-url="@{/api/reminders}"><strong>Напомняне за тренировка: </strong><span></span> <a th:href="@{/calendar}">Отвори календара</a></aside>
+    <script th:src="@{/js/navigation.js}" defer></script>
+    <script sec:authorize="isAuthenticated()" th:src="@{/js/reminders.js}" defer></script>
+    <noscript><style>.fit-nav .navbar-collapse{display:block!important;position:static!important;grid-column:1/-1;width:100%!important}.fit-nav .navbar-toggler{display:none!important}</style></noscript>
 </nav>

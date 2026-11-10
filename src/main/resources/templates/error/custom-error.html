@@ -1,12 +1,1 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Error')}"></head>
-<body class="page-bg">
-<div th:replace="~{fragments/nav :: nav}"></div>
-<main class="container page narrow">
-    <div class="fit-card text-center"><h1>Something went wrong</h1>
-        <p class="text-muted" th:text="${message}">Error message</p><a href="/dashboard" class="btn btn-pulse">Back to
-            dashboard</a></div>
-</main>
-</body>
-</html>
+<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Грешка')}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page narrow"><div class="fit-card text-center"><h1>Възникна проблем</h1><p class="text-muted" th:text="${message}">Моля, опитайте отново.</p><a th:href="@{/}" class="btn btn-pulse">Към началната страница</a></div></main></body></html>

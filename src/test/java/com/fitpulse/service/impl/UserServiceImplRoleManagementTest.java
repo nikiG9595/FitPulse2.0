@@ -63,7 +63,7 @@ class UserServiceImplRoleManagementTest {
         FitPulseException exception = assertThrows(FitPulseException.class,
                 () -> userService.changeRole(adminId, UserRole.MEMBER));
 
-        assertEquals("You cannot remove your own ADMIN role", exception.getMessage());
+        assertEquals("Не можете да премахнете собствената си администраторска роля.", exception.getMessage());
         assertEquals(UserRole.ADMIN, admin.getRole());
         verify(userRepository, never()).save(admin);
     }

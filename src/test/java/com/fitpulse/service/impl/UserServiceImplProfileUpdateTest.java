@@ -65,7 +65,7 @@ class UserServiceImplProfileUpdateTest {
         FitPulseException exception = assertThrows(FitPulseException.class,
                 () -> userService.updateCurrentUserProfile(request));
 
-        assertEquals("Username already exists", exception.getMessage());
+        assertEquals("Потребителското име вече е заето.", exception.getMessage());
         verify(userRepository, never()).save(currentUser);
     }
 
@@ -77,7 +77,7 @@ class UserServiceImplProfileUpdateTest {
         FitPulseException exception = assertThrows(FitPulseException.class,
                 () -> userService.updateCurrentUserProfile(request));
 
-        assertEquals("Email already exists", exception.getMessage());
+        assertEquals("Имейл адресът вече е регистриран.", exception.getMessage());
         verify(userRepository, never()).save(currentUser);
     }
 

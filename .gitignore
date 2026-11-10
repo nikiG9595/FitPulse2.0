@@ -1,5 +1,29 @@
-# Project exclude paths
-/fitpulse-final/target/
-target/
+# Maven
+/target/
+*.log
+
+# IDE and operating system
 .idea/
 *.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+src/main/resources/application-local.properties
+src/main/resources/application-local.yml
+*.pem
+*.key
+*.p12
+*.jks
+
+# Local database and uploaded files
+*.db
+*.mv.db
+uploads/
+/backups/

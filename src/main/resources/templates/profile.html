@@ -1,28 +1,42 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('Profile')}"></head>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Моят профил')}"></head>
 <body class="page-bg">
 <div th:replace="~{fragments/nav :: nav}"></div>
-<main class="container page">
-    <div th:if="${param.updated}" class="alert alert-success">Profile updated successfully.</div>
-    <div class="row g-4">
-        <div class="col-lg-4">
-            <div class="fit-card"><h1 th:text="${user.username}">User</h1>
-                <p class="text-muted" th:text="${user.email}"></p>
-                <p>Role: <strong th:text="${user.role}"></strong></p>
-                <p>Membership: <strong
-                        th:text="${user.membership != null ? user.membership.title : 'No active plan'}"></strong></p><a
-                        href="/memberships" class="btn btn-pulse w-100">Change Membership</a>
-                <a href="/profile/edit" class="btn btn-outline-dark w-100 mt-2">Edit Profile</a></div>
+<main class="container page profile-page">
+    <div th:if="${param.updated}" class="alert alert-success" role="status">Профилът е обновен успешно.</div>
+    <header class="profile-header fit-card">
+        <div class="profile-avatar"><svg th:replace="~{fragments/icons :: icon('user')}"></svg><span class="visually-hidden">Потребителски аватар</span></div>
+        <div class="profile-intro">
+            <span class="eyebrow">Твоето място във FitPulse</span>
+            <h1 th:text="${#strings.isEmpty(user.displayName)?user.username:user.displayName}"></h1>
+            <p class="profile-username" th:text="'@'+${user.username}"></p>
+            <p class="profile-bio" th:if="${!#strings.isEmpty(user.bio)}" th:text="${user.bio}"></p>
+            <span class="privacy-badge"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><span th:text="${user.publicProfile?'Публичен профил':'Частен профил'}"></span></span>
         </div>
-        <div class="col-lg-8">
-            <div class="fit-card"><h2>Recent Bookings</h2>
-                <div th:if="${#lists.isEmpty(bookings)}" class="text-muted">You have no bookings yet.</div>
-                <div class="booking-row" th:each="b : ${bookings}"><strong th:text="${b.gymClass.title}"></strong><span
-                        th:text="${#temporals.format(b.gymClass.startsAt,'dd MMM HH:mm')}"></span></div>
-            </div>
+        <div class="profile-actions">
+            <a class="btn btn-pulse" th:href="@{/profile/edit}">Редактирай профила</a>
+            <a class="profile-settings-link" th:href="@{/profile/edit#privacy-settings}">Настройки за поверителност</a>
+            <a class="profile-settings-link" th:if="${user.publicProfile}" th:href="@{/users/{username}(username=${user.username})}">Виж публичния си профил</a>
         </div>
-    </div>
+    </header>
+
+    <div class="section-heading profile-section-heading"><div><span class="eyebrow">Лично пространство</span><h2>Всичко за твоя напредък</h2><p class="text-muted mb-0">Тренировките, плановете и любимите ти места — на едно място.</p></div></div>
+    <section class="profile-tools" aria-label="Лични раздели"><a class="profile-tool" th:href="@{/exercises}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span><div><h3>Библиотека с упражнения</h3><p>Техника, варианти и алтернативи за дома и залата.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/dashboard}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('dashboard')}"></svg></span><div><h3>Моето табло</h3><p>Предстоящи тренировки и активни програми с един поглед.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/journal}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('journal')}"></svg></span><div><h3>Тренировъчен дневник</h3><p>Записвай упражнения, серии, повторения и тежести.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/calendar}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('calendar')}"></svg></span><div><h3>Календар</h3><p>Планирай следващата тренировка и настрой напомняне.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/progress}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('progress')}"></svg></span><div><h3>Моят прогрес</h3><p>Проследявай теглото и промените в телесния състав.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/profile#favorite-gyms}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('heart')}"></svg></span><div><h3>Любими фитнеси</h3><p><span th:text="${#lists.size(favorites)}"></span> запазени места за следващата ти тренировка.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/programs/my#my-programs}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span><div><h3>Моите тренировъчни програми</h3><p>Отвори и редактирай личните си програми и упражнения.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        <a class="profile-tool" th:href="@{/programs/my#my-meal-plans}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg></span><div><h3>Моите хранителни режими</h3><p>Настрой храненията и храните в запазените си копия.</p></div><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+    </section>
+    <aside class="profile-privacy-note"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><p>Дневникът, календарът, личните планове и измерванията са само за теб. <span th:text="${user.publicProfile?'В публичния профил се показват името и описанието ти.':'Публичният ти профил е изключен.'}"></span> <span th:if="${user.publicProfile}" th:text="${user.showCity?'Градът е видим.':'Градът е скрит.'}"></span> <span th:if="${user.publicProfile}" th:text="${user.showFavorites?'Любимите фитнеси са видими.':'Любимите фитнеси са скрити.'}"></span></p></aside>
+
+    <section id="favorite-gyms" class="profile-favorites">
+        <div class="section-heading"><div><span class="eyebrow">Запазени места</span><h2>Любими фитнеси</h2></div><a class="link-pulse" th:href="@{/gyms}">Разгледай фитнесите →</a></div>
+        <div class="empty-state fit-card" th:if="${#lists.isEmpty(favorites)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('heart')}"></svg></span><h3>Твоите любими места започват оттук</h3><p>Отвори фитнес от каталога и го добави в любими, за да го намираш лесно тук.</p><a class="btn btn-pulse" th:href="@{/gyms}">Открий фитнес</a></div>
+        <div class="row g-4" th:unless="${#lists.isEmpty(favorites)}"><div class="col-md-6 col-xl-4" th:each="f:${favorites}"><article class="fit-card favorite-card"><span class="eyebrow">Любим фитнес</span><h3 class="h4" th:text="${f.gym.name}"></h3><p class="text-muted" th:text="${f.gym.address}"></p><a class="btn btn-outline-dark" th:href="@{/gyms/{slug}(slug=${f.gym.slug})}">Виж фитнеса</a><form method="post" th:action="@{/gyms/{id}/favorite(id=${f.gym.id})}"><input type="hidden" name="slug" th:value="${f.gym.slug}"><button class="favorite-remove" type="submit">Премахни от любими</button></form></article></div></div>
+    </section>
 </main>
-</body>
-</html>
+</body></html>

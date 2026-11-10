@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleTypeMismatch(Model model) {
-        model.addAttribute("message", "The requested identifier is invalid.");
+        model.addAttribute("message", "Въведената стойност или идентификатор е невалиден.");
         return "error/custom-error";
     }
 
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleDataIntegrityViolation(Model model) {
         model.addAttribute("message",
-                "This item cannot be changed because it is still in use.");
+                "Записът е в употреба или вече съществува запис със същите данни. Обновете страницата и проверете въведеното.");
         return "error/custom-error";
     }
 }

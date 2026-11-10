@@ -6,19 +6,19 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
 
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
+    @NotBlank(message = "Потребителското име е задължително.")
+    @Size(min = 3, max = 30, message = "Потребителското име трябва да бъде между 3 и 30 знака.")
     private String username;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Enter a valid email address")
+    @NotBlank(message = "Имейл адресът е задължителен.")
+    @Email(message = "Въведете валиден имейл адрес.")
     private String email;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @NotBlank(message = "Паролата е задължителна.")
+    @Size(min = 6, message = "Паролата трябва да съдържа поне 6 знака.")
     private String password;
 
-    @NotBlank(message = "Confirm password is required")
+    @NotBlank(message = "Потвърждението на паролата е задължително.")
     private String confirmPassword;
 
     public String getUsername() {

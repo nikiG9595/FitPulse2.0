@@ -71,7 +71,7 @@ class AdminUserControllerSecurityTest {
                         .with(user("admin").roles("ADMIN")).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/users"))
-                .andExpect(flash().attribute("error", "Role must be either MEMBER or ADMIN"));
+                .andExpect(flash().attribute("error", "Ролята трябва да бъде потребител или администратор."));
         verify(userService, never()).changeRole(any(), any());
     }
 
@@ -80,7 +80,7 @@ class AdminUserControllerSecurityTest {
         mockMvc.perform(post("/admin/users/{id}/role", "not-a-uuid")
                         .with(user("admin").roles("ADMIN")).with(csrf()).param("role", "MEMBER"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(flash().attribute("error", "Invalid user ID"));
+                .andExpect(flash().attribute("error", "Невалиден идентификатор на потребител."));
     }
 
     @Test

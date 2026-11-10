@@ -36,9 +36,17 @@ public class User {
     @NotNull
     private UserRole role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "membership_id")
-    private Membership membership;
+    @Column(length = 80) private String displayName;
+    @Column(length = 500) private String bio;
+    @Column(length = 100) private String homeCity;
+    @Column(nullable = false) private boolean publicProfile;
+    @Column(nullable = false) private boolean showCity;
+    @Column(nullable = false) private boolean showFavorites;
+
+    public boolean isShowCity() { return showCity; }
+    public void setShowCity(boolean showCity) { this.showCity = showCity; }
+    public boolean isShowFavorites() { return showFavorites; }
+    public void setShowFavorites(boolean showFavorites) { this.showFavorites = showFavorites; }
 
     public UUID getId() {
         return id;
@@ -76,11 +84,13 @@ public class User {
         this.role = role;
     }
 
-    public Membership getMembership() {
-        return membership;
-    }
+    public String getDisplayName() { return displayName; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
+    public String getHomeCity() { return homeCity; }
+    public void setHomeCity(String homeCity) { this.homeCity = homeCity; }
+    public boolean isPublicProfile() { return publicProfile; }
+    public void setPublicProfile(boolean publicProfile) { this.publicProfile = publicProfile; }
 
-    public void setMembership(Membership membership) {
-        this.membership = membership;
-    }
 }

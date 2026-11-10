@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -13,9 +14,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/css/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/gyms/*/favorite", "/gyms/*/review", "/reviews/**").authenticated()
+                        .requestMatchers("/", "/login", "/register", "/css/**", "/images/**", "/exercises/**", "/js/anatomy.js", "/js/navigation.js", "/gyms/**", "/suggest-gym", "/users/**", "/trainers", "/trainers/*").permitAll()
                         .requestMatchers("/progress/**").hasAnyRole("MEMBER", "ADMIN")
-                        .requestMatchers("/classes/create", "/classes/*/edit", "/classes/*/delete", "/memberships/create", "/memberships/*/edit", "/memberships/*/delete", "/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/dashboard", true).permitAll())
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll())

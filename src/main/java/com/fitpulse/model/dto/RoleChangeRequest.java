@@ -4,7 +4,7 @@ import com.fitpulse.model.enums.UserRole;
 import jakarta.validation.constraints.NotNull;
 
 public class RoleChangeRequest {
-    @NotNull(message = "Role must be either MEMBER or ADMIN")
+    @NotNull(message = "Изберете валидна роля.")
     private UserRole role;
 
     public UserRole getRole() {

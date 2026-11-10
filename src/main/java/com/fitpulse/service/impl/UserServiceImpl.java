@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(RegisterRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword()))
-            throw new FitPulseException("Passwords do not match");
+            throw new FitPulseException("Паролите не съвпадат.");
         if (userRepository.existsByUsername(request.getUsername()))
-            throw new FitPulseException("Username already exists");
-        if (userRepository.existsByEmail(request.getEmail())) throw new FitPulseException("Email already exists");
+            throw new FitPulseException("Потребителското име вече е заето.");
+        if (userRepository.existsByEmail(request.getEmail())) throw new FitPulseException("Имейл адресът вече е регистриран.");
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username).orElseThrow(() -> new FitPulseException("Current user not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new FitPulseException("Текущият потребител не е намерен."));
     }
 
     @Override
@@ -59,18 +59,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeRole(UUID userId, UserRole newRole) {
-        if (userId == null) throw new FitPulseException("A valid user ID is required");
-        if (newRole == null) throw new FitPulseException("Role must be either MEMBER or ADMIN");
+        if (userId == null) throw new FitPulseException("Необходим е валиден идентификатор на потребител.");
+        if (newRole == null) throw new FitPulseException("Изберете валидна роля.");
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new FitPulseException("User not found"));
+                .orElseThrow(() -> new FitPulseException("Потребителят не е намерен."));
         User currentUser = getCurrentUser();
 
         if (user.getId().equals(currentUser.getId()) && user.getRole() == UserRole.ADMIN && newRole != UserRole.ADMIN)
-            throw new FitPulseException("You cannot remove your own ADMIN role");
+            throw new FitPulseException("Не можете да премахнете собствената си администраторска роля.");
 
         UserRole previousRole = user.getRole();
-        if (previousRole == newRole) throw new FitPulseException("User already has the selected role");
+        if (previousRole == newRole) throw new FitPulseException("Потребителят вече има избраната роля.");
 
         user.setRole(newRole);
         userRepository.save(user);
@@ -84,21 +84,33 @@ public class UserServiceImpl implements UserService {
         ProfileUpdateRequest request = new ProfileUpdateRequest();
         request.setUsername(currentUser.getUsername());
         request.setEmail(currentUser.getEmail());
+        request.setDisplayName(currentUser.getDisplayName());
+        request.setBio(currentUser.getBio());
+        request.setHomeCity(currentUser.getHomeCity());
+        request.setPublicProfile(currentUser.isPublicProfile());
+        request.setShowCity(currentUser.isShowCity());
+        request.setShowFavorites(currentUser.isShowFavorites());
         return request;
     }
 
     @Override
     public void updateCurrentUserProfile(ProfileUpdateRequest request) {
-        if (request == null) throw new FitPulseException("Profile details are required");
+        if (request == null) throw new FitPulseException("Данните за профила са задължителни.");
 
         User currentUser = getCurrentUser();
         if (userRepository.existsByUsernameAndIdNot(request.getUsername(), currentUser.getId()))
-            throw new FitPulseException("Username already exists");
+            throw new FitPulseException("Потребителското име вече е заето.");
         if (userRepository.existsByEmailAndIdNot(request.getEmail(), currentUser.getId()))
-            throw new FitPulseException("Email already exists");
+            throw new FitPulseException("Имейл адресът вече е регистриран.");
 
         currentUser.setUsername(request.getUsername());
         currentUser.setEmail(request.getEmail());
+        currentUser.setDisplayName(request.getDisplayName());
+        currentUser.setBio(request.getBio());
+        currentUser.setHomeCity(request.getHomeCity());
+        currentUser.setPublicProfile(request.isPublicProfile());
+        currentUser.setShowCity(request.isShowCity());
+        currentUser.setShowFavorites(request.isShowFavorites());
         userRepository.save(currentUser);
         refreshAuthenticationUsername(request.getUsername());
         LOGGER.info("User profile updated: userId={}", currentUser.getId());

@@ -1,54 +1,11 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('My Progress')}"></head>
-<body class="page-bg">
-<div th:replace="~{fragments/nav :: nav}"></div>
-<main class="container page">
-    <div class="page-title d-flex justify-content-between align-items-center">
-        <div>
-            <h1>My Progress</h1>
-            <p>Track your weight and body composition over time.</p>
-        </div>
-        <a class="btn btn-pulse" th:href="@{/progress/create}">Add Record</a>
-    </div>
-
-    <div class="alert alert-success" role="alert" th:if="${success}" th:text="${success}"></div>
-    <div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></div>
-
-    <div class="fit-card" th:if="${#lists.isEmpty(progressRecords)}">
-        No progress records yet. <a class="link-pulse" th:href="@{/progress/create}">Add your first record</a>.
-    </div>
-
-    <div class="fit-card p-0 overflow-hidden" th:unless="${#lists.isEmpty(progressRecords)}">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Weight</th>
-                    <th>Body Fat</th>
-                    <th>Note</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="record : ${progressRecords}">
-                    <td th:text="${#temporals.format(record.recordedAt, 'dd MMM yyyy')}"></td>
-                    <td><span th:text="${record.weight}"></span> kg</td>
-                    <td th:text="${record.bodyFatPercentage == null ? '—' : record.bodyFatPercentage + '%'}"></td>
-                    <td th:text="${#strings.isEmpty(record.note) ? '—' : record.note}"></td>
-                    <td class="text-end text-nowrap">
-                        <a class="btn btn-sm btn-outline-secondary"
-                           th:href="@{/progress/{id}/edit(id=${record.id})}">Edit</a>
-                        <form class="d-inline" th:action="@{/progress/{id}/delete(id=${record.id})}" method="post">
-                            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</main>
-</body>
-</html>
+<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Моят прогрес')}"></head><body class="page-bg "><div th:replace="~{fragments/nav :: nav}"></div><main class="container page module-page">
+<a class="back-link" th:href="@{/profile}">← Моят профил</a><header class="module-heading"><div><span class="eyebrow">Реални записи. Видима промяна.</span><h1>Моят прогрес</h1><p>Измервания и резултати от личния ти тренировъчен дневник.</p></div><a class="btn btn-pulse" th:href="@{/progress/create}">Добави измерване</a></header>
+<div th:if="${success}" class="alert alert-success" th:text="${success}" role="status"></div><div th:if="${error}" class="alert alert-danger" th:text="${error}"></div><div class="alert alert-danger" id="progress-error" hidden role="alert"></div>
+<div id="progress-dashboard" th:data-url="@{/progress/data}"><div class="period-selector"><label for="progress-period">Период</label><select class="form-select" id="progress-period"><option value="30">Последните 30 дни</option><option value="90">Последните 90 дни</option><option value="365">Последните 12 месеца</option><option value="all">Всички записи</option></select></div>
+<section class="progress-stats"><article class="module-panel"><span>Текущо тегло</span><strong id="current-weight">—</strong><small id="weight-date">Няма измерване</small></article><article class="module-panel"><span>Промяна от първия запис</span><strong id="weight-change">—</strong><small>По всички измервания</small></article><article class="module-panel"><span>Завършени тренировки</span><strong id="completed-workouts">—</strong><small>За избрания период, без дублиране на свързан запис</small></article><article class="module-panel"><span>Упражнения с личен рекорд</span><strong id="personal-records">—</strong><small>От всичките ти реално записани серии</small></article></section>
+<section class="module-panel"><div class="module-panel-heading"><h2>Промяна на теглото</h2><a th:href="@{/progress/create}" class="link-pulse">Добави запис →</a></div><div class="chart-box"><canvas id="weight-chart" role="img" aria-label="Графика на теглото по дати"></canvas><p class="chart-empty" id="weight-empty" hidden>Няма измервания за този период. Добави измерване или избери друг период.</p></div><div class="chart-metrics" id="weight-metrics"></div></section>
+<div class="module-two-columns mt-4"><section class="module-panel" id="body-sizes"><div class="module-panel-heading"><h2>Обиколки</h2><select class="form-select" id="body-type"><option th:each="t:${measurementTypes}" th:value="${t.key}" th:text="${t.value}"></option></select></div><div class="chart-box"><canvas id="body-chart" role="img" aria-label="Графика на избраната обиколка в сантиметри"></canvas><p class="chart-empty" id="body-empty" hidden>Няма записи за тази обиколка и период.</p></div></section><form class="module-panel" th:object="${bodyMeasurementForm}" method="post" th:action="@{/progress/measurements/save}"><h2 th:text="${bodyMeasurementForm.id==null?'Добави обиколка':'Редактирай обиколка'}"></h2><div class="alert alert-danger" th:if="${measurementError}" th:text="${measurementError}"></div><ul class="text-warning" th:if="${#fields.hasErrors('*')}"><li th:each="e:${#fields.errors('*')}" th:text="${e}"></li></ul><input type="hidden" th:field="*{id}"><label for="measurement-type">Измерване</label><select class="form-select" id="measurement-type" th:field="*{type}"><option th:each="t:${measurementTypes}" th:value="${t.key}" th:text="${t.value}"></option></select><label for="recordedAt">Дата</label><input class="form-control" type="date" th:field="*{recordedAt}" required><label for="value">Обиколка (см)</label><input class="form-control" type="number" th:field="*{value}" min="10" max="300" step="0.01" required><button class="btn btn-pulse mt-3" type="submit">Запази обиколката</button><a th:if="${bodyMeasurementForm.id!=null}" class="btn btn-outline-light mt-3" th:href="@{/progress#body-sizes}">Отказ</a></form></div>
+<section class="module-panel mt-4"><div class="module-panel-heading"><h2>Прогрес в упражненията</h2><select id="lift-type" class="form-select" aria-label="Избери упражнение от дневника"></select></div><p class="small module-muted">Максимална записана работна тежест за всяка дата. Различните упражнения се изчисляват отделно.</p><div class="chart-metrics" id="lift-metrics"></div><div class="chart-box"><canvas id="lift-chart" role="img" aria-label="Работна тежест по дати"></canvas><p class="chart-empty" id="lift-empty" hidden>Няма серии за този избор. Запиши тренировка в дневника.</p></div><a class="link-pulse" th:href="@{/journal}">Към тренировъчния дневник →</a><ul class="compact-history" id="lift-history"></ul></section></div>
+<section class="mt-4"><h2 class="h4">История на теглото</h2><div class="module-empty" th:if="${#lists.isEmpty(progressRecords)}"><h3>Първата стъпка е едно измерване</h3><p>Няма да показваме измислена графика. Добави първия си запис.</p><a class="btn btn-pulse" th:href="@{/progress/create}">Добави измерване</a></div><div class="measurement-grid"><article class="module-panel measurement-card" th:each="r:${progressRecords}"><time th:text="${#temporals.format(r.recordedAt,'dd.MM.yyyy')}"></time><h3 th:text="${r.weight}+' кг'"></h3><p th:if="${r.bodyFatPercentage!=null}" th:text="'Телесни мазнини: '+${r.bodyFatPercentage}+'%'"></p><p th:text="${r.note}"></p><div class="d-flex gap-2"><a class="btn btn-sm btn-outline-light" th:href="@{/progress/{id}/edit(id=${r.id})}">Редактирай</a><form method="post" th:action="@{/progress/{id}/delete(id=${r.id})}" onsubmit="return confirm('Изтриване на измерването?');"><button class="btn btn-sm btn-outline-danger">Изтрий</button></form></div></article></div></section>
+<section class="mt-4"><h2 class="h4">История на обиколките</h2><p th:if="${#lists.isEmpty(measurementHistory)}" class="text-muted">Все още няма записани обиколки.</p><div class="measurement-grid"><article class="module-panel measurement-card" th:each="r:${measurementHistory}"><time th:text="${#temporals.format(r.date,'dd.MM.yyyy')}"></time><h3 th:text="${r.label}+': '+${r.value}+' см'"></h3><div class="d-flex gap-2"><a class="btn btn-sm btn-outline-light" th:href="@{/progress/measurements/{id}/edit(id=${r.id})}">Редактирай</a><form method="post" th:action="@{/progress/measurements/{id}/delete(id=${r.id})}"><button class="btn btn-sm btn-outline-danger">Изтрий</button></form></div></article></div></section>
+</main><script th:src="@{/vendor/chart.umd.js}" defer></script><script th:src="@{/js/progress-dashboard.js}" defer></script></body></html>

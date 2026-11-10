@@ -39,15 +39,15 @@ public class AdminUserController {
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Role must be either MEMBER or ADMIN");
+            redirectAttributes.addFlashAttribute("error", "Ролята трябва да бъде потребител или администратор.");
             return "redirect:/admin/users";
         }
 
         try {
             userService.changeRole(UUID.fromString(id), roleChangeRequest.getRole());
-            redirectAttributes.addFlashAttribute("success", "User role changed successfully.");
+            redirectAttributes.addFlashAttribute("success", "Ролята на потребителя е променена успешно.");
         } catch (IllegalArgumentException exception) {
-            redirectAttributes.addFlashAttribute("error", "Invalid user ID");
+            redirectAttributes.addFlashAttribute("error", "Невалиден идентификатор на потребител.");
         } catch (FitPulseException exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }

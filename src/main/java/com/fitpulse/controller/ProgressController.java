@@ -22,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/progress")
 public class ProgressController {
     private final ProgressService progressService;
+    @org.springframework.beans.factory.annotation.Autowired private com.fitpulse.service.ProgressDashboardService dashboard;
 
     public ProgressController(ProgressService progressService) {
         this.progressService = progressService;
@@ -29,10 +30,24 @@ public class ProgressController {
 
     @GetMapping
     public String history(Model model) {
-        model.addAttribute("progressRecords", progressService.getCurrentUserProgress());
+        prepareDashboard(model);
         return "progress/list";
     }
 
+    private void prepareDashboard(Model model){
+        model.addAttribute("progressRecords",progressService.getCurrentUserProgress());
+        model.addAttribute("measurementHistory",dashboard.history());model.addAttribute("measurementTypes",com.fitpulse.service.ProgressDashboardService.TYPES);
+        if(!model.containsAttribute("bodyMeasurementForm"))model.addAttribute("bodyMeasurementForm",new com.fitpulse.model.dto.progress.BodyMeasurementForm());
+    }
+    @GetMapping("/data") @org.springframework.web.bind.annotation.ResponseBody
+    public org.springframework.http.ResponseEntity<com.fitpulse.service.ProgressDashboardService.Dashboard> data(@org.springframework.web.bind.annotation.RequestParam(defaultValue="30")String period){return org.springframework.http.ResponseEntity.ok().cacheControl(org.springframework.http.CacheControl.noStore()).body(dashboard.data(period));}
+    @GetMapping("/measurements/{id}/edit") public String editMeasurement(@PathVariable Long id,Model model){model.addAttribute("bodyMeasurementForm",dashboard.form(id));prepareDashboard(model);return "progress/list";}
+    @PostMapping("/measurements/save") public String saveMeasurement(@Valid @ModelAttribute com.fitpulse.model.dto.progress.BodyMeasurementForm bodyMeasurementForm,BindingResult errors,Model model,RedirectAttributes flash){
+        if(errors.hasErrors()){prepareDashboard(model);return "progress/list";}
+        try{dashboard.save(bodyMeasurementForm);}catch(com.fitpulse.exception.FitPulseException e){model.addAttribute("measurementError",e.getMessage());prepareDashboard(model);return "progress/list";}
+        flash.addFlashAttribute("success","Обиколката е запазена.");return "redirect:/progress#body-sizes";
+    }
+    @PostMapping("/measurements/{id}/delete") public String deleteMeasurement(@PathVariable Long id,RedirectAttributes flash){dashboard.delete(id);flash.addFlashAttribute("success","Измерването е изтрито.");return "redirect:/progress#body-sizes";}
     @GetMapping("/create")
     public String create(Model model) {
         ProgressFormRequest request = new ProgressFormRequest();
@@ -51,7 +66,7 @@ public class ProgressController {
         }
         try {
             progressService.create(progressFormRequest);
-            redirectAttributes.addFlashAttribute("success", "Progress record added successfully.");
+            redirectAttributes.addFlashAttribute("success", "Записът за прогрес е добавен успешно.");
             return "redirect:/progress";
         } catch (ProgressServiceException exception) {
             model.addAttribute("globalError", exception.getMessage());
@@ -84,7 +99,7 @@ public class ProgressController {
         }
         try {
             progressService.update(id, progressFormRequest);
-            redirectAttributes.addFlashAttribute("success", "Progress record updated successfully.");
+            redirectAttributes.addFlashAttribute("success", "Записът за прогрес е обновен успешно.");
             return "redirect:/progress";
         } catch (ProgressServiceException exception) {
             model.addAttribute("progressId", id);
@@ -97,7 +112,7 @@ public class ProgressController {
     public String delete(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         try {
             progressService.delete(id);
-            redirectAttributes.addFlashAttribute("success", "Progress record deleted successfully.");
+            redirectAttributes.addFlashAttribute("success", "Записът за прогрес е изтрит успешно.");
         } catch (ProgressServiceException exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }

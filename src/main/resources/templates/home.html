@@ -1,44 +1,38 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('FitPulse')}"></head>
-<body>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('FitPulse 2.0')}"></head>
+<body class="home-page">
 <div th:replace="~{fragments/nav :: nav}"></div>
-<section class="hero">
-    <div class="container">
-        <div class="row align-items-center min-vh-100">
-            <div class="col-lg-7"><span
-                    class="badge rounded-pill text-bg-dark mb-3">Train Smarter. Live Stronger.</span>
-                <h1 class="display-3 fw-bold">Your fitness rhythm starts with <span>FitPulse</span>.</h1>
-                <p class="lead text-light-emphasis mt-3">Book classes, manage memberships and follow your training
-                    schedule from one application.</p>
-                <div class="mt-4 d-flex gap-3"><a href="/classes" class="btn btn-pulse btn-lg">Explore Classes</a><a
-                        href="/memberships" class="btn btn-outline-light btn-lg">View Plans</a></div>
-            </div>
-            <div class="col-lg-5">
-                <div class="hero-card"><h3>Today’s Pulse</h3>
-                    <p class="mb-1">High-energy classes</p><strong
-                            th:text="${#lists.size(classes)} + ' available workouts'">2 workouts</strong></div>
+<main>
+    <section class="home-intro">
+        <div class="container home-intro-content">
+            <h1>Открий своя фитнес. Изгради своя <span>ритъм.</span></h1>
+            <p>Каталог с фитнеси, реални оценки, лични тренировки и прогрес на едно място.</p>
+            <div class="home-actions">
+                <a class="btn btn-pulse btn-lg" th:href="@{/gyms}">Разгледай фитнесите</a>
+                <a sec:authorize="isAnonymous()" class="btn btn-outline-light btn-lg" th:href="@{/register}">Създай профил</a>
+                <a sec:authorize="isAuthenticated()" class="btn btn-outline-light btn-lg" th:href="@{/profile}">Моят профил</a>
+                <a class="btn btn-outline-light btn-lg" th:href="@{/suggest-gym}">Предложи фитнес</a>
             </div>
         </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4"><h2>Featured Classes</h2><a href="/classes"
-                                                                                                        class="link-pulse">See
-            all</a></div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4" th:each="c : ${classes}">
-                <div class="fit-card h-100">
-                    <div class="badge text-bg-warning mb-3" th:text="${c.intensity}">HIGH</div>
-                    <h4 th:text="${c.title}">Class</h4>
-                    <p class="text-muted" th:text="${c.description}">Description</p>
-                    <div class="small">Trainer: <strong th:text="${c.trainerName}">Trainer</strong></div>
-                    <a class="btn btn-dark w-100 mt-3" th:href="@{/classes/{id}(id=${c.id})}">Details</a></div>
+    </section>
+    <figure class="home-hero-image" aria-label="Мъж и жена тренират с дъмбели пред логото на FitPulse">
+        <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
+             alt="Мъж и жена тренират с дъмбели пред светещото лого FP">
+    </figure>
+    <section class="section section-soft home-section home-access-section">
+        <div class="container"><div class="row align-items-center g-5"><div class="col-lg-8">
+            <h2>Регистрирай се и получи безплатен достъп до тренировъчни програми и хранителни режими</h2>
+            <p>След вход избираш сам от всички активни програми и режими и създаваш лично редактируемо копие.</p>
+            <p class="small home-muted">Хранителните режими са общи образователни примери, а не медицински или индивидуални препоръки.</p>
+            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register}">Безплатна регистрация</a>
+            <div sec:authorize="isAuthenticated()" class="d-flex flex-wrap gap-2">
+                <a class="btn btn-pulse" th:href="@{/programs}">Тренировъчни програми</a>
+                <a class="btn btn-outline-light" th:href="@{/meal-plans}">Хранителни режими</a>
             </div>
-        </div>
-    </div>
-</section>
+        </div></div></div>
+    </section>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

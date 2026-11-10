@@ -179,7 +179,7 @@ class ProgressControllerSecurityTest {
                         .param("weight", "75.5").param("recordedAt", "2020-01-01"))
                 .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/progress"))
                 .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash()
-                        .attribute("success", "Progress record updated successfully."));
+                        .attribute("success", "Записът за прогрес е обновен успешно."));
         verify(progressService).update(org.mockito.ArgumentMatchers.eq(id), org.mockito.ArgumentMatchers.any());
     }
 }
