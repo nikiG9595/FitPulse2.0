@@ -37,6 +37,12 @@ public class ProfileController {
         return "profile";
     }
 
+    @GetMapping("/profile/favorites")
+    public String favorites(Model model) {
+        model.addAttribute("favorites", favoriteGymRepository.findAllByUserOrderByCreatedAtDesc(userService.getCurrentUser()));
+        return "profile-favorites";
+    }
+
     @GetMapping("/users/{username}")
     public String publicProfile(@org.springframework.web.bind.annotation.PathVariable String username, Model model) {
         var user = userRepository.findByUsername(username)

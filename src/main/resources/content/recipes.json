@@ -93,7 +93,7 @@
     "code": "recipe-003",
     "name": "Пилешко с ориз и салата",
     "label": "Обяд",
-    "imagePath": "/images/meals/chicken-rice-khloe-arledge.jpg",
+    "imagePath": "/images/meals/chicken-rice-salad-change-cc.jpg",
     "preparationMinutes": 35,
     "steps": [
       "Свари ориза.",
@@ -249,7 +249,7 @@
     "code": "recipe-006",
     "name": "Омлет със спанак и хляб",
     "label": "Закуска",
-    "imagePath": "/images/meals/omelette-igor-miske.jpg",
+    "imagePath": "/images/meals/spinach-omelette-kurt-kaiser.jpg",
     "preparationMinutes": 15,
     "steps": [
       "Около 100 г ядлива част са две средни яйца.",
@@ -522,7 +522,7 @@
     "code": "recipe-011",
     "name": "Тост с извара и домат",
     "label": "Закуска",
-    "imagePath": "/images/meals/recipes/recipe-011.svg",
+    "imagePath": "/images/meals/cottage-tomato-toast-kaboompics.jpg",
     "preparationMinutes": 10,
     "steps": [
       "Препечи хляба, добави изварата, домата и претегления зехтин."
@@ -675,7 +675,7 @@
     "code": "recipe-014",
     "name": "Мляко с овес и плодове",
     "label": "Следобедно хранене",
-    "imagePath": "/images/meals/oats-fruit-brooke-lark.jpg",
+    "imagePath": "/images/meals/yogurt-oats-blackberry-micheile.jpg",
     "preparationMinutes": 5,
     "steps": [
       "Остави овеса да омекне в млякото и добави плодовете."
@@ -783,7 +783,7 @@
     "code": "recipe-016",
     "name": "Овес с мляко и ябълка",
     "label": "Закуска",
-    "imagePath": "/images/meals/recipes/recipe-016.svg",
+    "imagePath": "/images/meals/oats-apple-peanut-idil.jpg",
     "preparationMinutes": 15,
     "steps": [
       "Свари овеса в млякото, добави ябълката и фъстъченото масло."
@@ -1037,7 +1037,7 @@
     "code": "recipe-021",
     "name": "Яйца, хляб и краставица",
     "label": "Закуска",
-    "imagePath": "/images/meals/recipes/recipe-021.svg",
+    "imagePath": "/images/meals/eggs-cucumber-bread-yuliya.jpg",
     "preparationMinutes": 15,
     "steps": [
       "Свари яйцата.",
@@ -1300,7 +1300,7 @@
     "code": "recipe-026",
     "name": "Овесени палачинки",
     "label": "Закуска",
-    "imagePath": "/images/meals/recipes/recipe-026.svg",
+    "imagePath": "/images/meals/pancakes-berries-polina.jpg",
     "preparationMinutes": 20,
     "steps": [
       "Смели овеса, смеси с яйцата и млякото.",
@@ -1636,7 +1636,7 @@
     "code": "recipe-032",
     "name": "Тост с извара",
     "label": "Междинно хранене",
-    "imagePath": "/images/meals/recipes/recipe-032.svg",
+    "imagePath": "/images/meals/cottage-tomato-toast-kaboompics.jpg",
     "preparationMinutes": 5,
     "steps": [
       "Препечи хляба и добави изварата и домата."

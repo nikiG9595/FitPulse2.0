@@ -1,35 +1,7 @@
-<!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Моите лични планове')}"></head>
-<body class="page-bg">
-<div th:replace="~{fragments/nav :: nav}"></div>
-<main class="container page">
-    <a class="back-link" th:href="@{/profile}">← Моят профил</a>
-    <header class="library-header"><div><span class="eyebrow">Създадени за твоя ритъм</span><h1>Моите лични планове</h1><p>Твоите копия, твоите промени. Редактирай програмите и храненията, без да променяш оригиналите.</p></div></header>
-    <div class="alert alert-success" th:if="${success}" th:text="${success}" role="status"></div>
-    <nav class="plan-sections" aria-label="Раздели на личните планове"><a class="btn btn-outline-dark" href="#my-programs">Тренировъчни програми</a><a class="btn btn-outline-dark" href="#my-meal-plans">Хранителни режими</a></nav>
-
-    <section id="my-programs" class="personal-plan-section">
+<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Моите тренировъчни програми')}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page"><a class="back-link" th:href="@{/profile}">← Моят профил</a><header class="library-header"><div><span class="eyebrow">Лично пространство</span><h1>Моите тренировъчни програми</h1></div></header><div class="alert alert-success" th:if="${success}" th:text="${success}" role="status"></div>    <aside class="alert alert-warning" th:if="${legacyProgramDuplicates>0}">Имате повече от едно лично копие за <strong th:text="${legacyProgramDuplicates}"></strong> оригинала. Съществуващите копия и редакции са запазени; прегледайте ги преди да изберете кое да остане в списъка.</aside><section id="my-programs" class="personal-plan-section">
         <div class="section-heading"><h2>Моите тренировъчни програми</h2><a class="link-pulse" th:href="@{/programs}">Разгледай библиотеката →</a></div>
-        <div class="empty-state fit-card" th:if="${#lists.isEmpty(programs)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span><h3>Избери откъде да започнеш</h3><p>Добави програма от библиотеката, за да получиш лично копие с редактируеми упражнения.</p><a class="btn btn-pulse" th:href="@{/programs}">Намери програма</a></div>
-        <div class="row g-4"><div class="col-md-6 col-xl-4" th:each="p:${programs}"><article class="fit-card h-100"><span class="eyebrow" th:text="${p.active?'Активна програма':'Неактивна програма'}"></span><h3 class="h4" th:text="${p.displayName}"></h3><p class="text-muted small" th:text="${p.sourceTemplate!=null?'Лично копие. Редакциите са само за теб.':'Оригиналният шаблон е премахнат. Твоето копие е запазено.'}"></p><div class="d-flex flex-wrap gap-2 mt-3"><a class="btn btn-pulse" th:href="@{/programs/my/{id}(id=${p.id})}">Отвори програмата</a><a class="btn btn-outline-dark" th:href="@{/calendar/create(programId=${p.id})}">Планирай тренировка</a></div></article></div></div>
+        <div class="empty-state fit-card" th:if="${#lists.isEmpty(programs)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span><h3>Все още нямате добавени тренировъчни програми.</h3><p>Добави програма от библиотеката, за да получиш лично копие с редактируеми упражнения.</p><a class="btn btn-pulse" th:href="@{/programs}">Разгледай тренировъчните програми</a></div>
+        <div class="row g-4"><div class="col-md-6 col-xl-4" th:each="p:${programs}"><article class="fit-card h-100"><span class="eyebrow" th:text="${p.active?'Активна програма':'Неактивна програма'}"></span><h3 class="h4" th:text="${p.displayName}"></h3><p class="text-muted small" th:text="${p.sourceTemplate!=null?'Лично копие. Редакциите са само за теб.':'Оригиналният шаблон е премахнат. Твоето копие е запазено.'}"></p><div class="d-flex flex-wrap gap-2 mt-3"><a class="btn btn-pulse" th:href="@{/programs/my/{id}(id=${p.id})}">Отвори програмата</a><a class="btn btn-outline-dark" th:href="@{/calendar/create(programId=${p.id})}">Планирай тренировка</a></div><form class="personal-remove" method="post" th:action="@{/programs/my/{id}/remove(id=${p.id})}" onsubmit="return confirm('Да премахнем ли това копие от списъка? Редакциите и свързаната история ще останат запазени.');"><button type="submit" class="btn btn-outline-warning btn-sm">Премахни от моите програми</button></form></article></div></div>
     </section>
 
-    <section id="my-meal-plans" class="personal-plan-section">
-        <div class="section-heading"><h2>Моите хранителни режими</h2><a class="link-pulse" th:href="@{/meal-plans}">Разгледай библиотеката →</a></div>
-        <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealPlans)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg></span><h3>Направи първата крачка към своя режим</h3><p>Избери готов режим и запази лично копие. След това адаптирай храненията и храните тук.</p><a class="btn btn-pulse" th:href="@{/meal-plans}">Намери хранителен режим</a></div>
-        <article class="fit-card mb-4 personal-meal-editor" th:each="m:${mealPlans}">
-            <div class="section-heading"><div><span class="eyebrow">Личен хранителен режим</span><h3 class="h4 mb-0" th:text="${m.name}"></h3></div><a class="btn btn-outline-dark" th:href="@{/calendar/create(mealPlanId=${m.id})}">Свържи с тренировка</a></div>
-            <p class="text-muted small">Промените се запазват само в твоето копие. При редакция на продуктите и грамажите хранителните стойности в свободния текст не се преизчисляват автоматично.</p>
-            <a class="btn btn-pulse" th:if="${m.weeklyMenu!=null}" th:href="@{/meal-plans/my/{id}(id=${m.id})}">Отвори интерактивния режим</a><details th:if="${m.weeklyMenu==null}"><summary>Прегледай и редактирай режима</summary>
-                <form method="post" th:action="@{/meal-plans/my/{id}(id=${m.id})}">
-                    <label th:for="'meal-name-'+${m.id}">Име</label><input class="form-control" th:id="'meal-name-'+${m.id}" name="name" th:value="${m.name}" maxlength="150" required>
-                    <label th:for="'meal-content-'+${m.id}">Хранения</label><textarea class="form-control" th:id="'meal-content-'+${m.id}" rows="6" name="meals" th:text="${m.meals}" maxlength="100000" required></textarea>
-                    <label th:for="'meal-foods-'+${m.id}">Примерни храни</label><textarea class="form-control" th:id="'meal-foods-'+${m.id}" rows="3" name="exampleFoods" th:text="${m.exampleFoods}" maxlength="3000"></textarea>
-                    <button class="btn btn-pulse mt-3" type="submit">Запази моето копие</button>
-                </form>
-            </details>
-        </article>
-    </section>
-</main>
-</body></html>
+</main></body></html>

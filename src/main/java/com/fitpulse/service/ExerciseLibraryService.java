@@ -16,9 +16,13 @@ public class ExerciseLibraryService {
     public Exercise get(Long id){return exercises.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Невалидно упражнение."));}
     public List<Exercise> all(){return exercises.findAllByOrderByName();}
     public Page<Exercise> search(String q,String muscle,String difficulty,String equipment,String location,int page){
+        return search(q,muscle,"",difficulty,equipment,location,page);
+    }
+    public Page<Exercise> search(String q,String muscle,String subgroup,String difficulty,String equipment,String location,int page){
         String needle=normalize(q);
+        var selected=MuscleSubgroups.valid(muscle,subgroup);
         List<Exercise> found=all().stream().filter(e->needle.isEmpty()||normalize(e.getName()+" "+e.getAliases()).contains(needle))
-            .filter(e->empty(muscle)||e.getMuscle().equals(muscle)).filter(e->empty(difficulty)||e.getDifficulty().equals(difficulty))
+            .filter(e->selected!=null?MuscleSubgroups.matches(e,selected):empty(muscle)||e.getMuscle().equals(muscle)).filter(e->empty(difficulty)||e.getDifficulty().equals(difficulty))
             .filter(e->empty(equipment)||e.getEquipment().equals(equipment)).filter(e->empty(location)||e.getLocation().equals("Навсякъде")||e.getLocation().equals(location)).toList();
         int number=Math.min(Math.max(0,page),Math.max(0,(found.size()-1)/12));int start=number*12;
         return new PageImpl<>(found.subList(start,Math.min(start+12,found.size())),PageRequest.of(number,12),found.size());

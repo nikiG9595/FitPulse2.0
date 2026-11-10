@@ -22,7 +22,7 @@ public class PersonalNutritionService {
     public WeeklyMenu menu(UserMealPlan plan){if(plan.getWeeklyMenu()==null||plan.getWeeklyMenu().isBlank())throw new FitPulseException("Това е запазено текстово копие. За интерактивни грамажи добави ново копие от библиотеката.");return parse(plan.getWeeklyMenu());}
     public WeeklyMenu parse(String json){try{return mapper.readValue(json,WeeklyMenu.class);}catch(Exception e){throw new FitPulseException("Съдържанието на режима не може да се прочете.");}}
     public String canonicalJson(String json){
-        WeeklyMenu menu=parse(json);List<Food> catalog=foods.findAll();List<WeeklyMenu.Day> days=new ArrayList<>();
+        WeeklyMenu menu=parse(RecipeInstructions.repair(json,mapper));List<Food> catalog=foods.findAll();List<WeeklyMenu.Day> days=new ArrayList<>();
         for(var day:menu.days()){
             List<WeeklyMenu.Meal> meals=new ArrayList<>();
             for(var meal:day.meals()){
@@ -31,7 +31,7 @@ public class PersonalNutritionService {
                     Food food=catalog.stream().filter(f->f.getCode().equals(ingredient.foodCode())||(f.getName().equals(ingredient.name())&&f.getState().equals(ingredient.state()))).findFirst().orElseThrow(()->new FitPulseException("Продуктът липсва в хранителната база: "+ingredient.name()));
                     ingredients.add(ingredient(food,BigDecimal.valueOf(ingredient.grams())));
                 }
-                meals.add(new WeeklyMenu.Meal(meal.label(),meal.name(),ingredients,meal.preparation(),meal.substitution()));
+                meals.add(new WeeklyMenu.Meal(meal.label(),meal.name(),ingredients,meal.preparation(),meal.substitution(),meal.recipeCode()));
             }
             days.add(new WeeklyMenu.Day(day.title(),meals));
         }
@@ -60,25 +60,35 @@ public class PersonalNutritionService {
         Food food=replacement==null?current:foods.findByCode(replacement).filter(f->compatible(current,f)).orElseThrow(()->new FitPulseException("Избери подходящ продукт от същата категория."));
         List<WeeklyMenu.Day> days=new ArrayList<>(menu.days());var selectedDay=days.get(day);var meals=new ArrayList<>(selectedDay.meals());var selectedMeal=meals.get(meal);var ingredients=new ArrayList<>(selectedMeal.ingredients());ingredients.set(item,ingredient(food,grams));
         String title=replacement==null?selectedMeal.name():"Личен вариант на "+selectedMeal.name().replaceFirst("^Личен вариант на ","");
-        meals.set(meal,new WeeklyMenu.Meal(selectedMeal.label(),title,ingredients,selectedMeal.preparation(),selectedMeal.substitution()));days.set(day,new WeeklyMenu.Day(selectedDay.title(),meals));
+        meals.set(meal,new WeeklyMenu.Meal(selectedMeal.label(),title,ingredients,selectedMeal.preparation(),selectedMeal.substitution(),selectedMeal.recipeCode()));days.set(day,new WeeklyMenu.Day(selectedDay.title(),meals));
         WeeklyMenu changed=new WeeklyMenu(menu.author(),menu.methodology(),days);plan.setWeeklyMenu(json(changed));plan.setMeals(plainText(changed));
     }
     public List<Food> alternatives(Long id,int day,int meal,int item,String q){var old=selected(menu(owned(id)),day,meal,item);Food current=foods.findByCode(old.foodCode()).orElseThrow();String query=q==null?"":q.strip().toLowerCase(Locale.ROOT);return foods.findAllByOrderByCategoryAscNameAsc().stream().filter(f->compatible(current,f)&&!f.getCode().equals(current.getCode())).filter(f->f.getName().toLowerCase(Locale.ROOT).contains(query)).toList();}
     public record ShoppingItem(String code,String name,String state,String category,BigDecimal grams,boolean checked){}
+    @Transactional public List<Integer> resetShopping(Long id,List<Integer> requested){
+        var plan=locked(id);var selected=shopping(id,requested).days();
+        checks.findAllByPlanOrderByIdDesc(plan).forEach(check->check.setChecked(false));return selected;
+    }
+    public Map<String,Long> totals(WeeklyMenu.Meal meal){return Map.of("calories",meal.getCalories(),"protein",meal.getProtein(),"fat",meal.getFat(),"carbs",meal.getCarbs());}
+    public Map<String,Long> totals(WeeklyMenu.Day day){return Map.of("calories",day.getCalories(),"protein",day.getProtein(),"fat",day.getFat(),"carbs",day.getCarbs());}
+    public Map<String,Object> savedTotals(Long id,int day,int meal,BigDecimal grams){var menu=menu(owned(id));return Map.of("saved",true,"grams",grams,"meal",totals(menu.days().get(day).meals().get(meal)),"day",totals(menu.days().get(day)));}
     public record ShoppingList(String scope,List<Integer> days,List<ShoppingItem> items){}
     public ShoppingList shopping(Long id,List<Integer> requested){
-        UserMealPlan plan=owned(id);WeeklyMenu menu=menu(plan);List<Integer> days=requested==null||requested.isEmpty()?java.util.stream.IntStream.rangeClosed(1,menu.days().size()).boxed().toList():requested.stream().distinct().sorted().toList();
+        UserMealPlan plan=owned(id);WeeklyMenu menu=menu(plan);if(requested!=null&&requested.stream().anyMatch(Objects::isNull))throw new FitPulseException("Избери валидни дни.");List<Integer> days=requested==null?List.of():requested.stream().distinct().sorted().toList();
         if(days.stream().anyMatch(d->d<1||d>menu.days().size()))throw new FitPulseException("Избери валидни дни.");
         Map<String,BigDecimal> amounts=new TreeMap<>();Map<String,WeeklyMenu.Ingredient> ingredients=new HashMap<>();
         for(int day:days)for(var meal:menu.days().get(day-1).meals())for(var item:meal.ingredients()){amounts.merge(item.foodCode(),BigDecimal.valueOf(item.grams()),BigDecimal::add);ingredients.put(item.foodCode(),item);}
         String signature=days+"|"+amounts;String scope;try{scope=HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(signature.getBytes(StandardCharsets.UTF_8)));}catch(Exception e){throw new IllegalStateException(e);}
         Map<String,ShoppingCheck> purchased=checks.findAllByPlanAndScope(plan,digest(days.toString())).stream().collect(java.util.stream.Collectors.toMap(ShoppingCheck::getFoodCode,c->c));
-        List<ShoppingItem> result=new ArrayList<>();for(var entry:amounts.entrySet()){Food food=foods.findByCode(entry.getKey()).orElseThrow();var snapshot=ingredients.get(entry.getKey());var check=purchased.get(food.getCode());boolean bought=check!=null&&check.isChecked()&&check.getGrams().compareTo(entry.getValue())==0;result.add(new ShoppingItem(food.getCode(),food.getName(),snapshot.state(),food.getCategory(),entry.getValue(),bought));}
+        checks.findAllByPlanOrderByIdDesc(plan).forEach(c->purchased.putIfAbsent(c.getFoodCode(),c));
+        Map<String,ShoppingCheck> persistent=checks.findAllByPlanAndScope(plan,digest("product-check-v11")).stream().collect(java.util.stream.Collectors.toMap(ShoppingCheck::getFoodCode,c->c));
+        List<ShoppingItem> result=new ArrayList<>();for(var entry:amounts.entrySet()){Food food=foods.findByCode(entry.getKey()).orElseThrow();var snapshot=ingredients.get(entry.getKey());var check=purchased.get(food.getCode());var stable=persistent.get(food.getCode());boolean bought=stable!=null?stable.isChecked():check!=null&&check.isChecked();result.add(new ShoppingItem(food.getCode(),food.getName(),snapshot.state(),food.getCategory(),entry.getValue(),bought));}
         result.sort(Comparator.comparing(ShoppingItem::category).thenComparing(ShoppingItem::name));return new ShoppingList(scope,days,result);
     }
     @Transactional public void check(Long id,List<Integer> days,String scope,String code,boolean checked){
+        var plan=locked(id);
         var shopping=shopping(id,days);if(!shopping.scope().equals(scope))throw new FitPulseException("Списъкът е променен. Презареди го преди отбелязване.");if(shopping.items().stream().noneMatch(i->i.code().equals(code)))throw new FitPulseException("Продуктът не е в списъка.");
-        var plan=owned(id);String selection=digest(shopping.days().toString());ShoppingCheck check=checks.findByPlanAndScopeAndFoodCode(plan,selection,code).orElseGet(ShoppingCheck::new);check.setPlan(plan);check.setScope(selection);check.setFoodCode(code);check.setGrams(shopping.items().stream().filter(i->i.code().equals(code)).findFirst().orElseThrow().grams());check.setChecked(checked);checks.save(check);
+        String selection=digest("product-check-v11");ShoppingCheck check=checks.findByPlanAndScopeAndFoodCode(plan,selection,code).orElseGet(ShoppingCheck::new);check.setPlan(plan);check.setScope(selection);check.setFoodCode(code);check.setGrams(shopping.items().stream().filter(i->i.code().equals(code)).findFirst().orElseThrow().grams());check.setChecked(checked);checks.save(check);
     }
     private String digest(String value){try{return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));}catch(Exception e){throw new IllegalStateException(e);}}
     private String plainText(WeeklyMenu menu){StringBuilder text=new StringBuilder("Лично интерактивно меню\n");for(var day:menu.days()){text.append("\n").append(day.title()).append(" — ").append(day.getCalories()).append(" ккал; Б ").append(day.getProtein()).append(" г / М ").append(day.getFat()).append(" г / В ").append(day.getCarbs()).append(" г\n");for(var meal:day.meals()){text.append(meal.label()).append(": ").append(meal.name()).append("\n");for(var i:meal.ingredients())text.append(i.name()).append(" — ").append(i.getQuantity()).append(" (").append(i.state()).append(")\n");text.append(meal.preparation()).append("\n");}}return text.toString();}

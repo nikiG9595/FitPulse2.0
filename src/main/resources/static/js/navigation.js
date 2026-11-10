@@ -1,4 +1,12 @@
 (() => {
+    // Carry the complete current internal location, including an anchor, from every visible auth link.
+    const here=window.location.pathname;
+    if(!/\/(login|register)\/?$/.test(here))document.querySelectorAll('a[href]').forEach(link=>{
+        const url=new URL(link.href,window.location.href);
+        if(!link.hasAttribute('data-fixed-return')&&url.origin===window.location.origin&&/\/(login|register)\/?$/.test(url.pathname)){
+            url.searchParams.set('returnTo',here+window.location.search+window.location.hash);link.href=url.toString();
+        }
+    });
     const toggle = document.getElementById('fitpulse-menu-toggle'), menu = document.getElementById('fitpulse-menu');
     if (!toggle || !menu) return;
     const member = menu.closest('.fit-nav').classList.contains('nav-member');
@@ -8,6 +16,7 @@
     function align() {
         const width = (expanded() ? menu : toggle).getBoundingClientRect().width;
         layout.classList.toggle('slogan-inline', 2 * Math.max(identity.getBoundingClientRect().width, width) + slogan.getBoundingClientRect().width + 32 <= layout.clientWidth);
+        document.documentElement.style.setProperty('--fitpulse-header-height',Math.ceil(layout.closest('.fit-nav').getBoundingClientRect().height)+'px');
     }
     const observer = new ResizeObserver(align); [layout,identity,menu,toggle,slogan].forEach(e => observer.observe(e));
     document.fonts.ready.then(align); align();

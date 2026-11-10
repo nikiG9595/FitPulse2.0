@@ -8,11 +8,11 @@
         <div class="container home-intro-content">
             <h1>Открий своя фитнес. Изгради своя <span>ритъм.</span></h1>
             <p>Каталог с фитнеси, реални оценки, лични тренировки и прогрес на едно място.</p>
-            <div class="home-actions">
-                <a class="btn btn-pulse btn-lg" th:href="@{/gyms}">Разгледай фитнесите</a>
-                <a sec:authorize="isAnonymous()" class="btn btn-outline-light btn-lg" th:href="@{/register}">Създай профил</a>
-                <a sec:authorize="isAuthenticated()" class="btn btn-outline-light btn-lg" th:href="@{/profile}">Моят профил</a>
-                <a class="btn btn-outline-light btn-lg" th:href="@{/suggest-gym}">Предложи фитнес</a>
+            <div class="home-actions home-actions-v12">
+                <a class="btn btn-outline-light btn-lg" th:href="@{/meal-plans}">Хранителни режими</a>
+                <a class="btn btn-outline-light btn-lg" sec:authorize="isAuthenticated()" th:href="@{/profile}">Моят профил</a>
+                <a class="btn btn-outline-light btn-lg" sec:authorize="isAnonymous()" th:href="@{/login(returnTo='/profile')}" data-fixed-return>Моят профил</a>
+                <a class="btn btn-outline-light btn-lg" th:href="@{/programs}">Тренировъчни програми</a>
             </div>
         </div>
     </section>
@@ -20,16 +20,12 @@
         <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
              alt="Мъж и жена тренират с дъмбели пред светещото лого FP">
     </figure>
-    <section class="section section-soft home-section home-access-section">
+    <section class="section section-soft home-section home-access-section" sec:authorize="isAnonymous()">
         <div class="container"><div class="row align-items-center g-5"><div class="col-lg-8">
             <h2>Регистрирай се и получи безплатен достъп до тренировъчни програми и хранителни режими</h2>
             <p>След вход избираш сам от всички активни програми и режими и създаваш лично редактируемо копие.</p>
             <p class="small home-muted">Хранителните режими са общи образователни примери, а не медицински или индивидуални препоръки.</p>
-            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register}">Безплатна регистрация</a>
-            <div sec:authorize="isAuthenticated()" class="d-flex flex-wrap gap-2">
-                <a class="btn btn-pulse" th:href="@{/programs}">Тренировъчни програми</a>
-                <a class="btn btn-outline-light" th:href="@{/meal-plans}">Хранителни режими</a>
-            </div>
+            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo=${authReturnTo})}">Безплатна регистрация</a>
         </div></div></div>
     </section>
 </main>

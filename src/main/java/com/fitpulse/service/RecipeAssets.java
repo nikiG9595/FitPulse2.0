@@ -8,7 +8,9 @@ import java.util.*;
 /** Immutable local recipe metadata. Food calculations still use structured ingredient snapshots. */
 public final class RecipeAssets {
     @JsonIgnoreProperties(ignoreUnknown=true)
-    public record Recipe(String code,String name,String label,String imagePath,int preparationMinutes,List<String> steps,WeeklyMenu.Meal meal){}
+    public record Recipe(String code,String name,String label,String imagePath,int preparationMinutes,List<String> steps,WeeklyMenu.Meal meal){
+        public Recipe { steps=List.copyOf(steps); }
+    }
     private static final List<Recipe> RECIPES=load();
     private RecipeAssets(){}
     private static List<Recipe> load(){try(var stream=RecipeAssets.class.getResourceAsStream("/content/recipes.json")){if(stream==null)throw new IllegalStateException("Липсват рецептите.");return List.of(new ObjectMapper().readValue(stream,Recipe[].class));}catch(Exception e){throw new ExceptionInInitializerError(e);}}
@@ -23,6 +25,6 @@ public final class RecipeAssets {
         return expected.equals(actual)?recipe.imagePath():"/images/meals/recipes/"+recipe.code()+".svg";
     }
     public static int minutes(WeeklyMenu.Meal meal){var recipe=find(meal.recipeCode(),meal.name());return recipe==null?20:recipe.preparationMinutes();}
-    public static List<String> steps(WeeklyMenu.Meal meal){var recipe=find(meal.recipeCode(),meal.name());return recipe==null||!Objects.equals(recipe.meal().preparation(),meal.preparation())?Arrays.stream(meal.preparation().split("(?<=[.!?])\\s+")).filter(s->!s.isBlank()).toList():recipe.steps();}
+    public static List<String> steps(WeeklyMenu.Meal meal){var recipe=find(meal.recipeCode(),meal.name());return recipe==null||!Objects.equals(recipe.meal().preparation(),meal.preparation())?Arrays.stream(meal.preparation().split("(?<=[.!?])\\s+")).filter(s->!s.isBlank()).toList():List.copyOf(recipe.steps());}
     public static String bucket(String label){if(label.contains("Закуска"))return "breakfast";if(label.contains("Междинно")||label.contains("Следобедно"))return "snack";return "main";}
 }

@@ -10,20 +10,19 @@
         </button>
         <div class="collapse navbar-collapse" id="fitpulse-menu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" th:href="@{/gyms}">Фитнеси</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/gyms}">Разгледай фитнесите</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">Тренировъчни програми</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">Хранителни режими</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/suggest-gym}">Предложи фитнес</a></li><li class="nav-item"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>Профил</a></li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">Администрация</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login}">Вход</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register}">Регистрация</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login(returnTo=${authReturnTo})}">Вход</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register(returnTo=${authReturnTo})}">Регистрация</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button class="btn btn-outline-light btn-sm" type="submit">Изход</button></form></li>
             </ul>
         </div>
     </div>
-    <aside id="workout-reminders" class="workout-reminders alert alert-warning" hidden role="status" aria-live="polite" sec:authorize="isAuthenticated()" th:data-url="@{/api/reminders}"><strong>Напомняне за тренировка: </strong><span></span> <a th:href="@{/calendar}">Отвори календара</a></aside>
     <script th:src="@{/js/navigation.js}" defer></script>
-    <script sec:authorize="isAuthenticated()" th:src="@{/js/reminders.js}" defer></script>
+
     <noscript><style>.fit-nav .navbar-collapse{display:block!important;position:static!important;grid-column:1/-1;width:100%!important}.fit-nav .navbar-toggler{display:none!important}</style></noscript>
 </nav>

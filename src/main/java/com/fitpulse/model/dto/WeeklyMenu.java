@@ -21,7 +21,7 @@ import java.util.List;
         public String getDescription(){return "Примерна порция с "+ingredients.stream().map(Ingredient::name).limit(3).reduce((a,b)->a+", "+b).orElse("")+".";}
         public String getImage(){return com.fitpulse.service.RecipeAssets.image(this);}
         public int getPreparationMinutes(){return com.fitpulse.service.RecipeAssets.minutes(this);}
-        public List<String> getCookingSteps(){return com.fitpulse.service.RecipeAssets.steps(this);}
+        @com.fasterxml.jackson.annotation.JsonIgnore public List<String> getCookingSteps(){return com.fitpulse.service.RecipeAssets.steps(this);}
     }
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true) public record Day(String title,List<Meal> meals) {
         public double protein(){return meals.stream().mapToDouble(Meal::protein).sum();}
