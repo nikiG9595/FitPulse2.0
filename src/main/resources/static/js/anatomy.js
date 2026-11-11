@@ -1,7 +1,7 @@
 (() => {
     const normalize=value=>(value||'').normalize('NFC').trim();
     const groupZones={'Бицепс':['BICEPS'],'Трицепс':['TRICEPS'],'Гърди':['CHEST'],'Гръб':['TRAPEZIUS','RHOMBOIDS','LATS','BACK_LOWER'],'Рамене':['SHOULDERS_FRONT','SHOULDERS_SIDE','SHOULDERS_REAR'],'Крака':['QUADS','HAMSTRINGS','ADDUCTORS','ABDUCTORS','CALVES'],'Седалище':['GLUTES','ABDUCTORS'],'Корем':['CORE','OBLIQUES'],'Кардио':['QUADS','HAMSTRINGS','CALVES','GLUTES']};
-    document.querySelectorAll('[data-anatomy-mode]').forEach(async panel=>{
+    document.querySelectorAll('[data-anatomy-mode]').forEach(async (panel,panelIndex)=>{
         const mode=panel.getAttribute('data-anatomy-mode');
         const primary=new Set((panel.getAttribute('data-primary')||'').split(',').map(normalize));
         const secondary=new Set((panel.getAttribute('data-secondary')||'').split(',').map(normalize));
@@ -12,6 +12,42 @@
         const hoverAvailable=matchMedia('(any-hover: hover)');
         const zonesForGroup=name=>new Set(name==='Цяло тяло'?['*']:groupZones[normalize(name)]||[]);
         const keyOf=zone=>normalize(zone.getAttribute('data-zone')).toUpperCase();
+        const anatomicalLabels=new Map([...panel.querySelectorAll('[data-zone-name]')].map(label=>[label.dataset.zoneKey,label.dataset.zoneName]));
+        let tooltip=null,tooltipZone=null;
+        if(mode==='detail'){
+            tooltip=document.createElement('div');tooltip.className='anatomy-muscle-tooltip';tooltip.id=`fitpulse-muscle-tooltip-${panelIndex}`;
+            tooltip.setAttribute('role','tooltip');tooltip.hidden=true;document.body.append(tooltip);
+        }
+        function hideTooltip(){
+            if(!tooltip)return;tooltip.hidden=true;
+            tooltipZone?.removeAttribute('aria-describedby');tooltipZone=null;
+        }
+        function positionTooltip(x,y){
+            if(!tooltip||tooltip.hidden)return;
+            const gap=14,edge=8,box=tooltip.getBoundingClientRect();
+            let left=x+gap,top=y+gap;
+            if(left+box.width>window.innerWidth-edge)left=x-box.width-gap;
+            if(top+box.height>window.innerHeight-edge)top=y-box.height-gap;
+            tooltip.style.left=Math.max(edge,Math.min(left,window.innerWidth-box.width-edge))+'px';
+            tooltip.style.top=Math.max(edge,Math.min(top,window.innerHeight-box.height-edge))+'px';
+        }
+        function showTooltip(zone,x,y){
+            const name=anatomicalLabels.get(keyOf(zone));if(!tooltip||!name)return;
+            if(tooltipZone!==zone)hideTooltip();
+            tooltipZone=zone;tooltip.textContent=name;tooltip.hidden=false;
+            zone.setAttribute('aria-describedby',tooltip.id);positionTooltip(x,y);
+        }
+        function selectMuscleName(zone){
+            const name=anatomicalLabels.get(keyOf(zone));if(mode!=='detail'||!name)return;
+            panel.querySelector('[data-selected-muscle-name]').textContent=name;
+            panel.querySelector('[data-selected-muscle]').hidden=false;
+            // Naming the selected zone never changes the exercise's primary/secondary colors or filters.
+        }
+        if(tooltip){
+            window.addEventListener('scroll',hideTooltip,{passive:true,capture:true});
+            window.addEventListener('resize',hideTooltip,{passive:true});
+            document.addEventListener('keydown',event=>{if(event.key==='Escape')hideTooltip();});
+        }
         const pathsOf=zone=>zone.matches('path')?[zone]:[...zone.querySelectorAll('path,polygon,ellipse')];
         function color(zone,value){zone.style.setProperty('--muscle-fill',value);pathsOf(zone).forEach(path=>{path.style.setProperty('fill',value,'important');path.setAttribute('fill',value);});}
         function paint(){
@@ -64,8 +100,16 @@
                 const zones=[...svg.querySelectorAll('[data-zone]')];allZones.push(...zones);
                 zones.forEach((zone,index)=>{
                     zone.setAttribute('tabindex',index===0?'0':'-1');
-                    const chooseZone=()=>choose(zone.getAttribute('data-muscle'));
+                    const chooseZone=()=>mode==='detail'?selectMuscleName(zone):choose(zone.getAttribute('data-muscle'));
                     zone.addEventListener('click',chooseZone);
+                    if(mode==='detail'){
+                        const name=anatomicalLabels.get(keyOf(zone));if(name)zone.setAttribute('aria-label',name);
+                        zone.addEventListener('pointerenter',event=>{if(hoverAvailable.matches&&event.pointerType!=='touch')showTooltip(zone,event.clientX,event.clientY);});
+                        zone.addEventListener('pointermove',event=>{if(tooltipZone===zone&&event.pointerType!=='touch')positionTooltip(event.clientX,event.clientY);});
+                        zone.addEventListener('pointerleave',hideTooltip);zone.addEventListener('pointercancel',hideTooltip);
+                        zone.addEventListener('focus',()=>{if(zone.matches(':focus-visible')){const box=zone.getBoundingClientRect();showTooltip(zone,box.right,box.top+box.height/2);}});
+                        zone.addEventListener('blur',hideTooltip);
+                    }
                     previewOn(zone,()=>mode==='library'?zonesForGroup(zone.getAttribute('data-muscle')):new Set([keyOf(zone)]));
                     zone.addEventListener('keydown',event=>{
                         if(event.key==='Enter'||event.key===' '){event.preventDefault();chooseZone();}
