@@ -47,6 +47,19 @@ public class AuthReturnNavigation implements AuthenticationSuccessHandler {
     public String pending(HttpServletRequest request){Object value=request.getSession().getAttribute(KEY);String safe=internal(value instanceof String?(String)value:null,request);return safe==null?"/":safe;}
     public void beginAuthentication(HttpServletRequest request,HttpServletResponse response)throws java.io.IOException{
         String original="GET".equals(request.getMethod())?internal(request.getRequestURI()+(request.getQueryString()==null?"":"?"+request.getQueryString()),request):null;
+        if(original==null&&!"GET".equals(request.getMethod())){
+            String path=request.getServletPath();
+            var personal=java.util.regex.Pattern.compile("^/(programs|meal-plans)/my/([0-9]+)(?:/.*)?$").matcher(path);
+            var template=java.util.regex.Pattern.compile("^/(programs|meal-plans)/([0-9]+)(?:/.*)?$").matcher(path);
+            if(personal.matches())original="/"+personal.group(1)+"/my/"+personal.group(2);
+            else if(template.matches())original="/"+template.group(1)+"/"+template.group(2)+(template.group(1).equals("meal-plans")?"/personalize":"");
+            else if(path.matches("/training-sessions/[0-9]+(?:/.*)?"))original=path.replaceFirst("^(/training-sessions/[0-9]+)(?:/.*)?$","$1");
+            else if(path.equals("/training-sessions"))original="/training-sessions";
+            else if(path.equals("/suggest-gym"))original="/suggest-gym";
+            else if(path.matches("/gyms/[^/]+/favorite")||path.matches("/gyms/[^/]+/review")||path.startsWith("/reviews/"))original="/gyms";
+            // Redirect to an existing GET page; never replay a mutation or retain posted personal data.
+            original=internal(original,request);
+        }
         response.sendRedirect(response.encodeRedirectURL(request.getContextPath()+"/login?returnTo="+java.net.URLEncoder.encode(original==null?"/":original,java.nio.charset.StandardCharsets.UTF_8)));
     }
     public void loginFailure(HttpServletRequest request,HttpServletResponse response)throws java.io.IOException{
@@ -97,7 +110,7 @@ public class AuthReturnNavigation implements AuthenticationSuccessHandler {
         if(parts.length==2&&!parts[1].equals("my")&&parts[0].equals("programs")){try{var p=entities.find(ProgramTemplate.class,Long.valueOf(parts[1]));if(p==null||!p.isActive())return "/";}catch(IllegalArgumentException e){return "/";}}
         if(parts.length>=2&&!parts[1].equals("my")&&parts[0].equals("meal-plans")){try{var p=entities.find(MealPlanTemplate.class,Long.valueOf(parts[1]));if(p==null||!p.isActive())return "/";}catch(IllegalArgumentException e){return "/";}}
         if(parts.length==2&&parts[0].equals("trainers")){try{var trainer=entities.find(Trainer.class,Long.valueOf(parts[1]));if(trainer==null||!trainer.isPublished())return "/";}catch(IllegalArgumentException e){return "/";}}
-        if(parts.length==2&&parts[0].equals("gyms")&&entities.createQuery("select count(g) from Gym g where g.slug=:slug and g.status=:status",Long.class).setParameter("slug",parts[1]).setParameter("status",com.fitpulse.model.enums.ContentStatus.APPROVED).getSingleResult()==0)return "/";
+        if(parts.length==2&&parts[0].equals("gyms")&&entities.createQuery("select count(g) from Gym g where g.slug=:slug and g.status=:status",Long.class).setParameter("slug",parts[1]).setParameter("status",com.fitpulse.model.enums.ContentStatus.PUBLISHED).getSingleResult()==0)return "/";
         if(parts.length==2&&parts[0].equals("users")&&entities.createQuery("select count(u) from User u where u.username=:username and u.publicProfile=true",Long.class).setParameter("username",parts[1]).getSingleResult()==0)return "/";
         if(parts.length==2&&parts[0].equals("exercises")&&entities.createQuery("select count(e) from Exercise e where e.code=:code",Long.class).setParameter("code",parts[1]).getSingleResult()==0)return "/";
         if(uri.getRawQuery()!=null){

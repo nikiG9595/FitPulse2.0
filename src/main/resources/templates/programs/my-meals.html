@@ -12,6 +12,6 @@
                     <button class="btn btn-pulse mt-3" type="submit">Запази моето копие</button>
                 </form>
             </details>
-<form class="personal-remove" method="post" th:action="@{/meal-plans/my/{id}/remove(id=${m.id})}" onsubmit="return confirm('Да премахнем ли това копие от списъка? Редакциите и свързаната история ще останат запазени.');"><button type="submit" class="btn btn-outline-warning btn-sm">Премахни от моите режими</button></form>        </article>
+<form class="personal-remove" method="post" th:action="@{/meal-plans/my/{id}/remove(id=${m.id})}" onsubmit="return confirm('Окончателно да изтрием личния режим? Всички негови хранения, грамажи, редакции и покупки ще бъдат изтрити. Действието не може да се отмени.');"><button type="submit" class="btn btn-outline-danger btn-sm">Изтрий</button></form>        </article>
     </section>
 </main></body></html>

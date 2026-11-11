@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Персонализирай хранителния режим')}"></head>
+<body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page module-page">
+<a class="back-link" th:href="@{/meal-plans/{id}(id=${meal.id})}">← Избраният режим</a>
+<header class="module-heading"><div><span class="eyebrow">Само за твоето ново лично копие</span><h1>Персонализирай хранителния режим</h1><p th:text="${meal.displayName}"></p><p th:text="'Избран режим: средно '+${originalCalories}+' ккал на ден преди адаптиране.'"></p></div></header>
+<p class="module-disclaimer">Резултатите са ориентировъчни, а не индивидуален медицински съвет. Функцията не е предназначена за непълнолетни, бременни, кърмещи или хора със специфични медицински потребности.</p>
+<div class="alert alert-warning" role="alert" th:if="${error}" th:text="${error}"></div>
+<section class="module-panel" th:if="${savedCopy!=null}">
+<h2>Вече имаш този режим в профила си</h2><p>Отвори личното си копие, за да го редактираш. Ново копие може да се добави след окончателно изтриване на текущото.</p>
+<a class="btn btn-pulse" th:if="${savedCopy.listed}" th:href="${savedCopy.weeklyMenu==null}?@{/meal-plans/my}:@{/meal-plans/my/{id}(id=${savedCopy.id})}">Отвори моя режим</a>
+
+</section>
+<form th:if="${savedCopy==null}" class="module-panel" method="post" th:action="@{/meal-plans/{id}/copy(id=${meal.id})}" th:object="${personalization}">
+<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}"><p>Проверете въведените данни:</p><ul><li th:each="e:${#fields.detailedErrors()}" th:text="${e.message}"></li></ul></div>
+<div class="row g-3">
+<div class="col-sm-6 col-lg-4"><label for="sex">Пол за изчислението</label><select class="form-select" id="sex" th:field="*{sex}" required><option value="">Избери</option><option value="MALE">Мъж</option><option value="FEMALE">Жена</option></select></div>
+<div class="col-sm-6 col-lg-4"><label for="age">Възраст (години)</label><input class="form-control" id="age" type="number" th:field="*{age}" min="18" max="100" step="1" required></div>
+<div class="col-sm-6 col-lg-4"><label for="height">Ръст (см)</label><input class="form-control" id="height" type="number" th:field="*{height}" min="120" max="230" step=".01" required></div>
+<div class="col-sm-6 col-lg-4"><label for="weight">Тегло (кг)</label><input class="form-control" id="weight" type="number" th:field="*{weight}" min="35" max="300" step=".01" required></div>
+<div class="col-sm-6 col-lg-8"><label for="activity">Физическа активност</label><select class="form-select" id="activity" th:field="*{activity}" required><option value="">Избери</option><option value="LOW">Ниска — коефициент 1,2</option><option value="MODERATE">Умерена — коефициент 1,55</option><option value="HIGH">Висока — коефициент 1,725</option></select></div>
+</div>
+<label class="d-flex gap-2 mt-4"><input type="checkbox" th:field="*{eligible}" required><span>Потвърждавам, че съм пълнолетен/пълнолетна, не съм бременна или кърмеща и нямам специфични медицински потребности, изискващи индивидуален режим.</span></label>
+<p class="small module-muted">Тези данни се използват за текущото изчисление и не се записват в профила.</p>
+<button class="btn btn-outline-light mt-2" name="action" value="calculate" type="submit">Изчисли дневните калории</button>
+<section class="mt-4" th:if="${estimate!=null}" aria-live="polite">
+<h2>Ориентировъчни нужди и избран режим</h2>
+<div class="module-tags"><span th:text="'Разход в покой: '+${estimate.resting}+' ккал'"></span><span th:text="'Дневни нужди за поддържане: '+${estimate.daily}+' ккал'"></span><span th:text="'Избран режим: средно '+${estimate.original}+' ккал/ден'"></span></div>
+<p class="small module-muted mt-3">Mifflin–St Jeor: 10 × тегло (кг) + 6,25 × ръст (см) − 5 × възраст + 5 за мъж или − 161 за жена; след това се прилага избраният коефициент на активност. <a class="link-pulse" href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">Източник за формулата</a>.</p>
+</section>
+<div class="mt-4" th:if="${estimate!=null or personalization.target!=null or #fields.hasErrors('target')}">
+<label for="target">Потвърди или редактирай дневната цел (ккал)</label><input class="form-control" id="target" type="number" th:field="*{target}" min="1200" max="6000" step="1" required>
+<p class="small module-muted mt-2">Началната цел е средната стойност на избрания режим. Изчислените нужди са ориентир за поддържане; избери сам подходяща дневна цел. Количествата във всеки ден ще се адаптират към нея, с малки отклонения от закръгляването. Ако порциите излязат извън допустимите 1–2000 г за продукт, копието няма да бъде създадено.</p>
+<button th:if="${estimate!=null}" class="btn btn-pulse" type="submit" name="action" value="confirm">Потвърди и създай лично копие</button>
+</div>
+</form>
+</main></body></html>
+

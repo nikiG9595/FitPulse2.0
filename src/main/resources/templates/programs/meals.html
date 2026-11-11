@@ -17,10 +17,10 @@
     <div class="library-results"><p><strong th:text="${#lists.size(mealTemplates)}"></strong> <span>режима</span><span th:if="${goal!=null}" th:text="' · '+${goal.displayName}"></span></p><a class="link-pulse" th:if="${!#strings.isEmpty(q) || goal!=null}" th:href="@{/meal-plans}">Изчисти филтрите</a></div>
     <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealTemplates)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('search')}"></svg></span><h2>Няма намерени режими</h2><p th:text="${total==0?'В момента няма публикувани режими. Разгледай личните си копия или се върни по-късно.':'Опитай с друга дума или избери различна цел.'}"></p><a class="btn btn-outline-dark" th:href="${total==0}?@{/meal-plans/my}:@{/meal-plans}" th:text="${total==0?'Моите режими':'Всички режими'}"></a></div>
     <section class="library-grid" aria-label="Готови хранителни режими" th:unless="${#lists.isEmpty(mealTemplates)}">
-        <article class="library-card meal-catalog-card" th:each="m:${mealTemplates}"><img class="meal-catalog-photo" th:src="@{${mealCovers[m.id]}}" alt="Илюстративна снимка на хранене" loading="lazy">
+        <article class="library-card meal-catalog-card" th:each="m:${mealTemplates}"><img class="meal-catalog-photo" th:src="@{${mealCovers[m.id]}}" th:alt="${m.displayName}" th:data-fallback="@{${mealFallbackCovers[m.id]}}" onerror="this.onerror=null;this.src=this.dataset.fallback;" loading="lazy">
             <span class="eyebrow" th:text="${m.goal.displayName}"></span>
             <h2 th:text="${m.displayName}"></h2>
-            <p class="meal-catalog-description" th:if="${m.name=='Пример за активен ден'}" th:text="${m.displayDescription}"></p>
+            <p class="meal-catalog-description" th:text="${m.displayDescription}"></p>
             <a class="btn btn-outline-dark" th:unless="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/{id}(id=${m.id})}">Разгледай</a><a class="btn btn-pulse" th:if="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/my/{id}(id=${myMealLinks[m.id]})}">Отвори моя режим</a>
         </article>
     </section>

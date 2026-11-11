@@ -16,6 +16,9 @@ import java.util.List;
 public class WellnessService {
     @org.springframework.beans.factory.annotation.Autowired private ExerciseLibraryService exerciseLibrary;
     @org.springframework.beans.factory.annotation.Autowired private UserRepository accountLocks;
+    @org.springframework.beans.factory.annotation.Autowired private ShoppingCheckRepository shoppingChecks;
+    @org.springframework.beans.factory.annotation.Autowired private WorkoutSessionRepository workoutSessions;
+    @org.springframework.beans.factory.annotation.Autowired private WorkoutSessionSetRepository workoutSessionSets;
     @org.springframework.beans.factory.annotation.Autowired private PersonalNutritionService nutrition;
     @org.springframework.beans.factory.annotation.Autowired private WeeklyMenuReader menuReader;
 
@@ -51,29 +54,48 @@ public class WellnessService {
         ProgramTemplate template=templates.findById(templateId).filter(ProgramTemplate::isActive).orElseThrow(()->new FitPulseException("Програмата не е достъпна."));
         var existing=programs.findAllByUserOrderByCreatedAtDesc(user).stream().filter(p->p.getSourceTemplate()!=null&&p.getSourceTemplate().getId().equals(templateId)).sorted(java.util.Comparator.comparing(UserProgram::getId)).toList();
         if(existing.stream().anyMatch(UserProgram::isListed))throw new FitPulseException("Вече имате тази тренировъчна програма в профила си.");
-        if(!existing.isEmpty()){existing.get(0).setListed(true);return existing.get(0).getId();}
+        
         return copyTemplate(user,template).getId();
     }
-    @Transactional public void removeProgram(Long id){programs.lockOwned(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Личната програма не е намерена.")).setListed(false);}
-    @Transactional public void removeMeal(Long id){mealPlans.findOwnedForUpdate(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Личният режим не е намерен.")).setListed(false);}
+    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public void removeProgram(Long id){
+        User user=accountLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();
+        UserProgram program=programs.lockOwned(id,user).orElseThrow(()->new FitPulseException("Личната програма не е намерена."));
+        for(var session:workoutSessions.lockForProgram(program,user)){
+            if(session.getFinishedLog()!=null||"FINISHED".equals(session.getStatus())){session.setProgram(null);session.setActiveKey(null);}
+            else{workoutSessionSets.deleteAll(workoutSessionSets.findAllBySessionOrderByExerciseOrderAscSetNumberAsc(session));workoutSessions.delete(session);}
+        }
+        events.lockForProgram(program,user).forEach(event->event.setProgram(null));
+        programs.delete(program); // Only personal items cascade; shared exercises and finished logs remain.
+        programs.flush();
+    }
+    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public void removeMeal(Long id){
+        User user=accountLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();
+        UserMealPlan plan=mealPlans.findOwnedForUpdate(id,user).orElseThrow(()->new FitPulseException("Личният режим не е намерен."));
+        events.lockForMeal(plan,user).forEach(event->event.setMealPlan(null));
+        shoppingChecks.deleteAll(shoppingChecks.findAllByPlanOrderByIdDesc(plan));
+        mealPlans.delete(plan);mealPlans.flush(); // Personal meals and quantities live inside this row's JSON.
+    }
     private UserProgram copyTemplate(User u,ProgramTemplate t){UserProgram p=new UserProgram();p.setUser(u);p.setSourceTemplate(t);p.setName(t.getDisplayName());programs.save(p);for(ProgramTemplateItem x:programOutline(t)){UserProgramItem item=addItem(p,x.getDayNumber(),x.getExerciseName(),x.getSetsCount(),x.getRepetitions(),x.getSortOrder());if(x.getExercise()!=null)item.setExercise(x.getExercise());item.setSessionTitle(x.getSessionTitle());item.setRestSeconds(x.getRestSeconds());item.setInstructions(x.getInstructions());}return p;}
     public List<ProgramTemplateItem> programOutline(ProgramTemplate template){var outline=TrainingSessions.outline(template);if(exerciseLibrary!=null)for(var item:outline)if(item.getExercise()==null)item.setExercise(exerciseLibrary.resolve(item.getExerciseName()));return outline;}
-    @Transactional(readOnly=true) public UserProgram ownedProgram(Long id){UserProgram p=programs.findByIdAndUser(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Програмата не е намерена."));p.getItems().size();return p;}
+    @Transactional(readOnly=true) public UserProgram ownedProgram(Long id){UserProgram p=programs.findByIdAndUser(id,users.getCurrentUser()).filter(UserProgram::isListed).orElseThrow(()->new FitPulseException("Програмата не е намерена."));p.getItems().size();return p;}
     @Transactional public void addProgramItem(Long id,ProgramItemForm f){UserProgram p=ownedProgram(id);UserProgramItem added=addItem(p,f.getDayNumber(),f.getExerciseName(),f.getSetsCount(),f.getRepetitions(),p.getItems().size()+1);added.setSessionTitle(sessionFocus(p,f.getDayNumber(),f.getSessionTitle()));added.setRestSeconds(f.getRestSeconds());added.setInstructions(f.getInstructions());}
     @Transactional public void updateProgramItem(Long programId,Long itemId,ProgramItemForm f){UserProgram p=ownedProgram(programId);UserProgramItem x=p.getItems().stream().filter(i->i.getId().equals(itemId)).findFirst().orElseThrow(()->new FitPulseException("Упражнението не е намерено."));x.setDayNumber(f.getDayNumber());x.setExerciseName(f.getExerciseName());if(exerciseLibrary!=null)x.setExercise(exerciseLibrary.resolve(f.getExerciseName()));x.setSetsCount(f.getSetsCount());x.setRepetitions(f.getRepetitions());x.setSessionTitle(sessionFocus(p,f.getDayNumber(),f.getSessionTitle()));x.setRestSeconds(f.getRestSeconds());x.setInstructions(f.getInstructions());items.save(x);}
     @Transactional public void deleteProgramItem(Long programId,Long itemId){UserProgram p=ownedProgram(programId);UserProgramItem x=p.getItems().stream().filter(i->i.getId().equals(itemId)).findFirst().orElseThrow(()->new FitPulseException("Упражнението не е намерено."));items.delete(x);}
     @Transactional public void addDayToCalendar(Long programId,int day,LocalDateTime startsAt){UserProgram p=ownedProgram(programId);WorkoutEvent e=new WorkoutEvent();if(p.getItems().stream().noneMatch(i->i.getDayNumber()==day))throw new FitPulseException("Няма упражнения за този ден.");e.setProgram(p);e.setUser(users.getCurrentUser());e.setTitle(p.getDisplayName()+" — "+TrainingSessions.personalSessions(p).stream().filter(session->session.number()==day).findFirst().orElseThrow().title());e.setNotes(p.getItems().stream().filter(i->i.getDayNumber()==day).map(UserProgramItem::getExerciseName).reduce((a,b)->a+", "+b).orElse("Лична тренировка"));e.setStartsAt(startsAt);e.setDurationMinutes(60);events.save(e);}
 
-    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public Long copyMeal(Long id){
+    public UserMealPlan savedMealCopy(Long id){return mealPlans.findAllByUserOrderByCreatedAtDesc(users.getCurrentUser()).stream().filter(UserMealPlan::isListed).filter(p->p.getSourceTemplate()!=null&&p.getSourceTemplate().getId().equals(id)).sorted(java.util.Comparator.comparing(UserMealPlan::isListed).reversed().thenComparing(UserMealPlan::getId)).findFirst().orElse(null);}
+    public com.fitpulse.service.PersonalNutritionService.CalorieEstimate mealEstimate(Long id,com.fitpulse.model.dto.MealPersonalizationForm form){return nutrition.estimate(form,menuReader.sourceJson(mealTemplate(id)));}
+    public long mealCalories(Long id){return nutrition.originalCalories(menuReader.sourceJson(mealTemplate(id)));}
+    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public Long copyMeal(Long id,java.math.BigDecimal target){
         User user=accountLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();
         MealPlanTemplate t=mealTemplates.findById(id).filter(MealPlanTemplate::isActive).orElseThrow(()->new FitPulseException("Режимът не е достъпен."));
         var existing=mealPlans.findAllByUserOrderByCreatedAtDesc(user).stream().filter(p->p.getSourceTemplate()!=null&&p.getSourceTemplate().getId().equals(id)).sorted(java.util.Comparator.comparing(UserMealPlan::getId)).toList();
         if(existing.stream().anyMatch(UserMealPlan::isListed))throw new FitPulseException("Вече имате този хранителен режим в профила си.");
-        if(!existing.isEmpty()){existing.get(0).setListed(true);return existing.get(0).getId();}
-        UserMealPlan p=new UserMealPlan();p.setUser(user);p.setSourceTemplate(t);p.setGoal(t.getGoal());p.setName(t.getDisplayName());
-        if(nutrition!=null&&menuReader!=null)p.setWeeklyMenu(nutrition.canonicalJson(menuReader.sourceJson(t)));p.setMeals(t.getMeals());p.setExampleFoods(t.getExampleFoods());return mealPlans.save(p).getId();
+          
+          UserMealPlan p=new UserMealPlan();p.setUser(user);p.setSourceTemplate(t);p.setGoal(t.getGoal());p.setName(t.getDisplayName());
+          p.setWeeklyMenu(nutrition.adaptedJson(menuReader.sourceJson(t),target));p.setMeals(nutrition.menuText(p.getWeeklyMenu()));p.setExampleFoods(t.getExampleFoods());return mealPlans.save(p).getId();
     }
-    @Transactional public void updateMeal(Long id,String name,String meals,String exampleFoods){if(name==null||name.isBlank()||name.length()>150||meals==null||meals.isBlank()||meals.length()>100000||exampleFoods==null||exampleFoods.length()>3000)throw new FitPulseException("Проверете името и съдържанието на режима.");UserMealPlan p=mealPlans.findOwnedForUpdate(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Режимът не е намерен."));if(!java.util.Objects.equals(p.getMeals(),meals))p.setWeeklyMenu(null);p.setName(name);p.setMeals(meals);p.setExampleFoods(exampleFoods);}
+    @Transactional public void updateMeal(Long id,String name,String meals,String exampleFoods){if(name==null||name.isBlank()||name.length()>150||meals==null||meals.isBlank()||meals.length()>100000||exampleFoods==null||exampleFoods.length()>3000)throw new FitPulseException("Проверете името и съдържанието на режима.");UserMealPlan p=mealPlans.findOwnedForUpdate(id,users.getCurrentUser()).filter(UserMealPlan::isListed).orElseThrow(()->new FitPulseException("Режимът не е намерен."));if(!java.util.Objects.equals(p.getMeals(),meals))p.setWeeklyMenu(null);p.setName(name);p.setMeals(meals);p.setExampleFoods(exampleFoods);}
 
     public List<ProgramTemplate> allTemplates(){return templates.findAll();}
     public ProgramTemplate template(Long id){return templates.findById(id).orElseThrow(()->new FitPulseException("Програмата не е намерена."));}
@@ -88,7 +110,7 @@ public class WellnessService {
     @Transactional public void deleteMealTemplate(Long id){mealTemplates.delete(mealTemplate(id));}
 
     public WorkoutEvent ownedEvent(Long id){return events.findByIdAndUser(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Тренировката не е намерена."));}
-    public UserMealPlan ownedMeal(Long id){return mealPlans.findByIdAndUser(id,users.getCurrentUser()).orElseThrow(()->new FitPulseException("Режимът не е намерен."));}
+    public UserMealPlan ownedMeal(Long id){return mealPlans.findByIdAndUser(id,users.getCurrentUser()).filter(UserMealPlan::isListed).orElseThrow(()->new FitPulseException("Режимът не е намерен."));}
     public List<WorkoutEvent> upcoming(){return calendar().stream().filter(e->e.getStatus()==WorkoutStatus.PLANNED && !e.getStartsAt().isBefore(LocalDateTime.now())).limit(5).toList();}
     public List<WorkoutEvent> reminders(){return java.util.List.of();}
     @Transactional public void dismissReminder(Long id){ownedEvent(id).setReminderDismissed(true);}

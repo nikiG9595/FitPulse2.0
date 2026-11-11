@@ -1,0 +1,11 @@
+<section class="exercise-video" th:fragment="player(video)" xmlns:th="http://www.thymeleaf.org">
+    <details class="exercise-video-disclosure" th:if="${video!=null}">
+        <summary>Видео за правилно изпълнение <span th:text="'· '+${video.durationSeconds}+' сек.'"></span></summary>
+        <div class="exercise-video-frame">
+            <iframe th:src="${video.embedUrl}" title="Кратка демонстрация на упражнението" loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        </div>
+        <a class="link-pulse" th:href="${video.url}" target="_blank" rel="noopener noreferrer">Отвори видеото в YouTube ↗</a>
+    </details>
+    <p class="small module-muted" th:unless="${video!=null}">Все още няма потвърдено подходящо видео до 59 секунди за това упражнение.</p>
+</section>
