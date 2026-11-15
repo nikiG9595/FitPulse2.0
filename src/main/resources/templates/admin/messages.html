@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Съобщения')}"></head>
+<body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page support-admin">
+    <a class="back-link" th:href="@{/admin}">← Администрация</a><h1>Съобщения</h1>
+    <form method="get" th:action="@{/admin/messages}" class="fit-card support-filters">
+        <div><label for="category">Категория</label><select id="category" name="category" class="form-select">
+            <option value="">Всички категории</option><option th:each="c:${categories}" th:value="${c}" th:text="${c.displayName}" th:selected="${c==category}"></option>
+        </select></div>
+        <div><label for="status">Статус</label><select id="status" name="status" class="form-select">
+            <option value="">Всички статуси</option><option th:each="s:${statuses}" th:value="${s}" th:text="${s.displayName}" th:selected="${s==status}"></option>
+        </select></div><button class="btn btn-pulse" type="submit">Филтрирай</button>
+        <a class="link-pulse" th:href="@{/admin/messages}">Изчисти</a>
+    </form>
+    <p th:text="'Общо: '+${messages.totalElements}"></p><p class="fit-card" th:if="${messages.empty}">Няма съобщения по избраните критерии.</p>
+    <article class="fit-card mb-3" th:each="m:${messages.content}">
+        <div class="d-flex flex-wrap gap-2"><span class="badge text-bg-dark" th:text="${m.category.displayName}"></span><span class="badge text-bg-dark" th:text="${m.status.displayName}"></span></div>
+        <h2 class="h5 mt-2"><a class="link-pulse" th:href="@{/admin/messages/{id}(id=${m.id})}" th:text="${m.subject}"></a></h2>
+        <p class="support-wrap" th:text="${m.replyEmail}"></p><p class="small" th:text="${#temporals.format(m.createdAt,'dd.MM.yyyy HH:mm')}"></p>
+        <span th:if="${m.attachmentKey!=null}">Има прикачена снимка</span>
+    </article>
+    <nav aria-label="Страници със съобщения" class="d-flex flex-wrap gap-3">
+        <a class="link-pulse" th:if="${messages.hasPrevious()}" th:href="@{/admin/messages(page=${messages.number-1},category=${category},status=${status})}">← Предишна</a>
+        <span th:if="${messages.totalPages>0}" th:text="'Страница '+${messages.number+1}+' от '+${messages.totalPages}"></span>
+        <a class="link-pulse" th:if="${messages.hasNext()}" th:href="@{/admin/messages(page=${messages.number+1},category=${category},status=${status})}">Следваща →</a>
+    </nav>
+</main></body></html>

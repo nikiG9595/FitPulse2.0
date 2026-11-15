@@ -11,6 +11,8 @@ public final class TrainingSessions {
 
     public static List<ProgramTemplateItem> outline(ProgramTemplate p) {
         if (!p.getItems().isEmpty()) return List.copyOf(p.getItems());
+        var standard = StandardTrainingPlans.outline(p);
+        if (standard != null) return standard;
         boolean home=p.getLocation()==TrainingLocation.HOME;
         boolean strength=p.getGoal()==FitnessGoal.STRENGTH;
         List<ProgramTemplateItem> result=new ArrayList<>();

@@ -23,7 +23,7 @@ public final class ExerciseVideos {
             for(var video:mapper.readValue(stream,Video[].class)){
                 if(video.code()==null||video.url()==null||!video.url().matches("https://www\\.youtube\\.com/(?:watch\\?v=|shorts/)[A-Za-z0-9_-]{11}")||!codes.add(video.code()))
                     throw new IOException("Невалиден или дублиран адрес на видео.");
-                if(video.durationConfirmed()&&video.durationSeconds()!=null&&video.durationSeconds()>0&&video.durationSeconds()<=59
+                if(video.durationConfirmed()&&video.durationSeconds()!=null&&video.durationSeconds()>0&&video.durationSeconds()<=90
                         &&video.durationSource()!=null&&!video.durationSource().isBlank()&&video.movementEvidence()!=null&&!video.movementEvidence().isBlank())found.put(video.code(),video);
             }
             videos=Map.copyOf(found);

@@ -1,0 +1,17 @@
+.support-page { max-width: 900px; }
+.support-form label,.support-filters label { display:block; margin:1rem 0 .4rem; font-weight:600; }
+.support-form .form-control,.support-form .form-select,.support-filters .form-select {
+    background-color:#171b22; color:#f2f4f7; border:1px solid #566171; border-radius:10px;
+}
+.support-form .form-control:focus,.support-form .form-select:focus,.support-filters .form-select:focus {
+    border-color:#ff7a22; box-shadow:0 0 0 .2rem rgb(255 122 34 / 20%);
+}
+.support-form input[readonly] { color:#c4cbd4; }
+.support-form .small { color:#c4cbd4; margin-top:.65rem; }
+.support-filters { display:flex; flex-wrap:wrap; gap:1rem; align-items:end; margin:1.5rem 0; }
+.support-filters > div { flex:1 1 200px; }
+.support-description { white-space:pre-wrap; overflow-wrap:anywhere; }
+.support-wrap { overflow-wrap:anywhere; }
+.support-image { display:block; max-width:100%; max-height:600px; object-fit:contain; margin:1rem 0; border-radius:12px; }
+.home-support-footer { background:#11151b; border-top:1px solid #343b46; padding:1.5rem 0; }
+.home-support-footer a { color:#ff9348; }

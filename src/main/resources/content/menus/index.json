@@ -13,5 +13,25 @@
     "code": "maintenance",
     "name": "Хранителен режим за поддържане на теглото",
     "goal": "GENERAL"
+  },
+  {
+    "code": "mediterranean",
+    "name": "Средиземноморски режим",
+    "goal": "GENERAL"
+  },
+  {
+    "code": "vegetarian",
+    "name": "Вегетариански режим",
+    "goal": "GENERAL"
+  },
+  {
+    "code": "active",
+    "name": "Хранителен режим за активно спортуващи",
+    "goal": "PERFORMANCE"
+  },
+  {
+    "code": "low-carb",
+    "name": "Нисковъглехидратен режим",
+    "goal": "GENERAL"
   }
 ]
