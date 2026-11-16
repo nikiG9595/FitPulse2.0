@@ -2,6 +2,7 @@ package com.fitpulse.controller;
 import com.fitpulse.model.dto.ProgramItemForm; import com.fitpulse.service.WellnessService; import jakarta.validation.Valid; import org.springframework.format.annotation.DateTimeFormat; import org.springframework.stereotype.Controller; import org.springframework.ui.Model; import org.springframework.web.bind.annotation.*; import java.time.LocalDateTime;
 @Controller public class ProgramController {private final WellnessService service;private final com.fitpulse.service.WeeklyMenuReader menuReader;public ProgramController(WellnessService s,com.fitpulse.service.WeeklyMenuReader reader){service=s;menuReader=reader;}
  @org.springframework.beans.factory.annotation.Autowired private com.fitpulse.service.ExerciseVideos exerciseVideos;
+ @org.springframework.beans.factory.annotation.Autowired private com.fitpulse.service.UserService personalizationUsers;
  @ModelAttribute public void libraryMembership(Model model,org.springframework.security.core.Authentication authentication){
      model.addAttribute("exerciseVideos",exerciseVideos.all());
      var programLinks=new java.util.LinkedHashMap<Long,Long>();var mealLinks=new java.util.LinkedHashMap<Long,Long>();
@@ -52,7 +53,11 @@ import com.fitpulse.model.dto.ProgramItemForm; import com.fitpulse.service.Welln
      return "programs/meal-details";
  }
  @GetMapping("/meal-plans/{id}/recipe") public String recipe(@PathVariable Long id,@RequestParam int day,@RequestParam int meal,Model m){var template=service.mealTemplate(id);if(!template.isActive())throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);var menu=menuReader.read(template);if(day<0||day>=menu.days().size()||meal<0||meal>=menu.days().get(day).meals().size())throw new com.fitpulse.exception.FitPulseException("Храненето не е намерено.");m.addAttribute("cookingMeal",menu.days().get(day).meals().get(meal));m.addAttribute("returnPath","/meal-plans/"+id+"#menu-day-"+day);m.addAttribute("personal",false);return "programs/recipe";}
- @GetMapping("/meal-plans/{id}/personalize") public String personalize(@PathVariable Long id,Model model){
+ private static final String MEAL_DRAFT="fitpulse.mealPersonalization";
+ private record MealDraft(java.util.UUID user,Long templateId,String inputKey,String token,com.fitpulse.service.MealPersonalizationService.Preview preview,Long savedId){}
+ @InitBinder("personalization") public void personalizationFields(org.springframework.web.bind.WebDataBinder binder){binder.setAllowedFields("sex","age","height","weight","activity","eligible");}
+ @GetMapping("/meal-plans/{id}/personalize") public String personalize(@PathVariable Long id,Model model,jakarta.servlet.http.HttpSession session){
+     synchronized(session){session.removeAttribute(MEAL_DRAFT);}
      model.addAttribute("personalization",new com.fitpulse.model.dto.MealPersonalizationForm());return personalizationPage(id,model);
  }
  private String personalizationPage(Long id,Model model){
@@ -61,15 +66,31 @@ import com.fitpulse.model.dto.ProgramItemForm; import com.fitpulse.service.Welln
  }
  @PostMapping("/meal-plans/{id}/copy") public String copyMeal(@PathVariable Long id,
          @Valid @ModelAttribute("personalization") com.fitpulse.model.dto.MealPersonalizationForm form,
-         org.springframework.validation.BindingResult binding,@RequestParam(defaultValue="calculate") String action,Model model,
-         org.springframework.web.servlet.mvc.support.RedirectAttributes flash){
-     if(!action.equals("calculate")&&!action.equals("confirm")){model.addAttribute("error","Изберете изчисляване или потвърждение.");return personalizationPage(id,model);}
-     if(binding.hasErrors())return personalizationPage(id,model);
-     var estimate=service.mealEstimate(id,form);model.addAttribute("estimate",estimate);
-     if(action.equals("calculate")){if(form.getTarget()==null)form.setTarget(java.math.BigDecimal.valueOf(estimate.original()));return personalizationPage(id,model);}
-     if(form.getTarget()==null){binding.rejectValue("target","target.required","Въведете и потвърдете дневната калорийна цел.");return personalizationPage(id,model);}
-     try{Long copiedId=service.copyMeal(id,form.getTarget());flash.addFlashAttribute("success","Личното копие е създадено с адаптирани количества към "+form.getTarget().toPlainString()+" ккал на ден. Стойностите са ориентировъчни.");return "redirect:/meal-plans/my/"+copiedId;}
-     catch(com.fitpulse.exception.FitPulseException e){model.addAttribute("error",e.getMessage());return personalizationPage(id,model);}
+         org.springframework.validation.BindingResult binding,@RequestParam(defaultValue="calculate") String action,
+         @RequestParam(defaultValue="")String previewToken,Model model,jakarta.servlet.http.HttpSession session,
+         org.springframework.security.core.Authentication authentication,org.springframework.web.servlet.mvc.support.RedirectAttributes flash){
+     synchronized(session){
+         if(authentication==null||!authentication.isAuthenticated()||authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)throw new org.springframework.security.access.AccessDeniedException("Необходим е вход.");
+         if(binding.hasErrors()||(!action.equals("calculate")&&!action.equals("confirm"))){session.removeAttribute(MEAL_DRAFT);if(!binding.hasErrors())model.addAttribute("error","Изберете изчисляване или добавяне.");return personalizationPage(id,model);}
+         String inputKey=com.fitpulse.service.MealPersonalizationService.inputKey(form);
+         var userId=personalizationUsers.getCurrentUser().getId();
+         try{
+             if(action.equals("calculate")){
+                 session.removeAttribute(MEAL_DRAFT);
+                 var preview=service.mealPreview(id,form);
+                 String token=java.util.UUID.randomUUID().toString();
+                 session.setAttribute(MEAL_DRAFT,new MealDraft(userId,id,inputKey,token,preview,null));
+                 model.addAttribute("preview",preview);model.addAttribute("previewToken",token);return personalizationPage(id,model);
+             }
+             Object stored=session.getAttribute(MEAL_DRAFT);
+             if(!(stored instanceof MealDraft draft)||!draft.user().equals(userId)||!draft.templateId().equals(id)||!draft.token().equals(previewToken)||!draft.inputKey().equals(inputKey)||!service.freshMealPreview(draft.preview())||!draft.preview().canSave())throw new com.fitpulse.exception.FitPulseException("Данните или изчислението са променени или изтекли. Натиснете „Изчисли калориите“ отново.");
+             if(draft.savedId()!=null)return "redirect:/meal-plans/my/"+draft.savedId();
+             Long copiedId=service.copyMeal(id,draft.preview());
+             session.setAttribute(MEAL_DRAFT,new MealDraft(draft.user(),id,inputKey,draft.token(),draft.preview(),copiedId));
+             flash.addFlashAttribute("success","Личният режим е добавен с показаните персонализирани грамажи и реалните хранителни стойности.");
+             return "redirect:/meal-plans/my/"+copiedId;
+         }catch(com.fitpulse.exception.FitPulseException e){session.removeAttribute(MEAL_DRAFT);model.addAttribute("error",e.getMessage());return personalizationPage(id,model);}
+     }
  }
  @PostMapping("/meal-plans/my/{id}") public String editMeal(@PathVariable Long id,@RequestParam String name,@RequestParam String meals,@RequestParam String exampleFoods,org.springframework.web.servlet.mvc.support.RedirectAttributes flash){service.updateMeal(id,name,meals,exampleFoods);flash.addFlashAttribute("success","Личният ти хранителен режим е запазен.");return "redirect:/meal-plans/my";}
 }

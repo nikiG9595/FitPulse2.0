@@ -25,10 +25,6 @@ public class MealPersonalizationForm {
     private String activity;
     public String getActivity(){return activity;}
     public void setActivity(String value){activity=value;}
-    @DecimalMin(value="1200",message="Целта трябва да е между 1200 и 6000 ккал.") @DecimalMax(value="6000",message="Целта трябва да е между 1200 и 6000 ккал.") @Digits(integer=4,fraction=0,message="Въведете цели килокалории.")
-    private BigDecimal target;
-    public BigDecimal getTarget(){return target;}
-    public void setTarget(BigDecimal value){target=value;}
     @NotNull(message="Потвърдете приложимостта на примерния калкулатор.") @AssertTrue(message="Калкулаторът не е предназначен за посочените специални потребности.")
     private Boolean eligible;
     public Boolean getEligible(){return eligible;}

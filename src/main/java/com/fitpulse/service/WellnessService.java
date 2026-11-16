@@ -21,6 +21,7 @@ public class WellnessService {
     @org.springframework.beans.factory.annotation.Autowired private WorkoutSessionSetRepository workoutSessionSets;
     @org.springframework.beans.factory.annotation.Autowired private PersonalNutritionService nutrition;
     @org.springframework.beans.factory.annotation.Autowired private WeeklyMenuReader menuReader;
+    @org.springframework.beans.factory.annotation.Autowired private MealPersonalizationService personalization;
 
     private final WorkoutEventRepository events; private final GymRepository gyms;
     private final ProgramTemplateRepository templates; private final UserProgramRepository programs;
@@ -84,16 +85,18 @@ public class WellnessService {
     @Transactional public void addDayToCalendar(Long programId,int day,LocalDateTime startsAt){UserProgram p=ownedProgram(programId);WorkoutEvent e=new WorkoutEvent();if(p.getItems().stream().noneMatch(i->i.getDayNumber()==day))throw new FitPulseException("Няма упражнения за този ден.");e.setProgram(p);e.setUser(users.getCurrentUser());e.setTitle(p.getDisplayName()+" — "+TrainingSessions.personalSessions(p).stream().filter(session->session.number()==day).findFirst().orElseThrow().title());e.setNotes(p.getItems().stream().filter(i->i.getDayNumber()==day).map(UserProgramItem::getExerciseName).reduce((a,b)->a+", "+b).orElse("Лична тренировка"));e.setStartsAt(startsAt);e.setDurationMinutes(60);events.save(e);}
 
     public UserMealPlan savedMealCopy(Long id){return mealPlans.findAllByUserOrderByCreatedAtDesc(users.getCurrentUser()).stream().filter(UserMealPlan::isListed).filter(p->p.getSourceTemplate()!=null&&p.getSourceTemplate().getId().equals(id)).sorted(java.util.Comparator.comparing(UserMealPlan::isListed).reversed().thenComparing(UserMealPlan::getId)).findFirst().orElse(null);}
-    public com.fitpulse.service.PersonalNutritionService.CalorieEstimate mealEstimate(Long id,com.fitpulse.model.dto.MealPersonalizationForm form){return nutrition.estimate(form,menuReader.sourceJson(mealTemplate(id)));}
+    public MealPersonalizationService.Preview mealPreview(Long id,com.fitpulse.model.dto.MealPersonalizationForm form){var template=mealTemplate(id);if(!template.isActive())throw new FitPulseException("Режимът не е достъпен.");return personalization.calculate(form,template,menuReader.sourceJson(template));}
+    public boolean freshMealPreview(MealPersonalizationService.Preview preview){return personalization.fresh(preview);}
     public long mealCalories(Long id){return nutrition.originalCalories(menuReader.sourceJson(mealTemplate(id)));}
-    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public Long copyMeal(Long id,java.math.BigDecimal target){
+    @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public Long copyMeal(Long id,MealPersonalizationService.Preview preview){
         User user=accountLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();
         MealPlanTemplate t=mealTemplates.findById(id).filter(MealPlanTemplate::isActive).orElseThrow(()->new FitPulseException("Режимът не е достъпен."));
+        if(!personalization.fresh(preview)||!preview.canSave()||!preview.sourceHash().equals(personalization.sourceHash(t,menuReader.sourceJson(t))))throw new FitPulseException("Изчислението е изтекло или режимът е променен. Изчислете отново.");
         var existing=mealPlans.findAllByUserOrderByCreatedAtDesc(user).stream().filter(p->p.getSourceTemplate()!=null&&p.getSourceTemplate().getId().equals(id)).sorted(java.util.Comparator.comparing(UserMealPlan::getId)).toList();
-        if(existing.stream().anyMatch(UserMealPlan::isListed))throw new FitPulseException("Вече имате този хранителен режим в профила си.");
+        if(existing.stream().anyMatch(UserMealPlan::isListed))throw new FitPulseException("Вече има лично копие на този режим. То е запазено без промени; отворете го от профила си.");
           
           UserMealPlan p=new UserMealPlan();p.setUser(user);p.setSourceTemplate(t);p.setGoal(t.getGoal());p.setName(t.getDisplayName());
-          p.setWeeklyMenu(nutrition.adaptedJson(menuReader.sourceJson(t),target));p.setMeals(nutrition.menuText(p.getWeeklyMenu()));p.setExampleFoods(t.getExampleFoods());return mealPlans.save(p).getId();
+          p.setWeeklyMenu(preview.json());p.setMeals(nutrition.menuText(p.getWeeklyMenu()));p.setExampleFoods(t.getExampleFoods());return mealPlans.save(p).getId();
     }
     @Transactional public void updateMeal(Long id,String name,String meals,String exampleFoods){if(name==null||name.isBlank()||name.length()>150||meals==null||meals.isBlank()||meals.length()>100000||exampleFoods==null||exampleFoods.length()>3000)throw new FitPulseException("Проверете името и съдържанието на режима.");UserMealPlan p=mealPlans.findOwnedForUpdate(id,users.getCurrentUser()).filter(UserMealPlan::isListed).orElseThrow(()->new FitPulseException("Режимът не е намерен."));if(!java.util.Objects.equals(p.getMeals(),meals))p.setWeeklyMenu(null);p.setName(name);p.setMeals(meals);p.setExampleFoods(exampleFoods);}
 
@@ -116,6 +119,14 @@ public class WellnessService {
     @Transactional public void dismissReminder(Long id){ownedEvent(id).setReminderDismissed(true);}
     @Transactional public void programSettings(Long id,String name,boolean active){if(name==null || name.isBlank() || name.length()>150)throw new FitPulseException("Въведете име до 150 знака.");UserProgram p=ownedProgram(id);p.setName(name.trim());p.setActive(active);}
     public long eventCount(){return events.count();} public long programCount(){return programs.count();}
+    @Transactional(readOnly=true) public long savedProgramCount(){return programs.countByListedTrueAndOrigin(UserProgramOrigin.CATALOG);}
+    @Transactional(readOnly=true) public long personalProgramCount(){return programs.countByListedTrueAndOrigin(UserProgramOrigin.PERSONAL);}
+    @Transactional(readOnly=true) public org.springframework.data.domain.Page<UserProgram> adminUserPrograms(UserProgramOrigin origin,int page){
+        var requested=org.springframework.data.domain.PageRequest.of(Math.max(0,page),25,org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC,"createdAt","id"));
+        var result=programs.findByListedTrueAndOrigin(origin,requested);
+        if(result.isEmpty()&&result.getTotalElements()>0&&requested.getPageNumber()>0)return programs.findByListedTrueAndOrigin(origin,requested.withPage(0));
+        return result;
+    }
     private String sessionFocus(UserProgram program,int number,String requested){
         String title=requested==null||requested.isBlank()?program.getItems().stream().filter(i->i.getDayNumber()==number && !i.getSessionTitle().isBlank()).map(UserProgramItem::getSessionTitle).findFirst().orElse("Тренировка за цяло тяло"):requested.strip();
         program.getItems().stream().filter(i->i.getDayNumber()==number).forEach(i->i.setSessionTitle(title));return title;

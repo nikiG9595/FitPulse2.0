@@ -1,0 +1,1082 @@
+[
+  {
+    "code": "fat-loss",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Скир с ябълка, овес и лен",
+            "spec": "skyr:250 apple:150 oats:40 flax:10"
+          },
+          {
+            "name": "Банан и 15 г бадеми",
+            "spec": "banana:120 almond:15"
+          },
+          {
+            "name": "Пилешко филе с печени картофи и доматена салата",
+            "spec": "chicken:170 potato:250 tomato:200 oil:8"
+          },
+          {
+            "name": "Пълнозърнест тост с извара и домат",
+            "spec": "bread:60 cottage:100 tomato:100"
+          },
+          {
+            "name": "Пилешка тортила със зеленчуци",
+            "spec": "tortilla:60 chicken:150 tomato:100 cucumber:100 lettuce:40 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Омлет с печурки и домати",
+            "spec": "egg:150 mushroom:120 tomato:150 oil:5"
+          },
+          {
+            "name": "Извара с праскова",
+            "spec": "cottage:150 peach:150"
+          },
+          {
+            "name": "Свинско филе с ориз и моркови",
+            "spec": "porkfillet:170 rice:65 carrot:150 oil:7"
+          },
+          {
+            "name": "Скир с портокал и какао",
+            "spec": "skyr:200 orange:150 cocoa:5"
+          },
+          {
+            "name": "Пилешка салата с яйце и млечен дресинг",
+            "spec": "chicken:150 egg:50 lettuce:80 tomato:150 cucumber:100 yogurt:70 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Кисело мляко с малини и чиа",
+            "spec": "yogurt:300 raspberry:120 chia:20"
+          },
+          {
+            "name": "Ябълка и 20 г орехи",
+            "spec": "apple:180 walnut:20"
+          },
+          {
+            "name": "Бяла риба с картофи и салата",
+            "spec": "whitefish:200 potato:280 tomato:100 cucumber:100 oil:10"
+          },
+          {
+            "name": "Кисело мляко с овес и канела",
+            "spec": "yogurt:200 oats:30 cinnamon:1"
+          },
+          {
+            "name": "Пуешко филе с печени зеленчуци",
+            "spec": "turkey:180 zucchini:150 carrot:100 pepper:100 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Пълнозърнест сандвич с пуешко и краставица",
+            "spec": "bread:80 turkey:120 cucumber:100 oil:4"
+          },
+          {
+            "name": "Банан с кисело мляко",
+            "spec": "banana:120 yogurt:200"
+          },
+          {
+            "name": "Пилешко с булгур и печени чушки",
+            "spec": "chicken:170 bulgur:65 pepper:180 oil:8"
+          },
+          {
+            "name": "Кисело мляко с ягоди",
+            "spec": "yogurt:250 strawberry:150"
+          },
+          {
+            "name": "Свинско филе със зелена салата и печен картоф",
+            "spec": "porkfillet:170 lettuce:150 potato:250 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Две яйца, пълнозърнест тост и домат",
+            "spec": "egg:100 bread:80 tomato:180"
+          },
+          {
+            "name": "Ябълка с малко орехи",
+            "spec": "apple:180 walnut:15"
+          },
+          {
+            "name": "Свинско бонфиле със зеле и печен картоф",
+            "spec": "pork:170 cabbage:180 potato:250 oil:8"
+          },
+          {
+            "name": "Извара с мед и орехи",
+            "spec": "cottage:130 honey:10 walnut:10"
+          },
+          {
+            "name": "Пълнозърнеста тортила с риба тон и зеленчуци",
+            "spec": "tortilla:60 tuna:130 tomato:100 cucumber:100 lettuce:40"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Овесени палачинки с банан",
+            "spec": "oats:50 egg:100 milk:80 banana:100 oil:3"
+          },
+          {
+            "name": "Скир с портокал и какао",
+            "spec": "skyr:200 orange:150 cocoa:5"
+          },
+          {
+            "name": "Салата с нахут, риба тон и яйце",
+            "spec": "chickpea:130 tuna:100 egg:50 lettuce:60 tomato:100 cucumber:100 oil:5 lemon:10"
+          },
+          {
+            "name": "Кисело мляко с ягоди и бадеми",
+            "spec": "yogurt:200 strawberry:100 almond:15"
+          },
+          {
+            "name": "Пилешко с печени зеленчуци и млечен сос",
+            "spec": "chicken:170 zucchini:150 carrot:100 pepper:100 yogurt:80 oil:7"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Палачинки с извара и ягоди",
+            "spec": "cottage:150 egg:50 oats:35 strawberry:150 oil:3"
+          },
+          {
+            "name": "Краставици с дип от извара",
+            "spec": "cucumber:200 cottage:120 yogurt:30 dill:3"
+          },
+          {
+            "name": "Пъстърва с картофи и броколи",
+            "spec": "trout:180 potato:230 broccoli:180 oil:7"
+          },
+          {
+            "name": "Пълнозърнести сухари с крема сирене",
+            "spec": "rusk:35 creamcheese:40"
+          },
+          {
+            "name": "Омлет със сирене, домати и салата",
+            "spec": "egg:150 cheese:40 tomato:150 lettuce:100 oil:5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "code": "muscle",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Овес с мляко, банан и фъстъчено масло",
+            "spec": "oats:100 milk:300 banana:150 peanut:25"
+          },
+          {
+            "name": "Кисело мляко и орехи",
+            "spec": "yogurt:300 walnut:30"
+          },
+          {
+            "name": "Пилешко с ориз и грах",
+            "spec": "chicken:230 rice:120 peas:150 oil:10"
+          },
+          {
+            "name": "Тост с извара и мед",
+            "spec": "bread:100 cottage:180 honey:20"
+          },
+          {
+            "name": "Свинско бонфиле с картофи и салата",
+            "spec": "pork:220 potato:400 tomato:150 cucumber:100 oil:12"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Омлет с 3 яйца, сирене и хляб",
+            "spec": "egg:150 cheese:60 bread:120 oil:5"
+          },
+          {
+            "name": "Банан и бадеми",
+            "spec": "banana:150 almond:30"
+          },
+          {
+            "name": "Паста с пилешко и доматен сос",
+            "spec": "pasta:130 chicken:220 tomato:200 oil:10"
+          },
+          {
+            "name": "Скир с овес",
+            "spec": "skyr:300 oats:60"
+          },
+          {
+            "name": "Сьомга с ориз и броколи",
+            "spec": "salmon:200 rice:100 broccoli:200 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Овесени палачинки с банан",
+            "spec": "oats:90 egg:150 milk:150 banana:150 oil:5"
+          },
+          {
+            "name": "Извара с ябълка",
+            "spec": "cottage:200 apple:200"
+          },
+          {
+            "name": "Пуешко с булгур и печени чушки",
+            "spec": "turkey:230 bulgur:120 pepper:200 oil:10"
+          },
+          {
+            "name": "Кисело мляко и ядки",
+            "spec": "yogurt:300 walnut:30"
+          },
+          {
+            "name": "Домашен пилешки бургер с печени картофи",
+            "spec": "chicken:200 bun:100 potato:350 tomato:80 lettuce:30 yogurt:50 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Пълнозърнести тостове с яйца и кашкавал",
+            "spec": "bread:120 egg:150 yellowcheese:50"
+          },
+          {
+            "name": "Плод и кисело мляко",
+            "spec": "apple:200 yogurt:300"
+          },
+          {
+            "name": "Свинско филе с ориз и зеленчуци",
+            "spec": "porkfillet:230 rice:120 carrot:100 pepper:100 oil:10"
+          },
+          {
+            "name": "Сандвич с извара",
+            "spec": "bread:100 cottage:200"
+          },
+          {
+            "name": "Риба тон с паста и царевица",
+            "spec": "tuna:180 pasta:120 corn:100 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Кисело мляко с овес, мед и плод",
+            "spec": "yogurt:350 oats:100 honey:20 apple:180"
+          },
+          {
+            "name": "Банан и фъстъчено масло",
+            "spec": "banana:160 peanut:30"
+          },
+          {
+            "name": "Телешко филе с картофи и салата",
+            "spec": "beef:230 potato:400 tomato:150 cucumber:100 oil:10"
+          },
+          {
+            "name": "Варени яйца и хляб",
+            "spec": "egg:150 bread:100"
+          },
+          {
+            "name": "Пилешки шишчета с кус-кус",
+            "spec": "chicken:230 couscous:120 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Бъркани яйца, хляб и домати",
+            "spec": "egg:200 bread:120 tomato:200 oil:5"
+          },
+          {
+            "name": "Извара с круша",
+            "spec": "cottage:200 pear:200"
+          },
+          {
+            "name": "Печена скумрия с картофи",
+            "spec": "mackerel:220 potato:400 oil:5"
+          },
+          {
+            "name": "Скир с банан",
+            "spec": "skyr:300 banana:150"
+          },
+          {
+            "name": "Тортила с пуешко, ориз и зеленчуци",
+            "spec": "tortilla:80 turkey:200 rice:70 tomato:100 pepper:100 oil:7"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Палачинки с извара и ягоди",
+            "spec": "cottage:220 egg:100 oats:70 strawberry:180 oil:5"
+          },
+          {
+            "name": "Ябълка и орехи",
+            "spec": "apple:200 walnut:30"
+          },
+          {
+            "name": "Пилешко с булгур и моркови",
+            "spec": "chicken:230 bulgur:120 carrot:200 oil:10"
+          },
+          {
+            "name": "Кисело мляко с овес",
+            "spec": "yogurt:300 oats:60"
+          },
+          {
+            "name": "Свински котлет без излишна мазнина с картофи и салата",
+            "spec": "chop:230 potato:400 tomato:150 cucumber:100 oil:8"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "code": "maintenance",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Омлет със сирене и домат",
+            "spec": "egg:150 cheese:40 tomato:180 oil:5"
+          },
+          {
+            "name": "Ябълка и орехи",
+            "spec": "apple:180 walnut:20"
+          },
+          {
+            "name": "Пилешко с ориз и зеленчуци",
+            "spec": "chicken:180 rice:80 carrot:100 pepper:100 oil:8"
+          },
+          {
+            "name": "Кисело мляко с плод",
+            "spec": "yogurt:250 apple:150"
+          },
+          {
+            "name": "Пъстърва с картофи и салата",
+            "spec": "trout:180 potato:300 tomato:150 cucumber:100 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Овес с мляко и банан",
+            "spec": "oats:70 milk:250 banana:120"
+          },
+          {
+            "name": "Извара с праскова",
+            "spec": "cottage:170 peach:180"
+          },
+          {
+            "name": "Свинско филе с булгур",
+            "spec": "porkfillet:180 bulgur:80 oil:8"
+          },
+          {
+            "name": "Моркови с хумус",
+            "spec": "carrot:180 chickpea:80 tahini:10 lemon:10 garlic:2"
+          },
+          {
+            "name": "Пилешка тортила със зеленчуци",
+            "spec": "tortilla:70 chicken:180 tomato:120 cucumber:100 lettuce:40 oil:7"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Тост с яйце и домат",
+            "spec": "bread:80 egg:100 tomato:180"
+          },
+          {
+            "name": "Круша и бадеми",
+            "spec": "pear:180 almond:25"
+          },
+          {
+            "name": "Паста с риба тон и домати",
+            "spec": "pasta:90 tuna:150 tomato:200 oil:8"
+          },
+          {
+            "name": "Кисело мляко с овес",
+            "spec": "yogurt:250 oats:40"
+          },
+          {
+            "name": "Пуешки кюфтета с печени тиквички и картофи",
+            "spec": "turkey:200 zucchini:200 potato:250 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Кисело мляко с овес и ягоди",
+            "spec": "yogurt:300 oats:60 strawberry:150"
+          },
+          {
+            "name": "Варено яйце и плод",
+            "spec": "egg:50 apple:180"
+          },
+          {
+            "name": "Пилешко с картофи и броколи",
+            "spec": "chicken:180 potato:300 broccoli:180 oil:8"
+          },
+          {
+            "name": "Извара с канела",
+            "spec": "cottage:170 cinnamon:1"
+          },
+          {
+            "name": "Салата с нахут, сирене и пълнозърнест тост",
+            "spec": "chickpea:180 cheese:50 tomato:150 cucumber:100 bread:60 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Бъркани яйца и пълнозърнест хляб",
+            "spec": "egg:150 bread:100 oil:5"
+          },
+          {
+            "name": "Банан и орехи",
+            "spec": "banana:120 walnut:25"
+          },
+          {
+            "name": "Свинско бонфиле с ориз и моркови",
+            "spec": "pork:180 rice:80 carrot:180 oil:8"
+          },
+          {
+            "name": "Скир с плод",
+            "spec": "skyr:250 apple:150"
+          },
+          {
+            "name": "Хек с печени зеленчуци и картоф",
+            "spec": "hake:220 zucchini:150 pepper:100 potato:250 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Овесени палачинки с ябълка",
+            "spec": "oats:60 egg:100 milk:100 apple:150 oil:4"
+          },
+          {
+            "name": "Кисело мляко",
+            "spec": "yogurt:250"
+          },
+          {
+            "name": "Пуешко с кус-кус и салата",
+            "spec": "turkey:180 couscous:90 tomato:150 cucumber:100 oil:8"
+          },
+          {
+            "name": "Плод и ядки",
+            "spec": "apple:180 almond:25"
+          },
+          {
+            "name": "Омлет с гъби и сирене, доматена салата",
+            "spec": "egg:150 mushroom:150 cheese:40 tomato:200 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Тост с извара и краставица",
+            "spec": "bread:90 cottage:150 cucumber:120"
+          },
+          {
+            "name": "Ябълка и бадеми",
+            "spec": "apple:180 almond:25"
+          },
+          {
+            "name": "Пилешки шишчета с булгур",
+            "spec": "chicken:200 bulgur:90 oil:8"
+          },
+          {
+            "name": "Кисело мляко с плод",
+            "spec": "yogurt:250 apple:150"
+          },
+          {
+            "name": "Скумрия на фурна с картофи и зелена салата",
+            "spec": "mackerel:180 potato:280 lettuce:150 oil:5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "code": "vegetarian",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Омлет със спанак и сирене",
+            "spec": "egg:150 spinach:100 cheese:50 oil:5"
+          },
+          {
+            "name": "Ябълка и орехи",
+            "spec": "apple:180 walnut:25"
+          },
+          {
+            "name": "Нахут с ориз и зеленчуци на тиган",
+            "spec": "chickpea:180 rice:70 carrot:100 pepper:100 oil:8"
+          },
+          {
+            "name": "Кисело мляко с овес",
+            "spec": "yogurt:250 oats:40"
+          },
+          {
+            "name": "Тортила с боб, царевица и зеленчуци",
+            "spec": "tortilla:70 bean:180 corn:70 tomato:100 pepper:100 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Овес с мляко, банан и канела",
+            "spec": "oats:70 milk:250 banana:120 cinnamon:1"
+          },
+          {
+            "name": "Извара с плод",
+            "spec": "cottage:180 apple:150"
+          },
+          {
+            "name": "Тофу с ориз и броколи",
+            "spec": "tofu:200 rice:80 broccoli:200 oil:8"
+          },
+          {
+            "name": "Моркови с хумус",
+            "spec": "carrot:180 chickpea:80 tahini:10 lemon:10 garlic:2"
+          },
+          {
+            "name": "Омлет с гъби и картофи",
+            "spec": "egg:150 mushroom:180 potato:250 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Тост с извара и домат",
+            "spec": "bread:90 cottage:160 tomato:150"
+          },
+          {
+            "name": "Круша и бадеми",
+            "spec": "pear:180 almond:25"
+          },
+          {
+            "name": "Пълнозърнеста паста с домати, моцарела и спанак",
+            "spec": "pasta:100 tomato:200 mozzarella:100 spinach:100 oil:8"
+          },
+          {
+            "name": "Кисело мляко и плод",
+            "spec": "yogurt:250 apple:150"
+          },
+          {
+            "name": "Салата с леща, яйце и зеленчуци",
+            "spec": "lentil:220 egg:100 tomato:150 cucumber:100 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Овесени палачинки с ягоди",
+            "spec": "oats:70 egg:100 milk:100 strawberry:150 oil:4"
+          },
+          {
+            "name": "Банан и орехи",
+            "spec": "banana:120 walnut:25"
+          },
+          {
+            "name": "Боб с печени чушки и пълнозърнест хляб",
+            "spec": "bean:250 pepper:200 bread:90 oil:8"
+          },
+          {
+            "name": "Скир с канела",
+            "spec": "skyr:250 cinnamon:1"
+          },
+          {
+            "name": "Тофу с тиквички и булгур",
+            "spec": "tofu:200 zucchini:250 bulgur:80 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Бъркани яйца със сирене и домат",
+            "spec": "egg:150 cheese:60 tomato:200 oil:5"
+          },
+          {
+            "name": "Ябълка и фъстъчено масло",
+            "spec": "apple:180 peanut:25"
+          },
+          {
+            "name": "Нахутени кюфтенца на тиган с млечен сос и салата",
+            "spec": "chickpea:200 oats:25 yogurt:100 tomato:150 cucumber:150 oil:8"
+          },
+          {
+            "name": "Кисело мляко с овес",
+            "spec": "yogurt:250 oats:40"
+          },
+          {
+            "name": "Пълнена тортила с яйца, сирене и зеленчуци",
+            "spec": "tortilla:70 egg:100 cheese:50 tomato:100 pepper:100 oil:5"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Кисело мляко с овес и ябълка",
+            "spec": "yogurt:300 oats:70 apple:180"
+          },
+          {
+            "name": "Краставици с дип от извара",
+            "spec": "cucumber:200 cottage:150 yogurt:30 dill:3"
+          },
+          {
+            "name": "Ориз с гъби, грах и настърган кашкавал",
+            "spec": "rice:90 mushroom:200 peas:150 yellowcheese:50 oil:8"
+          },
+          {
+            "name": "Плод и бадеми",
+            "spec": "apple:180 almond:25"
+          },
+          {
+            "name": "Салата с нахут, фета, домати и маслини",
+            "spec": "chickpea:220 feta:70 tomato:250 olive:30 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Тост с яйце и кашкавал",
+            "spec": "bread:90 egg:100 yellowcheese:50"
+          },
+          {
+            "name": "Банан и орехи",
+            "spec": "banana:120 walnut:25"
+          },
+          {
+            "name": "Леща с ориз и печени моркови",
+            "spec": "lentil:220 rice:70 carrot:200 oil:8"
+          },
+          {
+            "name": "Извара с плод",
+            "spec": "cottage:180 apple:150"
+          },
+          {
+            "name": "Омлет със спанак и салата с картофи",
+            "spec": "egg:150 spinach:100 potato:250 cucumber:150 oil:8"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "code": "active",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Овес с банан, мляко и ядки",
+            "spec": "oats:100 banana:150 milk:300 walnut:25"
+          },
+          {
+            "name": "Скир с плод",
+            "spec": "skyr:300 apple:200"
+          },
+          {
+            "name": "Пилешко с ориз и моркови",
+            "spec": "chicken:220 rice:120 carrot:200 oil:10"
+          },
+          {
+            "name": "Тост с извара",
+            "spec": "bread:100 cottage:180"
+          },
+          {
+            "name": "Свинско бонфиле с печени картофи",
+            "spec": "pork:220 potato:450 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Омлет с яйца, сирене и хляб",
+            "spec": "egg:150 cheese:60 bread:120 oil:5"
+          },
+          {
+            "name": "Банан и бадеми",
+            "spec": "banana:150 almond:30"
+          },
+          {
+            "name": "Паста с пуешко и доматен сос",
+            "spec": "pasta:130 turkey:220 tomato:200 oil:10"
+          },
+          {
+            "name": "Кисело мляко с овес",
+            "spec": "yogurt:300 oats:60"
+          },
+          {
+            "name": "Пъстърва с булгур и салата",
+            "spec": "trout:220 bulgur:110 tomato:150 cucumber:100 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Овесени палачинки с мед и плод",
+            "spec": "oats:90 egg:150 milk:150 honey:20 apple:180 oil:5"
+          },
+          {
+            "name": "Извара с ябълка",
+            "spec": "cottage:200 apple:200"
+          },
+          {
+            "name": "Пилешки шишчета с картофи и зеленчуци",
+            "spec": "chicken:220 potato:400 pepper:150 zucchini:150 oil:10"
+          },
+          {
+            "name": "Пълнозърнест сандвич с яйце",
+            "spec": "bread:100 egg:100"
+          },
+          {
+            "name": "Риба тон с ориз и царевица",
+            "spec": "tuna:180 rice:120 corn:120 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Тостове с яйца и домат",
+            "spec": "bread:120 egg:150 tomato:200"
+          },
+          {
+            "name": "Кисело мляко и банан",
+            "spec": "yogurt:300 banana:150"
+          },
+          {
+            "name": "Свинско филе с кус-кус и печени чушки",
+            "spec": "porkfillet:220 couscous:120 pepper:200 oil:10"
+          },
+          {
+            "name": "Плод и орехи",
+            "spec": "apple:200 walnut:30"
+          },
+          {
+            "name": "Пилешка тортила с ориз и зеленчуци",
+            "spec": "tortilla:80 chicken:200 rice:70 tomato:100 pepper:100 oil:7"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Кисело мляко с овес и ягоди",
+            "spec": "yogurt:350 oats:100 strawberry:200"
+          },
+          {
+            "name": "Банан с фъстъчено масло",
+            "spec": "banana:160 peanut:30"
+          },
+          {
+            "name": "Скумрия с картофи и салата",
+            "spec": "mackerel:220 potato:400 tomato:150 cucumber:100 oil:5"
+          },
+          {
+            "name": "Скир с плод",
+            "spec": "skyr:300 apple:200"
+          },
+          {
+            "name": "Пуешки кюфтета с паста и доматен сос",
+            "spec": "turkey:220 pasta:120 tomato:200 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Бъркани яйца с кашкавал и хляб",
+            "spec": "egg:150 yellowcheese:60 bread:120 oil:5"
+          },
+          {
+            "name": "Извара с круша",
+            "spec": "cottage:200 pear:200"
+          },
+          {
+            "name": "Пилешко с булгур и грах",
+            "spec": "chicken:220 bulgur:120 peas:150 oil:10"
+          },
+          {
+            "name": "Кисело мляко с ядки",
+            "spec": "yogurt:300 walnut:30"
+          },
+          {
+            "name": "Свинско с ориз и гъби на тиган",
+            "spec": "porkfillet:220 rice:120 mushroom:200 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Палачинки с извара и банан",
+            "spec": "cottage:200 egg:100 oats:70 banana:150 oil:5"
+          },
+          {
+            "name": "Ябълка и бадеми",
+            "spec": "apple:200 almond:30"
+          },
+          {
+            "name": "Телешко с ориз и зеленчуци на тиган",
+            "spec": "beef:220 rice:120 carrot:100 pepper:150 oil:10"
+          },
+          {
+            "name": "Сандвич с яйце",
+            "spec": "bread:100 egg:100"
+          },
+          {
+            "name": "Хек с картофи и салата",
+            "spec": "hake:250 potato:400 tomato:150 cucumber:100 oil:10"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "code": "low-carb",
+    "days": [
+      {
+        "title": "Ден 1",
+        "specs": [
+          {
+            "name": "Омлет с гъби и сирене",
+            "spec": "egg:150 mushroom:180 cheese:60 oil:8"
+          },
+          {
+            "name": "Кисело мляко с орехи",
+            "spec": "yogurt:250 walnut:25"
+          },
+          {
+            "name": "Пилешко филе със салата и авокадо",
+            "spec": "chicken:200 lettuce:100 tomato:150 cucumber:100 avocado:100 oil:10"
+          },
+          {
+            "name": "Извара с краставица",
+            "spec": "cottage:150 cucumber:150"
+          },
+          {
+            "name": "Свинско бонфиле с броколи",
+            "spec": "pork:220 broccoli:300 oil:15"
+          }
+        ]
+      },
+      {
+        "title": "Ден 2",
+        "specs": [
+          {
+            "name": "Яйца с домати и кашкавал",
+            "spec": "egg:150 tomato:200 yellowcheese:60 oil:8"
+          },
+          {
+            "name": "Бадеми и малини",
+            "spec": "almond:30 raspberry:100"
+          },
+          {
+            "name": "Печена скумрия със зелена салата",
+            "spec": "mackerel:220 lettuce:200 oil:10"
+          },
+          {
+            "name": "Кисело мляко с лен",
+            "spec": "yogurt:250 flax:15"
+          },
+          {
+            "name": "Пуешки кюфтета с тиквички",
+            "spec": "turkey:220 zucchini:300 oil:15"
+          }
+        ]
+      },
+      {
+        "title": "Ден 3",
+        "specs": [
+          {
+            "name": "Извара с орехи и канела",
+            "spec": "cottage:200 walnut:30 cinnamon:1"
+          },
+          {
+            "name": "Варено яйце и краставица",
+            "spec": "egg:50 cucumber:200"
+          },
+          {
+            "name": "Пилешко с гъби и сметанов сос с умерена масленост",
+            "spec": "chicken:220 mushroom:200 cream:100 oil:8"
+          },
+          {
+            "name": "Сирене и домат",
+            "spec": "cheese:70 tomato:200"
+          },
+          {
+            "name": "Омлет със спанак и салата",
+            "spec": "egg:200 spinach:100 lettuce:150 cucumber:100 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 4",
+        "specs": [
+          {
+            "name": "Бъркани яйца с авокадо",
+            "spec": "egg:150 avocado:120 oil:5"
+          },
+          {
+            "name": "Кисело мляко и малини",
+            "spec": "yogurt:250 raspberry:100"
+          },
+          {
+            "name": "Свинско филе с карфиолено пюре",
+            "spec": "porkfillet:220 cauliflower:300 milk:50 oil:15"
+          },
+          {
+            "name": "Извара с орехи",
+            "spec": "cottage:170 walnut:25"
+          },
+          {
+            "name": "Салата с риба тон, яйце и маслини",
+            "spec": "tuna:150 egg:100 lettuce:100 tomato:150 olive:40 oil:10"
+          }
+        ]
+      },
+      {
+        "title": "Ден 5",
+        "specs": [
+          {
+            "name": "Омлет с чушки и сирене",
+            "spec": "egg:150 pepper:150 cheese:60 oil:8"
+          },
+          {
+            "name": "Краставица с млечен дип",
+            "spec": "cucumber:200 yogurt:150 dill:3"
+          },
+          {
+            "name": "Пилешки шишчета със зелена салата",
+            "spec": "chicken:220 lettuce:200 oil:15"
+          },
+          {
+            "name": "Бадеми и малко кисело мляко",
+            "spec": "almond:30 yogurt:150"
+          },
+          {
+            "name": "Сьомга с броколи и лимон",
+            "spec": "salmon:220 broccoli:300 lemon:20 oil:8"
+          }
+        ]
+      },
+      {
+        "title": "Ден 6",
+        "specs": [
+          {
+            "name": "Кисело мляко с чиа и орехи",
+            "spec": "yogurt:300 chia:20 walnut:25"
+          },
+          {
+            "name": "Яйце и домат",
+            "spec": "egg:50 tomato:200"
+          },
+          {
+            "name": "Пуешко филе с печени тиквички и гъби",
+            "spec": "turkey:220 zucchini:200 mushroom:200 oil:15"
+          },
+          {
+            "name": "Извара с краставица",
+            "spec": "cottage:150 cucumber:150"
+          },
+          {
+            "name": "Свински котлет със салата от зеле",
+            "spec": "chop:220 cabbage:250 oil:15"
+          }
+        ]
+      },
+      {
+        "title": "Ден 7",
+        "specs": [
+          {
+            "name": "Яйца със сирене и спанак",
+            "spec": "egg:150 cheese:60 spinach:100 oil:8"
+          },
+          {
+            "name": "Малини и орехи",
+            "spec": "raspberry:120 walnut:30"
+          },
+          {
+            "name": "Хек с карфиол и салата",
+            "spec": "hake:250 cauliflower:250 lettuce:150 cucumber:100 oil:15"
+          },
+          {
+            "name": "Кисело мляко с лен",
+            "spec": "yogurt:250 flax:15"
+          },
+          {
+            "name": "Пилешко със задушен зелен фасул",
+            "spec": "chicken:220 greenbean:300 oil:15"
+          }
+        ]
+      }
+    ]
+  }
+]

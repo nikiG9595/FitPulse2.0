@@ -48,6 +48,14 @@ public class SupportService {
     }
     @Transactional(readOnly=true)
     public SupportMessage get(Long id){return messages.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));}
+    @Transactional(readOnly=true)
+    public long unreadCount(){return messages.countByStatus(SupportStatus.NEW);}
     @Transactional
-    public void status(Long id,SupportStatus status){get(id).setStatus(status);}
+    public SupportMessage open(Long id){
+        var message=messages.lockById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(message.getStatus()==SupportStatus.NEW)message.setStatus(SupportStatus.IN_PROGRESS);
+        return message;
+    }
+    @Transactional
+    public void status(Long id,SupportStatus status){messages.lockById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND)).setStatus(status);}
 }

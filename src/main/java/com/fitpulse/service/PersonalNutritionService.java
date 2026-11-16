@@ -38,35 +38,7 @@ public class PersonalNutritionService {
         return json(new WeeklyMenu(menu.author(),menu.methodology(),days));
     }
     private String json(WeeklyMenu menu){try{return mapper.writeValueAsString(menu);}catch(Exception e){throw new IllegalStateException(e);}}
-    public record CalorieEstimate(long resting,long daily,long original){}
-    public CalorieEstimate estimate(com.fitpulse.model.dto.MealPersonalizationForm form,String source){
-        double resting=10*form.getWeight().doubleValue()+6.25*form.getHeight().doubleValue()-5*form.getAge()+(form.getSex().equals("MALE")?5:-161);
-        double activity=switch(form.getActivity()){case "LOW"->1.2;case "MODERATE"->1.55;case "HIGH"->1.725;default->throw new FitPulseException("Изберете валидна активност.");};
-        return new CalorieEstimate(Math.round(resting),Math.round(resting*activity),originalCalories(source));
-    }
     public long originalCalories(String source){var menu=parse(canonicalJson(source));return Math.round(menu.days().stream().mapToDouble(d->4*d.protein()+9*d.fat()+4*d.carbs()).average().orElseThrow(()->new FitPulseException("Липсват дни в режима.")));}
-    public String adaptedJson(String source,BigDecimal target){
-        if(target==null||target.compareTo(new BigDecimal("1200"))<0||target.compareTo(new BigDecimal("6000"))>0||target.stripTrailingZeros().scale()>0)throw new FitPulseException("Потвърдете дневна цел между 1200 и 6000 цели ккал.");
-        var menu=parse(canonicalJson(source));List<WeeklyMenu.Day> days=new ArrayList<>();
-        for(var day:menu.days()){
-            double calories=4*day.protein()+9*day.fat()+4*day.carbs();
-            if(!Double.isFinite(calories)||calories<=0)throw new FitPulseException("Денят няма валидни хранителни стойности.");
-            BigDecimal factor=target.divide(BigDecimal.valueOf(calories),12,java.math.RoundingMode.HALF_UP);
-            List<WeeklyMenu.Meal> meals=new ArrayList<>();
-            for(var meal:day.meals()){
-                List<WeeklyMenu.Ingredient> ingredients=new ArrayList<>();
-                for(var item:meal.ingredients()){
-                    BigDecimal grams=BigDecimal.valueOf(item.grams()).multiply(factor).setScale(2,java.math.RoundingMode.HALF_UP);
-                    if(grams.compareTo(BigDecimal.ONE)<0||grams.compareTo(new BigDecimal("2000"))>0)throw new FitPulseException("Тази цел води до порция извън допустимите 1–2000 г за продукт. Изберете друга цел; копие не е създадено.");
-                    quantity(grams); // Reject impossible portions rather than silently breaking food ratios.
-                    ingredients.add(new WeeklyMenu.Ingredient(item.name(),grams.doubleValue(),item.state(),item.proteinPer100(),item.fatPer100(),item.carbsPer100(),item.foodCode()));
-                }
-                meals.add(new WeeklyMenu.Meal(meal.label(),meal.name(),ingredients,meal.preparation(),meal.substitution(),meal.recipeCode()));
-            }
-            days.add(new WeeklyMenu.Day(day.title(),meals));
-        }
-        return json(new WeeklyMenu(menu.author(),menu.methodology()+" Лично копие с потвърдена дневна цел "+target.toPlainString()+" ккал; възможни са малки отклонения от закръгляването на грамажите.",days));
-    }
     public String menuText(String source){return plainText(parse(source));}
     private WeeklyMenu.Ingredient ingredient(Food food,BigDecimal grams){return new WeeklyMenu.Ingredient(food.getName(),grams.doubleValue(),food.getState(),food.getProtein().doubleValue(),food.getFat().doubleValue(),food.getCarbs().doubleValue(),food.getCode());}
     public WeeklyMenu.Ingredient selected(WeeklyMenu menu,int day,int meal,int item){

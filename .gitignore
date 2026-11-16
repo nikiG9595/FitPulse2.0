@@ -27,3 +27,24 @@ src/main/resources/application-local.yml
 *.mv.db
 uploads/
 /backups/
+
+# Local database dumps and backup copies (never ignore Flyway *.sql migrations)
+*.sql.gz
+*.sql.zip
+*.sql.bak
+*.dump
+*.bak
+*.orig
+*~
+
+# Local recovery workspaces, temporary files and Python caches
+/.tmp-*
+/tmp/
+/temp/
+*.tmp
+*.temp
+__pycache__/
+*.py[cod]
+
+# Generated metadata reports; source catalogs and required images stay tracked
+/docs/exercise-video-duration-review.json

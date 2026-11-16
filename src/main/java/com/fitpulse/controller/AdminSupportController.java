@@ -24,10 +24,10 @@ public class AdminSupportController {
         return "admin/messages";
     }
     @GetMapping("/{id}")
-    public String details(@PathVariable Long id,Model model){model.addAttribute("message",support.get(id));return "admin/message-details";}
+    public String details(@PathVariable Long id,Model model){model.addAttribute("message",support.open(id));return "admin/message-details";}
     @PostMapping("/{id}/status")
     public String status(@PathVariable Long id,@RequestParam SupportStatus status,RedirectAttributes flash){
-        support.status(id,status);flash.addFlashAttribute("success","Статусът е обновен.");return "redirect:/admin/messages/"+id;
+        support.status(id,status);flash.addFlashAttribute("success","Статусът е обновен.");return status==SupportStatus.NEW?"redirect:/admin/messages?status=NEW":"redirect:/admin/messages/"+id;
     }
     @GetMapping("/{id}/attachment")
     public ResponseEntity<Resource> attachment(@PathVariable Long id){

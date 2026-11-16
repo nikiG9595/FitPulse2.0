@@ -9,7 +9,10 @@
             <option value="">Всички категории</option><option th:each="c:${categories}" th:value="${c}" th:text="${c.displayName}" th:selected="${c==category}"></option>
         </select></div>
         <div><label for="status">Статус</label><select id="status" name="status" class="form-select">
-            <option value="">Всички статуси</option><option th:each="s:${statuses}" th:value="${s}" th:text="${s.displayName}" th:selected="${s==status}"></option>
+            <option value="" th:selected="${status==null}">Всички</option>
+            <option value="NEW" th:selected="${status!=null and status.name()=='NEW'}">Нови</option>
+            <option value="IN_PROGRESS" th:selected="${status!=null and status.name()=='IN_PROGRESS'}">Прочетени</option>
+            <option value="RESOLVED" th:selected="${status!=null and status.name()=='RESOLVED'}">Приключени</option>
         </select></div><button class="btn btn-pulse" type="submit">Филтрирай</button>
         <a class="link-pulse" th:href="@{/admin/messages}">Изчисти</a>
     </form>

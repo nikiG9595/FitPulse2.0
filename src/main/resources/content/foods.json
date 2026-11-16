@@ -808,5 +808,122 @@
     "protein": 3.5,
     "fat": 4,
     "carbs": 4.5
+  },
+  {
+    "code": "food-final-honey",
+    "name": "Мед",
+    "state": "готов продукт",
+    "category": "Други",
+    "protein": 0.3,
+    "fat": 0,
+    "carbs": 82
+  },
+  {
+    "code": "food-final-yellowcheese",
+    "name": "Кашкавал",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 25,
+    "fat": 27,
+    "carbs": 2
+  },
+  {
+    "code": "food-final-tortilla",
+    "name": "Пълнозърнеста тортила",
+    "state": "готов продукт",
+    "category": "Зърнени и нишестени",
+    "protein": 8,
+    "fat": 7,
+    "carbs": 49
+  },
+  {
+    "code": "food-final-seabass",
+    "name": "Лаврак",
+    "state": "сурово филе, без кости",
+    "category": "Месо и риба",
+    "protein": 19,
+    "fat": 4,
+    "carbs": 0
+  },
+  {
+    "code": "food-final-cream",
+    "name": "Готварска сметана 12%",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 3,
+    "fat": 12,
+    "carbs": 4
+  },
+  {
+    "code": "food-final-fig",
+    "name": "Смокини",
+    "state": "пресни, почистени",
+    "category": "Плодове",
+    "protein": 0.8,
+    "fat": 0.3,
+    "carbs": 19
+  },
+  {
+    "code": "food-final-rusk",
+    "name": "Пълнозърнести сухари",
+    "state": "готов продукт",
+    "category": "Зърнени и нишестени",
+    "protein": 11,
+    "fat": 5,
+    "carbs": 66
+  },
+  {
+    "code": "food-final-creamcheese",
+    "name": "Крема сирене",
+    "state": "готов продукт",
+    "category": "Млечни продукти",
+    "protein": 7,
+    "fat": 21,
+    "carbs": 4
+  },
+  {
+    "code": "food-final-cinnamon",
+    "name": "Канела",
+    "state": "суха, смляна",
+    "category": "Подправки",
+    "protein": 4,
+    "fat": 1.2,
+    "carbs": 28
+  },
+  {
+    "code": "food-final-oregano",
+    "name": "Риган",
+    "state": "сух",
+    "category": "Подправки",
+    "protein": 9,
+    "fat": 4.3,
+    "carbs": 26
+  },
+  {
+    "code": "food-final-bun",
+    "name": "Пълнозърнеста питка за бургер",
+    "state": "готов продукт",
+    "category": "Зърнени и нишестени",
+    "protein": 9,
+    "fat": 4,
+    "carbs": 46
+  },
+  {
+    "code": "food-final-chop",
+    "name": "Свински котлет без видима мазнина",
+    "state": "суров, обезкостен",
+    "category": "Месо и риба",
+    "protein": 22,
+    "fat": 7,
+    "carbs": 0
+  },
+  {
+    "code": "food-final-porkfillet",
+    "name": "Свинско филе",
+    "state": "сурово, без видима мазнина",
+    "category": "Месо и риба",
+    "protein": 22,
+    "fat": 4,
+    "carbs": 0
   }
 ]

@@ -15,11 +15,6 @@
     "goal": "GENERAL"
   },
   {
-    "code": "mediterranean",
-    "name": "Средиземноморски режим",
-    "goal": "GENERAL"
-  },
-  {
     "code": "vegetarian",
     "name": "Вегетариански режим",
     "goal": "GENERAL"

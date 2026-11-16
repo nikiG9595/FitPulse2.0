@@ -91,3 +91,17 @@
     .day-macros { width:calc(100% - 35px);order:3 }
     .menu-meal { padding:16px }
 }
+
+/* Compact personalization result only; the saved personal menu keeps its full view. */
+.personalization-summary { container-type:inline-size; border-top:1px solid #e2e6ee; padding-top:20px; }
+.personalization-estimates { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 18px; }
+.personalization-estimates > div { min-width:0; }
+.personalization-estimates dt { color:var(--muted); font-size:clamp(.7rem,2.9cqi,.9rem); font-weight:500; }
+.personalization-estimates dd { margin:5px 0 0; white-space:nowrap; font-size:clamp(.78rem,3.2cqi,1rem); font-variant-numeric:tabular-nums; }
+.personalization-estimates dd strong { font-size:clamp(1.05rem,4.2cqi,1.4rem); font-weight:800; }
+.personalization-energy { display:flex; align-items:baseline; gap:8px; flex-wrap:nowrap; white-space:nowrap; margin:0 0 8px; font-size:clamp(.6rem,3.5cqi,1rem); }
+.personalization-energy strong { color:var(--pulse); font-size:clamp(1.15rem,5.5cqi,1.8rem); font-weight:800; font-variant-numeric:tabular-nums; }
+.personalization-macros { display:flex; align-items:baseline; gap:clamp(3px,1.2cqi,10px); flex-wrap:nowrap; white-space:nowrap; margin:0 0 16px; font-size:clamp(.6rem,3.7cqi,.95rem); font-variant-numeric:tabular-nums; }
+.personalization-macros strong { font-weight:700; }
+.personalization-blocked { color:#b91c1c; margin:0; font-size:.9rem; }
+@media(max-width:480px) { .personalization-estimates { gap:8px; } .personalization-summary > .btn { width:100%; } }
