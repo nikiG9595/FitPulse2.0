@@ -15,13 +15,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AdminProgramItemController {
-    @org.springframework.beans.factory.annotation.Autowired private com.fitpulse.service.ExerciseLibraryService library;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.fitpulse.service.ExerciseLibraryService library;
     private final WellnessService wellness;
     private final ProgramTemplateItemRepository items;
+
     public AdminProgramItemController(WellnessService wellness, ProgramTemplateItemRepository items) {
-        this.wellness = wellness; this.items = items;
+        this.wellness = wellness;
+        this.items = items;
     }
-    @Transactional(readOnly=true)
+
+    @Transactional(readOnly = true)
     @GetMapping("/admin/programs/{id}/items")
     public String list(@PathVariable Long id, Model model) {
         var template = wellness.template(id);
@@ -29,9 +33,10 @@ public class AdminProgramItemController {
         model.addAttribute("template", template);
         return "admin/program-items";
     }
+
     @Transactional
     @PostMapping("/admin/programs/{id}/items")
-    public String save(@PathVariable Long id, @RequestParam(required=false) Long itemId,
+    public String save(@PathVariable Long id, @RequestParam(required = false) Long itemId,
                        @Valid @ModelAttribute ProgramItemForm form, BindingResult errors, RedirectAttributes attributes) {
         var template = wellness.template(id);
         if (errors.hasErrors()) {
@@ -39,19 +44,29 @@ public class AdminProgramItemController {
             return "redirect:/admin/programs/" + id + "/items";
         }
         var item = itemId == null ? new ProgramTemplateItem() : owned(id, itemId);
-        item.setTemplate(template); item.setDayNumber(form.getDayNumber()); item.setExerciseName(form.getExerciseName());item.setExercise(library.resolve(form.getExerciseName()));
-        item.setSetsCount(form.getSetsCount()); item.setRepetitions(form.getRepetitions());item.setSessionTitle(form.getSessionTitle());item.setRestSeconds(form.getRestSeconds());item.setInstructions(form.getInstructions());
-        if(form.getSessionTitle()!=null&&!form.getSessionTitle().isBlank())template.getItems().stream().filter(i->i.getDayNumber()==form.getDayNumber()).forEach(i->i.setSessionTitle(form.getSessionTitle().strip()));
-        if (itemId == null) item.setSortOrder(template.getItems().size()+1);
+        item.setTemplate(template);
+        item.setDayNumber(form.getDayNumber());
+        item.setExerciseName(form.getExerciseName());
+        item.setExercise(library.resolve(form.getExerciseName()));
+        item.setSetsCount(form.getSetsCount());
+        item.setRepetitions(form.getRepetitions());
+        item.setSessionTitle(form.getSessionTitle());
+        item.setRestSeconds(form.getRestSeconds());
+        item.setInstructions(form.getInstructions());
+        if (form.getSessionTitle() != null && !form.getSessionTitle().isBlank())
+            template.getItems().stream().filter(i -> i.getDayNumber() == form.getDayNumber()).forEach(i -> i.setSessionTitle(form.getSessionTitle().strip()));
+        if (itemId == null) item.setSortOrder(template.getItems().size() + 1);
         items.save(item);
         return "redirect:/admin/programs/" + id + "/items";
     }
+
     @Transactional
     @PostMapping("/admin/programs/{id}/items/{itemId}/delete")
     public String delete(@PathVariable Long id, @PathVariable Long itemId) {
-        items.delete(owned(id,itemId));
+        items.delete(owned(id, itemId));
         return "redirect:/admin/programs/" + id + "/items";
     }
+
     private ProgramTemplateItem owned(Long templateId, Long itemId) {
         return items.findById(itemId).filter(i -> i.getTemplate().getId().equals(templateId))
                 .orElseThrow(() -> new FitPulseException("Упражнението не е намерено."));

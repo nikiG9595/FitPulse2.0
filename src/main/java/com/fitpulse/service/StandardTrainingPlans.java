@@ -4,14 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitpulse.model.entity.ProgramTemplate;
 import com.fitpulse.model.entity.ProgramTemplateItem;
-import java.util.*;
 
-/** Standard content for empty templates; saved personal programs never enter this path. */
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Standard content for empty templates; saved personal programs never enter this path.
+ */
 final class StandardTrainingPlans {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    record Item(String exerciseName, int setsCount, String repetitions, int restSeconds, String instructions) {}
-    record Day(String title, List<Item> items) {}
-    record Plan(String name, String goal, String experience, int days, String location, List<Day> sessions) {}
+    record Item(String exerciseName, int setsCount, String repetitions, int restSeconds, String instructions) {
+    }
+
+    record Day(String title, List<Item> items) {
+    }
+
+    record Plan(String name, String goal, String experience, int days, String location, List<Day> sessions) {
+    }
+
     private static final List<Plan> PLANS = load();
 
     private static List<Plan> load() {
@@ -25,8 +35,8 @@ final class StandardTrainingPlans {
 
     static List<ProgramTemplateItem> outline(ProgramTemplate template) {
         var plan = PLANS.stream().filter(p -> p.name().equals(template.getName())
-                && p.goal().equals(template.getGoal().name()) && p.experience().equals(template.getExperience().name())
-                && p.location().equals(template.getLocation().name()) && p.days() == template.getTrainingDays())
+                        && p.goal().equals(template.getGoal().name()) && p.experience().equals(template.getExperience().name())
+                        && p.location().equals(template.getLocation().name()) && p.days() == template.getTrainingDays())
                 .findFirst().orElse(null);
         if (plan == null) return null;
         List<ProgramTemplateItem> result = new ArrayList<>();

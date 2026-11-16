@@ -2,10 +2,10 @@ package com.fitpulse.controller;
 
 import com.fitpulse.exception.FitPulseException;
 import com.fitpulse.model.dto.ProfileUpdateRequest;
-import com.fitpulse.service.UserService;
 import com.fitpulse.repository.FavoriteGymRepository;
 import com.fitpulse.repository.ProgressRecordRepository;
 import com.fitpulse.repository.UserRepository;
+import com.fitpulse.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

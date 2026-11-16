@@ -34,8 +34,8 @@
 <p class="personalization-energy"><span>Адаптирано меню — средно на ден:</span> <strong th:text="${preview.calories}+' ккал'"></strong></p>
 <p class="personalization-macros"><span>Белтъци: <strong th:text="${preview.protein}+' г'"></strong></span><span aria-hidden="true">|</span><span>Въглехидрати: <strong th:text="${preview.carbs}+' г'"></strong></span><span aria-hidden="true">|</span><span>Мазнини: <strong th:text="${preview.fat}+' г'"></strong></span></p>
 <input th:if="${preview.canSave}" type="hidden" name="previewToken" th:value="${previewToken}">
-<button id="add-personal-meal" th:if="${preview.canSave}" class="btn btn-pulse" type="submit" name="action" value="confirm">Добави към моите режими</button>
-<p class="personalization-blocked" role="alert" th:unless="${preview.canSave}" th:text="${!#lists.isEmpty(preview.warnings) and #strings.startsWith(preview.warnings[0], 'Тези данни') ? 'Данните са извън обхвата за автоматично добавяне. Необходима е индивидуална професионална оценка.' : 'Менюто се отклонява прекалено от целта при допустимите порции. Добавянето е блокирано.'}"></p>
+<button id="add-personal-meal" th:if="${preview.canSave}" class="btn btn-pulse" type="submit" name="action" value="confirm">Добави към моите хранителни режими</button>
+<div class="personalization-warnings" role="alert" th:if="${!#lists.isEmpty(preview.warnings)}"><p><strong>Предупреждения за изчисленото меню</strong></p><ul><li th:each="warning : ${preview.warnings}" th:text="${warning}"></li></ul></div>
 </section>
 </form>
 </main><script th:src="@{/js/personalize-meal.js}" defer></script></body></html>

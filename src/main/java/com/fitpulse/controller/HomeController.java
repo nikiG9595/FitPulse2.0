@@ -1,7 +1,7 @@
 package com.fitpulse.controller;
 
-import com.fitpulse.service.UserService;
 import com.fitpulse.service.GymDirectoryService;
+import com.fitpulse.service.UserService;
 import com.fitpulse.service.WellnessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +30,10 @@ public class HomeController {
     public String dashboard(Model model) {
         model.addAttribute("user", userService.getCurrentUser());
 
-        model.addAttribute("upcoming",wellness.upcoming());
-        model.addAttribute("reminders",wellness.reminders());
-        model.addAttribute("programs",wellness.myPrograms().stream().filter(p->p.isActive()).toList());
-        model.addAttribute("mealPlans",wellness.myMeals());
+        model.addAttribute("upcoming", wellness.upcoming());
+        model.addAttribute("reminders", wellness.reminders());
+        model.addAttribute("programs", wellness.myPrograms().stream().filter(p -> p.isActive()).toList());
+        model.addAttribute("mealPlans", wellness.myMeals());
         return "dashboard";
     }
 }

@@ -48,46 +48,46 @@ public class MealPersonalizationService {
         };
         long target=Math.round(tdee*multiplier);
         if(!Double.isFinite(bmr)||!Double.isFinite(tdee)||bmr<=0||target<=0)throw new FitPulseException("Не може да се изчисли достоверна цел. Необходима е индивидуална професионална оценка.");
-        List<String> warnings=new ArrayList<>();boolean canSave=true;
+        List<String> warnings=new ArrayList<>();
         double bmi=weight/Math.pow(height/100,2);
         // Conservative software support limits, not diagnostic criteria or a safety guarantee.
         if(form.getAge()>75||bmi<18.5||bmi>=40||target<bmr||target/weight<18||target/weight>60){
-            warnings.add("Тези данни или изчисления са извън консервативния обхват на автоматичното персонализиране. Необходима е индивидуална професионална оценка; копие не може да се създаде.");canSave=false;
+            warnings.add("Тези данни или изчисления са извън консервативния обхват на автоматичното персонализиране. Калорийната цел може да е неподходяща и не е потвърдена като безопасна. Необходима е индивидуална професионална оценка преди следване на менюто.");
         }
         List<WeeklyMenu.Day> days=new ArrayList<>();
         for(var day:original.days()){
             double base=energy(day);if(!Double.isFinite(base)||base<=0)throw new FitPulseException("Менюто съдържа невалидни хранителни стойности.");
-            double upper=1.5;
+            double[] upper=new double[day.meals().size()];
+            Arrays.fill(upper,1.5);
+            int mealIndex=0;
             for(var meal:day.meals()){
                 if(meal.ingredients()==null||meal.ingredients().isEmpty())throw new FitPulseException("Липсват продукти за хранене.");
                 double mass=0;
                 for(var item:meal.ingredients()){
                     if(!Double.isFinite(item.grams())||item.grams()<=0||!Double.isFinite(item.proteinPer100())||!Double.isFinite(item.fatPer100())||!Double.isFinite(item.carbsPer100())||item.proteinPer100()<0||item.fatPer100()<0||item.carbsPer100()<0)throw new FitPulseException("Невалиден продукт в менюто.");
-                    mass+=item.grams();upper=Math.min(upper,portionCap(item)/item.grams());
+                    mass+=item.grams();upper[mealIndex]=Math.min(upper[mealIndex],portionCap(item)/item.grams());
                 }
                 String label=meal.label().toLowerCase(Locale.ROOT);
                 double mealCap=label.contains("междин")||label.contains("следобед")?450:label.contains("закуска")?650:1000;
-                upper=Math.min(upper,mealCap/mass);
+                upper[mealIndex]=Math.min(upper[mealIndex],mealCap/mass);
+                mealIndex++;
             }
-            if(upper<.65)throw new FitPulseException("Наличните рецепти не могат да се адаптират в разумните граници за порции. Необходима е индивидуална професионална оценка.");
-            double wanted=target/base,factor=Math.max(.65,Math.min(upper,wanted));
-            List<WeeklyMenu.Meal> meals=new ArrayList<>();
-            for(var meal:day.meals()){
-                List<WeeklyMenu.Ingredient> ingredients=new ArrayList<>();
-                for(var i:meal.ingredients()){
-                    // Keep tiny seasonings within the existing personal quantity editor's 1 g minimum.
-                    double grams=Math.max(1,java.math.BigDecimal.valueOf(i.grams()*factor).setScale(2,java.math.RoundingMode.HALF_UP).doubleValue());
-                    if(grams<=0||grams>portionCap(i)+.01)throw new FitPulseException("Получава се неподходящо количество за продукт.");
-                    ingredients.add(new WeeklyMenu.Ingredient(i.name(),grams,i.state(),i.proteinPer100(),i.fatPer100(),i.carbsPer100(),i.foodCode()));
-                }
-                meals.add(new WeeklyMenu.Meal(meal.label(),meal.name(),List.copyOf(ingredients),meal.preparation(),meal.substitution(),meal.recipeCode()));
+            // Cap each meal separately so one capped recipe does not limit the whole day.
+            double low=0,high=1.5;
+            var adaptedDay=adaptDay(day,upper,low);
+            var maximum=adaptDay(day,upper,high);
+            if(Math.abs(energy(maximum)-target)<Math.abs(energy(adaptedDay)-target))adaptedDay=maximum;
+            for(int iteration=0;iteration<64;iteration++){
+                double factor=(low+high)/2;
+                var candidate=adaptDay(day,upper,factor);
+                double achieved=energy(candidate);
+                if(Math.abs(achieved-target)<Math.abs(energy(adaptedDay)-target))adaptedDay=candidate;
+                if(achieved<target)low=factor;else high=factor;
             }
-            var adaptedDay=new WeeklyMenu.Day(day.title(),List.copyOf(meals));days.add(adaptedDay);
+            days.add(adaptedDay);
             double deviation=Math.abs(energy(adaptedDay)-target)/target;
-            if(deviation>.05)warnings.add(day.title()+": реално постигнати "+adaptedDay.getCalories()+" ккал при цел "+target+" ккал. Ограниченията на порциите не позволяват по-близък резултат.");
-            if(deviation>.15)canSave=false;
+            if(deviation>.05)warnings.add(day.title()+": постигнати "+adaptedDay.getCalories()+" ккал при цел "+target+" ккал (отклонение "+String.format(Locale.ROOT,"%.1f",deviation*100)+"%). Целта не е достигната в границите за порции на избраните хранения. Предупреждението не блокира добавянето.");
         }
-        if(!canSave&&warnings.stream().noneMatch(w->w.contains("професионална")))warnings.add("Отклонението е прекалено голямо за автоматично записване. Необходима е индивидуална професионална оценка или друга подходяща основа за меню.");
         var menu=new WeeklyMenu(original.author(),Objects.toString(original.methodology(),"")+" Персонализирани количества за новото лично копие; изчислена дневна цел: "+target+" ккал. Стойностите са ориентировъчни и са изчислени от съставките. Показаната цел не гарантира безопасност или индивидуален резултат.",List.copyOf(days));
         String json;try{json=mapper.writeValueAsString(menu);}catch(Exception e){throw new IllegalStateException(e);}
         // Preview the serialized snapshot that will be stored, including derived nutritional totals.
@@ -96,7 +96,23 @@ public class MealPersonalizationService {
         long protein=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::protein).average().orElseThrow());
         long carbs=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::carbs).average().orElseThrow());
         long fat=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::fat).average().orElseThrow());
-        return new Preview(Math.round(bmr),Math.round(tdee),target,calories,protein,carbs,fat,menu,json,canonicalSourceHash(template,canonical),warnings,canSave,Instant.now());
+        return new Preview(Math.round(bmr),Math.round(tdee),target,calories,protein,carbs,fat,menu,json,canonicalSourceHash(template,canonical),warnings,true,Instant.now());
+    }
+    private static WeeklyMenu.Day adaptDay(WeeklyMenu.Day day,double[] upper,double factor){
+        List<WeeklyMenu.Meal> meals=new ArrayList<>();
+        for(int index=0;index<day.meals().size();index++){
+            var meal=day.meals().get(index);
+            double scale=Math.max(Math.min(.65,upper[index]),Math.min(upper[index],factor));
+            List<WeeklyMenu.Ingredient> ingredients=new ArrayList<>();
+            for(var item:meal.ingredients()){
+                // Match the personal quantity editor: at least 1 g and two decimal places.
+                double grams=Math.max(1,java.math.BigDecimal.valueOf(item.grams()*scale).setScale(2,java.math.RoundingMode.HALF_UP).doubleValue());
+                if(!Double.isFinite(grams)||grams>portionCap(item)+.01)throw new FitPulseException("Получава се неподходящо количество за продукт.");
+                ingredients.add(new WeeklyMenu.Ingredient(item.name(),grams,item.state(),item.proteinPer100(),item.fatPer100(),item.carbsPer100(),item.foodCode()));
+            }
+            meals.add(new WeeklyMenu.Meal(meal.label(),meal.name(),List.copyOf(ingredients),meal.preparation(),meal.substitution(),meal.recipeCode()));
+        }
+        return new WeeklyMenu.Day(day.title(),List.copyOf(meals));
     }
     private static double energy(WeeklyMenu.Day day){return 4*day.protein()+4*day.carbs()+9*day.fat();}
     private static double portionCap(WeeklyMenu.Ingredient i){
