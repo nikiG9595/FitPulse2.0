@@ -46,6 +46,14 @@
 .readonly-ingredient b { white-space:nowrap;color:#ffbf9c;font-size:.76rem }
 .dish-actions { display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:18px }
 .dish-actions .btn { font-size:.74rem }
+.dish-actions .btn.meal-shopping-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .625rem 1.125rem;
+    font-size: .9rem;
+    line-height: 1.4;
+}
 .quick-recipe { margin-top:18px;color:#a5b0c2;font-size:.8rem;line-height:1.9 }
 .quick-recipe > summary { cursor:pointer;color:#ffb18c;font-weight:700 }
 .quick-recipe li { padding:6px 0 }

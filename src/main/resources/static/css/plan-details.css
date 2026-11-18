@@ -105,3 +105,17 @@
 .personalization-macros strong { font-weight:700; }
 .personalization-blocked { color:#b91c1c; margin:0; font-size:.9rem; }
 @media(max-width:480px) { .personalization-estimates { gap:8px; } .personalization-summary > .btn { width:100%; } }
+
+/* Clear exercise cards and comfortable touch targets. */
+.plan-page .exercise-detail {padding:1.25rem;border:1px solid #ffffff18;border-radius:14px;background:#ffffff04;margin-bottom:1rem}
+.plan-page .exercise-detail h4 {font-size:clamp(1.2rem,2vw,1.5rem);font-weight:800;line-height:1.35;margin-bottom:1rem}
+.measurement-picker {max-width:100%;min-width:0}
+.measurement-picker label {display:block;font-size:.85rem;margin-bottom:.4rem}
+.measurement-picker-controls {display:flex;align-items:center;gap:.5rem}
+.measurement-picker-controls .btn {min-width:48px;min-height:48px;font-size:1.4rem;padding:.25rem .65rem}
+.measurement-picker-controls .form-select {min-width:0;max-width:200px;min-height:48px}
+.fitpulse-toast {position:fixed;top:90px;right:1rem;max-width:calc(100vw - 2rem);padding:1rem 1.25rem;border:1px solid #ff763f;border-radius:12px;background:#1c2028;color:#fff;z-index:1100;box-shadow:0 8px 25px #0005}
+@media(max-width:575px){#body-sizes .module-panel-heading{align-items:flex-start;flex-direction:column}.measurement-picker{width:100%}.measurement-picker-controls .form-select{flex:1;max-width:none}}
+
+#progress-dashboard .progress-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:575px){#progress-dashboard .progress-stats{grid-template-columns:1fr}}

@@ -21,6 +21,8 @@ public class AuthController {
         this.navigation = navigation;
     }
 
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.security.authentication.AuthenticationManager authenticationManager;
     @GetMapping("/login")
     public String login(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, Model model) {
         model.addAttribute("authReturnTo", navigation.capture(request, response));
@@ -41,7 +43,17 @@ public class AuthController {
         if (bindingResult.hasErrors()) return "auth/register";
         try {
             userService.register(registerRequest);
-            return "redirect:/login?registered&returnTo=" + java.net.URLEncoder.encode(destination, java.nio.charset.StandardCharsets.UTF_8);
+            var authentication = authenticationManager.authenticate(
+                    org.springframework.security.authentication.UsernamePasswordAuthenticationToken.unauthenticated(registerRequest.getUsername(), registerRequest.getPassword()));
+            request.changeSessionId();
+            var context = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authentication);
+            org.springframework.security.core.context.SecurityContextHolder.setContext(context);
+            new org.springframework.security.web.context.HttpSessionSecurityContextRepository().saveContext(context, request, response);
+            navigation.clear(request, response);
+            request.getSession().removeAttribute("FITPULSE_LOGIN_TOAST");
+            if(userService.consumeFirstLogin()) request.getSession().setAttribute("FITPULSE_NEW_USER", true);
+            return "redirect:/profile";
         } catch (FitPulseException e) {
             model.addAttribute("globalError", e.getMessage());
             return "auth/register";

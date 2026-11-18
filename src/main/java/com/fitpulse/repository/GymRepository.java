@@ -1,2 +1,21 @@
 package com.fitpulse.repository; import com.fitpulse.model.entity.Gym; import com.fitpulse.model.enums.ContentStatus; import org.springframework.data.domain.*; import org.springframework.data.jpa.repository.*; import org.springframework.data.repository.query.Param; import java.util.*;
-public interface GymRepository extends JpaRepository<Gym,Long>{ Optional<Gym> findBySlugAndStatus(String slug,ContentStatus status); Optional<Gym> findBySlug(String slug); @Query("select g from Gym g where g.status=:status and (:city is null or g.city.slug=:city) and (:q is null or lower(g.name) like lower(concat('%',:q,'%')) or lower(g.address) like lower(concat('%',:q,'%')) or lower(g.services) like lower(concat('%',:q,'%'))) order by g.name") Page<Gym> search(@Param("status") ContentStatus status,@Param("city") String city,@Param("q") String q,Pageable pageable); long countByStatus(ContentStatus status); }
+public interface GymRepository extends JpaRepository<Gym,Long>{
+    Optional<Gym> findBySlugAndStatus(String slug, ContentStatus status);
+    Optional<Gym> findBySlug(String slug);
+
+    @Query(value = """
+            select g from Gym g
+            where g.status = :status and (:city is null or g.city.slug = :city)
+                and (:q is null or lower(g.name) like lower(concat('%', :q, '%'))
+                    or lower(g.address) like lower(concat('%', :q, '%'))
+                    or lower(g.services) like lower(concat('%', :q, '%')))
+            order by case when :byRating = true then coalesce(
+                (select avg(r.rating) from Review r where r.gym = g
+                    and r.status = com.fitpulse.model.enums.ContentStatus.PUBLISHED), 0.0)
+                else 0.0 end desc, g.name, g.id
+            """)
+    Page<Gym> search(@Param("status") ContentStatus status, @Param("city") String city,
+                     @Param("q") String q, @Param("byRating") boolean byRating, Pageable pageable);
+
+    long countByStatus(ContentStatus status);
+}

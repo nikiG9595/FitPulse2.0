@@ -43,4 +43,28 @@ public class ProfileUpdateRequest {
     public String getBio(){return bio;} public void setBio(String v){bio=v;}
     public String getHomeCity(){return homeCity;} public void setHomeCity(String v){homeCity=v;}
     public boolean isPublicProfile(){return publicProfile;} public void setPublicProfile(boolean v){publicProfile=v;}
+
+    @jakarta.validation.constraints.Pattern(regexp="MALE|FEMALE", message="Избери пол.")
+    private String sex;
+    @jakarta.validation.constraints.Past(message="Въведи минала дата на раждане.")
+    @org.springframework.format.annotation.DateTimeFormat(iso=org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
+    private java.time.LocalDate birthDate;
+    @jakarta.validation.constraints.DecimalMin("120")
+    @jakarta.validation.constraints.DecimalMax("230")
+    @jakarta.validation.constraints.Digits(integer=3, fraction=2)
+    private java.math.BigDecimal height;
+    @jakarta.validation.constraints.DecimalMin("20")
+    @jakarta.validation.constraints.DecimalMax("400")
+    @jakarta.validation.constraints.Digits(integer=3, fraction=2)
+    private java.math.BigDecimal weight;
+    public java.math.BigDecimal getWeight(){return weight;}
+    public void setWeight(java.math.BigDecimal v){weight=v;}
+    public String getSex(){return sex;}
+    public void setSex(String v){sex=v==null||v.isBlank()?null:v;}
+    public java.time.LocalDate getBirthDate(){return birthDate;}
+    public void setBirthDate(java.time.LocalDate v){birthDate=v;}
+    public java.math.BigDecimal getHeight(){return height;}
+    public void setHeight(java.math.BigDecimal v){height=v;}
+    public Integer getAge(){return birthDate==null?null:java.time.Period.between(birthDate,java.time.LocalDate.now()).getYears();}
+
 }

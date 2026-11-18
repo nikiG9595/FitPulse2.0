@@ -21,13 +21,20 @@ public class GymDirectoryController {
     }
 
     @GetMapping("/gyms")
-    public String list(@RequestParam(required = false) String city, @RequestParam(required = false) String q, @RequestParam(defaultValue = "0") int page, Model m) {
-        var result = service.search(city, q, page);
+    public String list(@RequestParam(required = false) String city, @RequestParam(required = false) String q,
+                       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "rating") String sort, Model m) {
+        boolean byName = "name".equals(sort);
+        var result = service.search(city, q, page, !byName);
         m.addAttribute("gyms", result);
         var covers = new java.util.LinkedHashMap<Long, com.fitpulse.model.entity.GymPhoto>();
-        for (var gym : result.getContent())
+        var ratings = new java.util.LinkedHashMap<Long, Double>();
+        for (var gym : result.getContent()) {
             gym.getPhotos().stream().filter(p -> !com.fitpulse.service.GymContent.text(p.getImageUrl()).isBlank() && com.fitpulse.service.GymContent.imageUrl(p.getImageUrl())).findFirst().ifPresent(p -> covers.put(gym.getId(), p));
+            ratings.put(gym.getId(), service.rating(gym));
+        }
         m.addAttribute("covers", covers);
+        m.addAttribute("ratings", ratings);
+        m.addAttribute("sort", byName ? "name" : "rating");
         m.addAttribute("cities", service.activeCities());
         m.addAttribute("city", city);
         m.addAttribute("q", q);

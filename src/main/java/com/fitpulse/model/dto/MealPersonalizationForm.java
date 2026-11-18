@@ -3,10 +3,15 @@ package com.fitpulse.model.dto;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
-/** Request-only inputs: personal measurements are not stored in a profile or public template. */
+/** Inputs populated from the private profile before calculation. */
 public class MealPersonalizationForm {
     @NotBlank(message="Изберете пол.") @Pattern(regexp="MALE|FEMALE",message="Изберете Мъж или Жена.")
     private String sex;
+    @Past(message="Въведи минала дата на раждане.")
+    @org.springframework.format.annotation.DateTimeFormat(iso=org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
+    private java.time.LocalDate birthDate;
+    public java.time.LocalDate getBirthDate(){return birthDate;}
+    public void setBirthDate(java.time.LocalDate value){birthDate=value;}
     public String getSex(){return sex;}
     public void setSex(String value){sex=value;}
     @NotNull(message="Въведете възраст.") @Min(value=18,message="Функцията е само за пълнолетни.") @Max(value=100,message="Поддържана възраст: 18–100 години.")

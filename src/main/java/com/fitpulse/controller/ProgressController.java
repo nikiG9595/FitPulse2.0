@@ -32,7 +32,7 @@ public class ProgressController {
     }
 
     private void prepareDashboard(Model model) {
-        model.addAttribute("progressRecords", progressService.getCurrentUserProgress());
+        model.addAttribute("progressRecords", progressService.getCurrentUserProgress().stream().sorted(java.util.Comparator.comparing(ProgressResponse::recordedAt).thenComparing(ProgressResponse::id)).toList());
         model.addAttribute("measurementHistory", dashboard.history());
         model.addAttribute("measurementTypes", com.fitpulse.service.ProgressDashboardService.TYPES);
         if (!model.containsAttribute("bodyMeasurementForm"))

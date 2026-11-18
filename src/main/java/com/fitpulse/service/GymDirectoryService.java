@@ -4,7 +4,10 @@ import com.fitpulse.exception.FitPulseException; import com.fitpulse.model.dto.*
  @org.springframework.beans.factory.annotation.Autowired private UserRepository userLocks;
  private final CityRepository cities; private final GymRepository gyms; private final GymPhotoRepository photos; private final ReviewRepository reviews; private final FavoriteGymRepository favorites; private final ReviewReportRepository reports; private final GymSuggestionRepository suggestions; private final UserService users;
  public GymDirectoryService(CityRepository c,GymRepository g,GymPhotoRepository p,ReviewRepository r,FavoriteGymRepository f,ReviewReportRepository rr,GymSuggestionRepository s,UserService u){cities=c;gyms=g;photos=p;reviews=r;favorites=f;reports=rr;suggestions=s;users=u;}
- public Page<Gym> search(String city,String q,int page){return gyms.search(ContentStatus.PUBLISHED,blank(city),blank(q),PageRequest.of(Math.max(0,page),12));}
+ public Page<Gym> search(String city,String q,int page){return search(city,q,page,false);}
+ public Page<Gym> search(String city,String q,int page,boolean byRating){
+     return gyms.search(ContentStatus.PUBLISHED,blank(city),blank(q),byRating,PageRequest.of(Math.max(0,page),12));
+ }
  public List<City> activeCities(){return cities.findAllByActiveTrueOrderByName();}
  public Gym published(String slug){return gyms.findBySlugAndStatus(slug,ContentStatus.PUBLISHED).orElseThrow(()->new FitPulseException("Фитнесът не е намерен."));}
  public Gym byId(Long id){return gyms.findById(id).orElseThrow(()->new FitPulseException("Фитнесът не е намерен."));}

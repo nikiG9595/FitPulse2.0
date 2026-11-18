@@ -31,10 +31,39 @@ public class ProfileController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model) {
+    public String profile(Model model, jakarta.servlet.http.HttpSession session) {
+        model.addAttribute("newUser", session.getAttribute("FITPULSE_NEW_USER")!=null);
+        session.removeAttribute("FITPULSE_NEW_USER");
+        var storedProfile=userService.getCurrentUserProfileUpdateRequest();
+        model.addAttribute("personalDataSummary",storedProfile);
+        if(!model.containsAttribute("profileUpdateRequest")) model.addAttribute("profileUpdateRequest", storedProfile);
+        model.addAttribute("profileComplete",storedProfile.getSex()!=null && storedProfile.getBirthDate()!=null && storedProfile.getHeight()!=null && storedProfile.getWeight()!=null);
         model.addAttribute("user", userService.getCurrentUser());
         model.addAttribute("favorites", favoriteGymRepository.findAllByUserOrderByCreatedAtDesc(userService.getCurrentUser()));
         return "profile";
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    private jakarta.validation.Validator validator;
+
+    @PostMapping("/profile/personal-data")
+    public String personalData(@ModelAttribute("profileUpdateRequest") ProfileUpdateRequest input,
+                               BindingResult binding, Model model, jakarta.servlet.http.HttpSession session) {
+        ProfileUpdateRequest stored=userService.getCurrentUserProfileUpdateRequest();
+        stored.setSex(input.getSex());stored.setBirthDate(input.getBirthDate());
+        stored.setHeight(input.getHeight());stored.setWeight(input.getWeight());
+        for(var violation:validator.validate(stored)) {
+            String field=violation.getPropertyPath().toString();
+            if(!binding.hasFieldErrors(field))binding.rejectValue(field,"invalid",violation.getMessage());
+        }
+        if(binding.hasErrors())return profile(model,session);
+        try {
+            userService.updateCurrentUserProfile(stored);
+            return "redirect:/profile?updated";
+        } catch(FitPulseException exception) {
+            model.addAttribute("globalError",exception.getMessage());
+            return profile(model,session);
+        }
     }
 
     @GetMapping("/profile/favorites")

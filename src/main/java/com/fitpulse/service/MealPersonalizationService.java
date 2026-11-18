@@ -85,14 +85,16 @@ public class MealPersonalizationService {
                 if(achieved<target)low=factor;else high=factor;
             }
             days.add(adaptedDay);
-            double deviation=Math.abs(energy(adaptedDay)-target)/target;
-            if(deviation>.05)warnings.add(day.title()+": постигнати "+adaptedDay.getCalories()+" ккал при цел "+target+" ккал (отклонение "+String.format(Locale.ROOT,"%.1f",deviation*100)+"%). Целта не е достигната в границите за порции на избраните хранения. Предупреждението не блокира добавянето.");
         }
         var menu=new WeeklyMenu(original.author(),Objects.toString(original.methodology(),"")+" Персонализирани количества за новото лично копие; изчислена дневна цел: "+target+" ккал. Стойностите са ориентировъчни и са изчислени от съставките. Показаната цел не гарантира безопасност или индивидуален резултат.",List.copyOf(days));
         String json;try{json=mapper.writeValueAsString(menu);}catch(Exception e){throw new IllegalStateException(e);}
         // Preview the serialized snapshot that will be stored, including derived nutritional totals.
         menu=nutrition.parse(json);
-        long calories=Math.round(menu.days().stream().mapToDouble(MealPersonalizationService::energy).average().orElseThrow());
+        double averageCalories = menu.days().stream().mapToDouble(MealPersonalizationService::energy).average().orElseThrow();
+        long calories = Math.round(averageCalories);
+        if (Math.abs(averageCalories - target) / target > .05) {
+            warnings.add("Среднодневните калории на режима се отклоняват с над 5% от дневната цел.");
+        }
         long protein=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::protein).average().orElseThrow());
         long carbs=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::carbs).average().orElseThrow());
         long fat=Math.round(menu.days().stream().mapToDouble(WeeklyMenu.Day::fat).average().orElseThrow());

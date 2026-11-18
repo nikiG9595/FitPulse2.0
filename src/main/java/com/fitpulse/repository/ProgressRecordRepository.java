@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface ProgressRecordRepository extends JpaRepository<ProgressRecord, UUID> {
     List<ProgressRecord> findAllByUserOrderByRecordedAtDesc(User user);
+    Optional<ProgressRecord> findByUserAndRecordedAt(User user, LocalDate recordedAt);
+    Optional<ProgressRecord> findFirstByUserOrderByRecordedAtDesc(User user);
     Optional<ProgressRecord> findByIdAndUser(UUID id, User user);
     boolean existsByUserAndRecordedAt(User user, LocalDate recordedAt);
     boolean existsByUserAndRecordedAtAndIdNot(User user, LocalDate recordedAt, UUID id);

@@ -9,16 +9,23 @@
     });
     const toggle = document.getElementById('fitpulse-menu-toggle'), menu = document.getElementById('fitpulse-menu');
     if (!toggle || !menu) return;
-    const member = menu.closest('.fit-nav').classList.contains('nav-member');
+    const nav = menu.closest('.fit-nav');
+    const member = nav.classList.contains('nav-member');
+    if (nav.classList.contains('nav-with-banner')) {
+        const updateNavBackground = () => nav.classList.toggle('is-scrolled', window.scrollY > 0);
+        window.addEventListener('scroll', updateNavBackground, {passive: true});
+        updateNavBackground();
+    }
     const wide = window.matchMedia('(min-width: 768px)');
     const expanded = () => !member;
+    const actions = toggle.closest('.nav-actions') || toggle;
     const layout = menu.closest('.nav-layout'), slogan = layout.querySelector('.nav-slogan'), identity = layout.querySelector('.nav-identity');
     function align() {
-        const width = (expanded() ? menu : toggle).getBoundingClientRect().width;
+        const width = (expanded() ? menu : actions).getBoundingClientRect().width;
         layout.classList.toggle('slogan-inline', 2 * Math.max(identity.getBoundingClientRect().width, width) + slogan.getBoundingClientRect().width + 32 <= layout.clientWidth);
-        document.documentElement.style.setProperty('--fitpulse-header-height',Math.ceil(layout.closest('.fit-nav').getBoundingClientRect().height)+'px');
+        document.documentElement.style.setProperty('--fitpulse-header-height',Math.ceil(nav.getBoundingClientRect().height)+'px');
     }
-    const observer = new ResizeObserver(align); [layout,identity,menu,toggle,slogan].forEach(e => observer.observe(e));
+    const observer = new ResizeObserver(align); [layout,identity,menu,actions,slogan].forEach(e => observer.observe(e));
     document.fonts.ready.then(align); align();
     const items = () => [...menu.querySelectorAll('a,button')].filter(e => e.getClientRects().length && !e.disabled);
     function open(value, focus) {
@@ -44,4 +51,12 @@
     const root=profile?new URL(profile.href).pathname.replace(/\/profile\/?$/,''):'';
     const personal=profile&&['/profile','/dashboard','/journal','/calendar','/progress','/training-sessions'].some(part=>path===root+part||path.startsWith(root+part+'/'));
     menu.querySelectorAll('a.nav-link').forEach(link=>{const target=new URL(link.href).pathname.replace(/\/$/,'');const active=personal?link===profile:path===target||path.startsWith(target+'/')||(target===root+'/programs'&&path.startsWith(root+'/exercises'));if(active)link.setAttribute('aria-current','page');});
+})();
+
+(() => {
+    const toast=document.getElementById('login-toast');
+    if(!toast)return;
+    document.body.append(toast);
+    setTimeout(()=>toast.classList.add('is-leaving'),3600);
+    setTimeout(()=>toast.remove(),4000);
 })();

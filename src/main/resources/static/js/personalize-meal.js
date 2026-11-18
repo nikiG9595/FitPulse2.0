@@ -2,18 +2,43 @@
     const form = document.getElementById('meal-personalization');
     if (!form) return;
     const result = document.getElementById('personalization-result');
+    const fields = document.getElementById('personalization-fields');
     const add = document.getElementById('add-personal-meal');
     const token = form.querySelector('[name="previewToken"]');
     const stale = document.getElementById('personalization-stale');
+    const weight = form.querySelector('[name="weight"]');
+    const editWeight = document.getElementById('change-weight');
+    const saveWeight = document.getElementById('save-weight');
+    const weightStatus = document.getElementById('weight-status');
+    editWeight?.addEventListener('click', () => {
+        weight.readOnly = false; weight.focus(); weight.select();
+        editWeight.hidden = true; saveWeight.hidden = false;
+    });
+    saveWeight?.addEventListener('click', async event => {
+        event.preventDefault();
+        if (!weight.reportValidity()) return;
+        saveWeight.disabled = true; weightStatus.textContent = '';
+        try {
+            const response = await fetch(saveWeight.formAction, {method:'POST', body:new FormData(form), headers:{Accept:'application/json'}});
+            if(!response.ok) throw new Error();
+            await response.json();
+            weight.readOnly = true; saveWeight.hidden = true;
+            if(editWeight) editWeight.hidden = false;
+            weightStatus.textContent = 'Теглото е запазено.';
+            invalidate();
+        } catch { weightStatus.textContent = 'Не успяхме да запазим теглото. Опитай отново.'; }
+        finally { saveWeight.disabled = false; }
+    });
     let saving = false;
     const invalidate = () => {
         if (!result) return;
         result.hidden = true;
+        fields.hidden = false;
         if (add) add.hidden = true;
         if (token) token.value = '';
         stale.hidden = false;
     };
-    form.querySelectorAll('[name="sex"],[name="age"],[name="height"],[name="weight"],[name="activity"],[name="eligible"]').forEach(input => {
+    form.querySelectorAll('[name="sex"],[name="birthDate"],[name="height"],[name="weight"],[name="activity"],[name="eligible"]').forEach(input => {
         input.addEventListener('input', invalidate);
         input.addEventListener('change', invalidate);
     });

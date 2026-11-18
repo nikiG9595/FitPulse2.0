@@ -24,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.fitpulse.service.PersonalDataService personalData;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.MEMBER);
+        user.setWelcomeShown(false);
         userRepository.save(user);
         LOGGER.info("User registered: userId={}", user.getId());
     }
@@ -50,6 +53,16 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(username).orElseThrow(() -> new FitPulseException("Текущият потребител не е намерен."));
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public boolean consumeFirstLogin() {
+        User current=userRepository.lockForLibrary(getCurrentUser().getId()).orElseThrow();
+        if(current.isWelcomeShown())return false;
+        current.setWelcomeShown(true);
+        userRepository.save(current);
+        return true;
     }
 
     @Override
@@ -90,10 +103,15 @@ public class UserServiceImpl implements UserService {
         request.setPublicProfile(currentUser.isPublicProfile());
         request.setShowCity(currentUser.isShowCity());
         request.setShowFavorites(currentUser.isShowFavorites());
+        request.setSex(currentUser.getSex());
+        request.setBirthDate(currentUser.getBirthDate());
+        request.setHeight(currentUser.getHeight());
+        if(personalData!=null)request.setWeight(personalData.weight(currentUser));
         return request;
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void updateCurrentUserProfile(ProfileUpdateRequest request) {
         if (request == null) throw new FitPulseException("Данните за профила са задължителни.");
 
@@ -103,6 +121,10 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmailAndIdNot(request.getEmail(), currentUser.getId()))
             throw new FitPulseException("Имейл адресът вече е регистриран.");
 
+        currentUser.setSex(request.getSex());
+        currentUser.setBirthDate(request.getBirthDate());
+        currentUser.setHeight(request.getHeight());
+        if(personalData!=null)personalData.saveWeight(currentUser,request.getWeight());
         currentUser.setUsername(request.getUsername());
         currentUser.setEmail(request.getEmail());
         currentUser.setDisplayName(request.getDisplayName());

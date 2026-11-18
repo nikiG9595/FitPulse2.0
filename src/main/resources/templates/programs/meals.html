@@ -6,16 +6,22 @@
 <main class="container page library-page nutrition-catalog">
     <div class="alert alert-warning" th:if="${error}" th:text="${error}" role="alert"></div>
     <header class="library-header">
-        <div><span class="eyebrow">Хранене с посока</span><h1>Хранителни режими</h1><p>Открий готова основа. Запази свое копие и го адаптирай към ежедневието си.</p></div>
+        <div><span class="eyebrow">Хранене с посока</span><h1>Хранителни режими</h1></div>
         <a class="btn btn-outline-dark" th:href="@{/meal-plans/my}">Моите хранителни режими <span aria-hidden="true">↗</span></a>
     </header>
-    <form class="library-filters" method="get" th:action="@{/meal-plans}" role="search" aria-label="Търсене на хранителни режими">
-        <div class="library-search"><label for="meal-search">Търси режим или храна</label><div class="search-input-wrap"><svg th:replace="~{fragments/icons :: icon('search')}"></svg><input class="form-control" id="meal-search" name="q" th:value="${q}" placeholder="Например: протеин, овес…" maxlength="150" type="search"></div></div>
+    <section class="meal-catalog-personalization" aria-labelledby="meal-catalog-personalization-title">
+        <svg th:replace="~{fragments/icons :: icon('target')}"></svg>
+        <div>
+            <h2 id="meal-catalog-personalization-title">Режим, съобразен с твоите нужди</h2>
+            <p>Избери хранителен режим, а ние ще изчислим необходимите калории и ще адаптираме количествата на храните според твоите лични данни и физическа активност.</p>
+        </div>
+    </section>
+    <form class="library-filters" method="get" th:action="@{/meal-plans}" aria-label="Филтри за хранителни режими">
         <div><label for="meal-goal">Твоята цел</label><select class="form-select" id="meal-goal" name="goal"><option value="">Всички цели</option><option th:each="g:${goals}" th:value="${g}" th:text="${g.displayName}" th:selected="${g==goal}"></option></select></div>
         <button class="btn btn-pulse" type="submit">Покажи режимите</button>
     </form>
-    <div class="library-results"><p><strong th:text="${#lists.size(mealTemplates)}"></strong> <span>режима</span><span th:if="${goal!=null}" th:text="' · '+${goal.displayName}"></span></p><a class="link-pulse" th:if="${!#strings.isEmpty(q) || goal!=null}" th:href="@{/meal-plans}">Изчисти филтрите</a></div>
-    <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealTemplates)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('search')}"></svg></span><h2>Няма намерени режими</h2><p th:text="${total==0?'В момента няма публикувани режими. Разгледай личните си копия или се върни по-късно.':'Опитай с друга дума или избери различна цел.'}"></p><a class="btn btn-outline-dark" th:href="${total==0}?@{/meal-plans/my}:@{/meal-plans}" th:text="${total==0?'Моите режими':'Всички режими'}"></a></div>
+    <div class="library-results"><p><strong th:text="${#lists.size(mealTemplates)}"></strong> <span>режима</span><span th:if="${goal!=null}" th:text="' · '+${goal.displayName}"></span></p><a class="link-pulse" th:if="${goal!=null}" th:href="@{/meal-plans}">Изчисти филтрите</a></div>
+    <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealTemplates)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('search')}"></svg></span><h2>Няма намерени режими</h2><p th:text="${total==0?'В момента няма публикувани режими. Разгледай личните си копия или се върни по-късно.':'Избери различна цел.'}"></p><a class="btn btn-outline-dark" th:href="${total==0}?@{/meal-plans/my}:@{/meal-plans}" th:text="${total==0?'Моите режими':'Всички режими'}"></a></div>
     <section class="library-grid" aria-label="Готови хранителни режими" th:unless="${#lists.isEmpty(mealTemplates)}">
         <article class="library-card meal-catalog-card" th:each="m:${mealTemplates}"><img class="meal-catalog-photo" th:src="@{${mealCovers[m.id]}}" th:alt="${m.displayName}" th:data-fallback="@{${mealFallbackCovers[m.id]}}" onerror="this.onerror=null;this.src=this.dataset.fallback;" loading="lazy">
             <span class="eyebrow" th:text="${m.goal.displayName}"></span>

@@ -1,0 +1,413 @@
+/* FitPulse shared dark theme. Layout and behavior remain in the component stylesheets. */
+:root {
+  color-scheme: dark;
+  --fp-bg: #101318;
+  --fp-surface: #1D222C;
+  --fp-field: #282F3C;
+  --fp-hover: #333D4D;
+  --fp-accent: #FF6728;
+  --fp-accent-hover: #FF8552;
+  --fp-accent-soft: #35271F;
+  --fp-text: #FFFFFF;
+  --fp-muted: #BFC7D5;
+  --fp-subtle: #A9B4C5;
+  --fp-border: #465267;
+  --fp-control-border: #728096;
+  --fp-focus: #FFAA84;
+  --fp-danger: #FF9CA8;
+  --fp-danger-bg: #3B2029;
+  --fp-success: #9BE3BB;
+  --fp-success-bg: #18332A;
+  --fp-warning: #F4D48E;
+  --fp-warning-bg: #382E1C;
+  --fp-info: #A9D4FF;
+  --fp-info-bg: #1B2D40;
+  --fp-chart-fill: #FF672818;
+  --fp-chart-grid: #46526766;
+  --fp-radius: 20px;
+  --fp-shadow: 0 14px 36px #00000029;
+  /* Existing components and Bootstrap consume the same palette. */
+  --pulse: var(--fp-accent);
+  --bg: var(--fp-bg);
+  --dark: var(--fp-text);
+  --muted: var(--fp-muted);
+  --bs-body-bg: var(--fp-bg);
+  --bs-body-color: var(--fp-text);
+  --bs-body-color-rgb: 255,255,255;
+  --bs-secondary-color: var(--fp-muted);
+  --bs-secondary-color-rgb: 191,199,213;
+  --bs-tertiary-color: var(--fp-subtle);
+  --bs-emphasis-color: var(--fp-text);
+  --bs-emphasis-color-rgb: 255,255,255;
+  --bs-border-color: var(--fp-border);
+  --bs-secondary-bg: var(--fp-surface);
+  --bs-tertiary-bg: var(--fp-field);
+  --bs-link-color: var(--fp-accent-hover);
+  --bs-link-hover-color: var(--fp-focus);
+  --bs-primary: var(--fp-accent);
+  --bs-primary-rgb: 255,103,40;
+  --bs-focus-ring-color: #FF672840;
+}
+html,body { background:var(--fp-bg);color:var(--fp-text); }
+body { min-height:100vh; }
+:root body :is(.page-bg,.auth-bg,.home-page,.section,.section-soft,.home-section,.home-intro,.home-support-footer) { background:var(--fp-bg);color:var(--fp-text); }
+:root body :is(.module-page,.profile-page,.library-page,.meal-detail-page,.plan-page) { --ink:var(--fp-text);--line:var(--fp-border);color:var(--fp-text); }
+:root body :is(h1,h2,h3,h4,h5,h6,legend,label,dt,.price,.library-results strong,.meal-instructions strong,.ingredient-list b) { color:var(--fp-text); }
+:root body :is(.text-muted,.module-muted,.home-muted,.profile-bio,.profile-settings-link,.profile-privacy-note,.library-footnote,.back-link,.module-results,.library-results,.module-disclaimer,.weekly-legend,.meal-instructions,.meal-detail-header p,.trainer-role,.trainer-meta,.chart-metrics,.chart-empty,.field-hint,small) { color:var(--fp-muted); }
+:root body :is(.text-muted,.module-muted) { color:var(--fp-muted)!important; }
+:root body :is(.module-heading,.module-hero,.module-panel,.module-empty,.page-title,.library-header,.fit-card,.profile-tool,.exercise-card,.plan-subheading,.session-card,.menu-method,.trainer-card,.trainer-profile-content) p { color:var(--fp-muted); }
+:root body :is(.exercise-steps,.cooking-steps,.quick-recipe,.readonly-ingredient,.recipe-ingredients,.ingredient-list,.interactive-ingredient small,.library-card-description,.meal-catalog-description,.library-card-meta,.progress-stats span,.progress-stats small,.anatomy-pair figcaption,.anatomy-legend p,.personalization-estimates dt) { color:var(--fp-muted); }
+:root body :is(.text-dark,.text-black,.text-body,.text-light-emphasis,.text-body-emphasis) { color:var(--fp-text)!important; }
+a { color:var(--fp-accent-hover);text-underline-offset:3px; }
+a:hover { color:var(--fp-focus); }
+:root body :is(.link-pulse,.eyebrow,.program-goal-label,.plan-author,.stats-grid strong,.progress-stats strong,.meal-energy,.ingredient-swap,.anatomy-scroll,.nav-slogan) { color:var(--fp-accent-hover); }
+:root body :is(.module-panel a:not(.btn),.home-section .section-heading a,.home-support-footer a) { color:var(--fp-accent-hover); }
+:root body :is(.library-card h2 a,.trainer-card h2 a,.exercise-detail h4 a,.admin-stat) { color:var(--fp-text); }
+:root body :is(.library-card h2 a,.trainer-card h2 a,.exercise-detail h4 a):hover { color:var(--fp-accent-hover); }
+/* Shared surfaces: filters, content cards, expandable days and administration. */
+:root body :is(.fit-card,.auth-card,.hero-card,.card,.profile-header,.profile-tool,.library-card,.exercise-card,.module-panel,.module-empty,.module-hero,.plan-intro,.session-card,.menu-day,.compact-day,.interactive-day,.menu-method,.anatomy-panel,.trainer-card,.trainer-profile,.trainer-profile-content,.trainer-next-step,.meal-detail-header,.module-filter,.library-filters,.filter-bar,.program-filter-panel,.program-navigator-card,.exercise-video-disclosure,.fitpulse-toast,.dropdown-menu,.modal-content,.offcanvas,.list-group-item) {
+  background:var(--fp-surface);color:var(--fp-text);border-color:var(--fp-border);box-shadow:var(--fp-shadow);
+}
+:root body :is(.fit-card,.auth-card,.card,.module-panel,.module-empty,.profile-tool,.library-card,.exercise-card,.module-filter,.library-filters,.filter-bar,.program-filter-panel) { border-radius:var(--fp-radius); }
+:root body :is(.profile-tool,.library-card,.exercise-card,.admin-stat):hover { border-color:var(--fp-accent); }
+:root body :is(.compact-meal,.menu-meal,.nutrition-original .menu-meal,.exercise-detail,.exercise-video-frame,.exercise-picker-results,.personalization-summary) { background:var(--fp-surface);color:var(--fp-text);border-color:var(--fp-border); }
+:root body :is(.library-card-actions,.meal-timeline li,.session-exercises,.exercise-detail,.ingredient-list li,.recipe-ingredients li,.readonly-ingredient,.interactive-ingredient,.compact-meal-content,.cooking-steps li,.home-support-footer) { border-color:var(--fp-border); }
+:root body :is(.tool-icon,.program-type-icon,.profile-avatar,.meal-step,.meal-detail-emblem,.meal-visual-ring) { background:var(--fp-accent-soft);color:var(--fp-accent-hover);border-color:var(--fp-border); }
+:root body :is(.privacy-badge,.module-tag,.module-tags>span,.plan-tags span,.program-card-tags span,.exercise-prescription span,.day-macros span,.goal-pill,.previous-set-chip,.shopping-days label,.meal-visual-balance,.meal-visual-strength,.meal-visual-energy) { background:var(--fp-field);color:var(--fp-text);border-color:var(--fp-border); }
+:root body :is(.recovery-note,.anatomy-picked-name,.unsaved-note) { background:var(--fp-accent-soft);color:var(--fp-muted);border-color:var(--fp-accent); }
+:root body .recovery-note strong { color:var(--fp-text); }
+/* Every editable, readonly and native dropdown field uses a single component palette. */
+:root body :is(.form-control,.form-select,.input-group-text,input:not([type]),input[type="text"],input[type="email"],input[type="password"],input[type="search"],input[type="number"],input[type="date"],input[type="datetime-local"],input[type="url"],input[type="tel"],textarea,select) {
+  background-color:var(--fp-field)!important;color:var(--fp-text)!important;border-color:var(--fp-control-border)!important;color-scheme:dark;caret-color:var(--fp-accent);
+}
+:root body :is(.form-control,.form-select,textarea,select) { border-radius:10px; }
+:root body :is(input,textarea)::placeholder { color:var(--fp-subtle);opacity:1; }
+:root body :is(.form-control,.form-select,input,textarea):focus { border-color:var(--fp-accent)!important;box-shadow:0 0 0 .2rem var(--bs-focus-ring-color); }
+:root body :is(.form-control,.form-select):disabled { opacity:.7; }
+:root body :is(input,textarea)[readonly] { color:var(--fp-muted)!important; }
+:root body select option { background:var(--fp-field);color:var(--fp-text); }
+:root body .form-select { --bs-form-select-bg-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23FF6728' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E"); }
+:root body :is(input[type="checkbox"],input[type="radio"]) { accent-color:var(--fp-accent); }
+:root body .form-check-input { background-color:var(--fp-field);border-color:var(--fp-border); }
+:root body .form-check-input:checked { background-color:var(--fp-accent);border-color:var(--fp-accent); }
+:root body input::file-selector-button { background:var(--fp-hover);color:var(--fp-text);border-color:var(--fp-border); }
+:root body input:-webkit-autofill { -webkit-text-fill-color:var(--fp-text);box-shadow:0 0 0 1000px var(--fp-field) inset; }
+/* Orange primary actions use dark lettering to retain contrast at the requested accent. */
+:root body .btn {
+  --bs-btn-color:var(--fp-text);--bs-btn-bg:var(--fp-field);--bs-btn-border-color:var(--fp-control-border);
+  --bs-btn-hover-color:var(--fp-text);--bs-btn-hover-bg:var(--fp-hover);--bs-btn-hover-border-color:var(--fp-subtle);
+  --bs-btn-active-color:var(--fp-text);--bs-btn-active-bg:var(--fp-hover);--bs-btn-active-border-color:var(--fp-accent);
+  --bs-btn-disabled-color:var(--fp-subtle);--bs-btn-disabled-bg:var(--fp-field);--bs-btn-disabled-border-color:var(--fp-border);
+  color:var(--bs-btn-color)!important;background-color:var(--bs-btn-bg)!important;border-color:var(--bs-btn-border-color)!important;border-radius:10px;
+}
+:root body .btn:hover { color:var(--bs-btn-hover-color)!important;background-color:var(--bs-btn-hover-bg)!important;border-color:var(--bs-btn-hover-border-color)!important; }
+:root body .btn:is(:active,.active,[aria-pressed="true"]) { color:var(--bs-btn-active-color)!important;background-color:var(--bs-btn-active-bg)!important;border-color:var(--bs-btn-active-border-color)!important; }
+:root body :is(.btn-pulse,.btn-primary) {
+  --bs-btn-color:var(--fp-bg);--bs-btn-bg:var(--fp-accent);--bs-btn-border-color:var(--fp-accent);
+  --bs-btn-hover-color:var(--fp-bg);--bs-btn-hover-bg:var(--fp-accent-hover);--bs-btn-hover-border-color:var(--fp-accent-hover);
+  --bs-btn-active-color:var(--fp-bg);--bs-btn-active-bg:var(--fp-accent-hover);--bs-btn-active-border-color:var(--fp-focus);
+  --bs-btn-disabled-color:var(--fp-bg);--bs-btn-disabled-bg:var(--fp-accent);--bs-btn-disabled-border-color:var(--fp-accent);
+  font-weight:700;
+}
+:root body :is(.btn-danger,.btn-outline-danger) { --bs-btn-color:var(--fp-danger);--bs-btn-bg:var(--fp-danger-bg);--bs-btn-border-color:#A85868;--bs-btn-hover-color:var(--fp-bg);--bs-btn-hover-bg:var(--fp-danger);--bs-btn-hover-border-color:var(--fp-danger);--bs-btn-active-bg:var(--fp-danger-bg);--bs-btn-active-color:var(--fp-danger); }
+:root body :is(.btn-success,.btn-outline-success) { --bs-btn-color:var(--fp-success);--bs-btn-bg:var(--fp-success-bg);--bs-btn-border-color:#4E9471;--bs-btn-hover-color:var(--fp-bg);--bs-btn-hover-bg:var(--fp-success);--bs-btn-hover-border-color:var(--fp-success); }
+:root body :is(.btn-warning,.btn-outline-warning) { --bs-btn-color:var(--fp-warning);--bs-btn-bg:var(--fp-warning-bg);--bs-btn-border-color:#977D42;--bs-btn-hover-color:var(--fp-bg);--bs-btn-hover-bg:var(--fp-warning);--bs-btn-hover-border-color:var(--fp-warning); }
+:root body :is(.btn-info,.btn-outline-info) { --bs-btn-color:var(--fp-info);--bs-btn-bg:var(--fp-info-bg);--bs-btn-hover-color:var(--fp-bg);--bs-btn-hover-bg:var(--fp-info); }
+:root body :is(.filter-buttons,.anatomy-buttons) button { background:var(--fp-field);color:var(--fp-text);border:1px solid var(--fp-control-border); }
+:root body :is(.filter-buttons,.anatomy-buttons) button:hover { background:var(--fp-hover);color:var(--fp-text);border-color:var(--fp-accent); }
+:root body :is(.filter-buttons,.anatomy-buttons) button[aria-pressed="true"] { background:var(--fp-accent);color:var(--fp-bg);border-color:var(--fp-accent); }
+:root body :is(.btn,.filter-buttons button,.anatomy-buttons button):disabled { opacity:.5;cursor:not-allowed; }
+:root body :is(a,button,input,select,textarea,summary):focus-visible { outline:3px solid var(--fp-focus);outline-offset:3px; }
+:root body :is(.table,.history-table) { --bs-table-color:var(--fp-text);--bs-table-bg:var(--fp-surface);--bs-table-border-color:var(--fp-border);--bs-table-striped-bg:var(--fp-field);--bs-table-striped-color:var(--fp-text);--bs-table-hover-bg:var(--fp-field);--bs-table-hover-color:var(--fp-text);color:var(--fp-text);background:var(--fp-surface); }
+:root body :is(.table,.history-table) :is(th,td) { color:var(--fp-text);border-color:var(--fp-border); }
+:root body :is(.table,.history-table) th { background:var(--fp-field); }
+:root body :is(.history-table-wrap,.history-table .history-row,.table-responsive) { border-color:var(--fp-border); }
+:root body .history-table .history-row { background:var(--fp-surface); }
+:root body .history-table .history-actions .btn { color:var(--bs-btn-color);background:var(--bs-btn-bg);border-color:var(--bs-btn-border-color); }
+:root body .history-table .history-actions .btn:hover { color:var(--bs-btn-hover-color);background:var(--bs-btn-hover-bg);border-color:var(--bs-btn-hover-border-color); }
+/* Semantic feedback stays distinct on dark surfaces. */
+:root body .alert { color:var(--fp-info);background:var(--fp-info-bg);border-color:#476D94; }
+:root body .alert-success { color:var(--fp-success);background:var(--fp-success-bg);border-color:#4E9471; }
+:root body .alert-danger { color:var(--fp-danger);background:var(--fp-danger-bg);border-color:#A85868; }
+:root body :is(.alert-warning,.alert-warning p) { color:var(--fp-warning);background:var(--fp-warning-bg);border-color:#977D42; }
+:root body .alert :is(a,strong,p) { color:inherit; }
+:root body :is(.field-error,.text-danger,.personalization-blocked) { color:var(--fp-danger)!important; }
+:root body .text-success { color:var(--fp-success)!important; }
+:root body .text-warning { color:var(--fp-warning)!important; }
+:root body :is(.bg-white,.bg-light) { background:var(--fp-surface)!important; }
+:root body :is(.text-bg-light,.text-bg-dark) { background:var(--fp-field)!important;color:var(--fp-text)!important; }
+:root body .dropdown-item { color:var(--fp-text); }
+:root body .dropdown-item:is(:hover,:focus) { color:var(--fp-text);background:var(--fp-field); }
+:root body .dropdown-item.active { color:var(--fp-bg);background:var(--fp-accent); }
+:root body .page-link { background:var(--fp-field);color:var(--fp-text);border-color:var(--fp-border); }
+:root body .active>.page-link { background:var(--fp-accent);color:var(--fp-bg);border-color:var(--fp-accent); }
+:root body :is(.badge,.chip) { border-color:var(--fp-border); }
+:root body .admin-stat.admin-stat-unread { border-color:#A85868;background:var(--fp-danger-bg); }
+:root body :is(.admin-stat-unread strong,.admin-stat-new-comments) { color:var(--fp-danger); }
+:root body .admin-stat-dot { background:var(--fp-danger); }
+:root body .fit-nav { background:var(--fp-bg);border-bottom:1px solid var(--fp-border); }
+:root body .fit-nav.nav-with-banner {
+    background: transparent;
+    border-bottom: 0;
+    backdrop-filter: none;
+}
+:root body .fit-nav.nav-with-banner.is-scrolled {
+    background: rgba(16, 19, 24, .9);
+    backdrop-filter: blur(10px);
+}
+.fit-nav.nav-with-banner .nav-slogan { display:none; }
+:root body .nav-member .navbar-collapse { background:var(--fp-surface);border-color:var(--fp-border); }
+:root body .fit-nav .nav-link { color:var(--fp-text); }
+.fit-nav .navbar-brand { color:#fff;font-weight:900;font-style:oblique 10deg; }
+.fit-nav .navbar-brand span { color:#FF6728; }
+:root body .fit-nav .nav-link:is(:hover,[aria-current="page"]) { color:var(--fp-accent-hover);background:var(--fp-field); }
+:root body .fitpulse-toast { border-color:var(--fp-accent); }
+/* Preserve the homepage artwork and blend its surrounding surfaces into the palette. */
+:root body .home-intro { background:radial-gradient(circle at 78% 0,#FF67281F,transparent 42%),var(--fp-bg); }
+:root body .home-intro::after,:root body .home-hero-image::before { background:linear-gradient(180deg,transparent,var(--fp-bg)); }
+:root body .home-hero-image::before { background:linear-gradient(180deg,var(--fp-bg),transparent); }
+:root body .home-hero-image::after { background:linear-gradient(0deg,var(--fp-bg),transparent); }
+:root body .home-access-section::before { background:linear-gradient(180deg,transparent,var(--fp-bg)); }
+::selection { color:var(--fp-bg);background:var(--fp-focus); }
+
+:root body :is(.trainer-card-image,.trainer-portrait,.program-facts span,.trainer-experience){background:var(--fp-field);color:var(--fp-text);border-color:var(--fp-border)}
+:root body :is(.trainer-about p,.trainer-next-step p,.trainer-facts dt,.meal-instructions strong,.readonly-ingredient small,.recipe-ingredients small,.ingredient-list small,.interactive-ingredient small){color:var(--fp-muted)}
+:root body :is(.plan-author,.unsaved-note){color:var(--fp-accent-hover)!important}
+:root body .form-control.is-invalid,:root body .form-select.is-invalid{border-color:var(--fp-danger)!important}
+:root body .navbar-toggler-icon{filter:none}
+
+:root body .form-select.measurement-type-select{background-image:var(--bs-form-select-bg-img)!important}
+:root body .form-select.meal-activity-select {
+    background-image: var(--bs-form-select-bg-img);
+    background-position: right .75rem center;
+    background-repeat: no-repeat;
+    background-size: 14px 12px;
+}
+
+.meal-catalog-personalization {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: var(--fp-surface);
+    border: 1px solid var(--fp-border);
+    border-radius: 12px;
+}
+.meal-catalog-personalization .ui-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--fp-accent);
+}
+.meal-catalog-personalization h2 {
+    margin: 0 0 4px;
+    font-size: .95rem;
+    font-weight: 700;
+}
+.meal-catalog-personalization p {
+    margin: 0;
+    color: var(--fp-muted);
+    font-size: .85rem;
+}
+#personalization-result { border-top:0;padding-top:0; }
+
+:root body :is(.filter-buttons,.anatomy-buttons) button[aria-pressed="true"]:hover{background:var(--fp-accent-hover);color:var(--fp-bg);border-color:var(--fp-accent-hover)}
+:root body :is(.filter-buttons,.anatomy-buttons) button:focus-visible{outline:3px solid var(--fp-focus);outline-offset:3px}
+
+/* Shared navigation shortcuts retain the existing menu and its positioning. */
+.fit-nav .nav-actions{grid-column:3;grid-row:1;justify-self:end;display:flex;align-items:center;gap:10px;min-width:0;width:max-content}
+.fit-nav.nav-public .nav-actions{display:none}
+.fit-nav .nav-icon-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 44px;color:#fff;text-decoration:none}
+.fit-nav .nav-icon-button:hover{color:#e5e7eb}
+.fit-nav .nav-icon-button .ui-icon{width:23px;height:23px}
+.fit-nav .nav-profile-icon{width:32px;height:32px}
+.fit-nav .nav-profile-background{fill:#535861}
+.fit-nav .nav-icon-button:hover .nav-profile-background{fill:#656b76}
+.fit-nav .nav-notification-dot{position:absolute;top:8px;right:9px;width:8px;height:8px;background:#ff354c;border-radius:50%;pointer-events:none}
+.fit-nav .nav-actions .navbar-toggler{flex-shrink:0;min-height:44px;background:var(--fp-surface);border:1px solid #555a63;color:#fff}
+.fit-nav .nav-actions .navbar-toggler:hover{background:var(--fp-field)}
+.fit-nav .nav-menu-icon{width:22px;height:22px;flex:none}
+@media(max-width:430px){.fit-nav .nav-actions{gap:6px}.fit-nav .nav-actions .navbar-toggler{padding:8px}.fit-nav .nav-actions .menu-button-text{font-size:.8rem}}
+
+@media(max-width:360px){.fit-nav .nav-actions .menu-button-text{display:none}}
+
+.fitpulse-banner {
+    height: calc(var(--fitpulse-header-height, 96px) + min(190px, 22vw));
+    background: var(--fp-bg) url("../images/fitpulse-banner.png") center 28% / cover no-repeat;
+}
+
+@media (max-width: 767px) {
+    .fitpulse-banner {
+        /* Continue the dark lower edge behind the controls so the artwork clears them. */
+        background-position: center max(0px, calc(var(--fitpulse-header-height, 56px) - 7vw));
+        background-repeat: repeat-y;
+    }
+}
+
+.fitpulse-banner + main.page {
+    padding-top: 24px;
+}
+
+.gym-catalog-filters .form-select {
+    background-image: var(--bs-form-select-bg-img);
+}
+
+@media (min-width: 768px) {
+    .gym-catalog-filters {
+        grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto auto;
+        align-items: center;
+    }
+}
+
+.profile-overview .profile-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 0;
+    padding: 18px 0;
+}
+
+.profile-overview :is(.profile-identity, .profile-progress, .profile-actions) {
+    min-width: 0;
+    padding-inline: clamp(14px, 2vw, 26px);
+}
+
+.profile-overview :is(.profile-identity, .profile-progress) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-overview :is(.profile-progress, .profile-actions) {
+    border-inline-start: 1px solid var(--fp-border);
+}
+
+.profile-overview .profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-width: 1px;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.profile-overview .profile-avatar .ui-icon {
+    width: 29px;
+    height: 29px;
+}
+
+.profile-overview .profile-intro h1 {
+    font-size: clamp(1.2rem, 2vw, 1.65rem);
+    line-height: 1.25;
+    letter-spacing: normal;
+}
+
+.profile-overview .profile-username {
+    font-size: .9rem;
+    margin-bottom: 6px;
+}
+
+.profile-overview .privacy-badge {
+    padding: 4px 8px;
+}
+
+.profile-overview .profile-bio {
+    margin: 6px 0 0;
+    font-size: .85rem;
+}
+
+.profile-overview .profile-progress h2 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.profile-overview .profile-progress p {
+    margin: 0 0 8px;
+    font-size: .85rem;
+}
+
+.profile-overview .profile-progress .btn {
+    color: var(--fp-accent-hover);
+    border-color: var(--fp-accent);
+}
+
+.profile-overview .profile-progress .btn:hover {
+    background: var(--fp-accent-soft);
+}
+
+.profile-overview .profile-actions {
+    width: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.profile-overview .profile-section-heading {
+    margin: 28px 0 14px;
+}
+
+.profile-overview .profile-section-heading h2 {
+    margin-bottom: 0;
+}
+
+.profile-overview .profile-tools {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.profile-overview .profile-tool {
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+}
+
+.profile-overview .profile-tool h3 {
+    margin: 0 0 4px;
+    line-height: 1.25;
+}
+
+.profile-overview .profile-tool p {
+    font-size: .82rem;
+    line-height: 1.4;
+}
+
+.profile-overview .tool-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+}
+
+.profile-overview .tool-icon .ui-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.profile-overview .profile-tool > .ui-icon {
+    align-self: center;
+    color: var(--fp-accent-hover);
+}
+
+@media (max-width: 991px) {
+    .profile-overview .profile-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+    .profile-overview .profile-header { grid-template-columns: minmax(0, 1fr); padding: 0 16px; }
+    .profile-overview :is(.profile-identity, .profile-progress, .profile-actions) { padding: 14px 0; }
+    .profile-overview :is(.profile-progress, .profile-actions) {
+        border-inline-start: 0;
+        border-block-start: 1px solid var(--fp-border);
+    }
+}
+
+@media (max-width: 575px) {
+    .profile-overview .profile-tools { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media print {
+    .shopping-page .fitpulse-banner { display: none; }
+    .shopping-page .fitpulse-banner + main.page { padding-top: 0; }
+}

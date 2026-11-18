@@ -25,6 +25,11 @@ public class ProgramController {
     @org.springframework.beans.factory.annotation.Autowired
     private com.fitpulse.service.UserService personalizationUsers;
 
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.fitpulse.service.PersonalDataService personalData;
+    @org.springframework.beans.factory.annotation.Autowired
+    private jakarta.validation.Validator validator;
+
     @ModelAttribute
     public void libraryMembership(Model model, org.springframework.security.core.Authentication authentication) {
         model.addAttribute("exerciseVideos", exerciseVideos.all());
@@ -65,17 +70,12 @@ public class ProgramController {
     }
 
     @GetMapping("/programs")
-    public String library(@RequestParam(defaultValue = "") String q, @RequestParam(required = false) com.fitpulse.model.enums.FitnessGoal goal, @RequestParam(required = false) com.fitpulse.model.enums.ExperienceLevel level, @RequestParam(required = false) com.fitpulse.model.enums.TrainingLocation location, Model m) {
-        String search = q.strip();
-        String needle = search.toLowerCase(java.util.Locale.ROOT);
-        m.addAttribute("templates", service.library().stream().filter(p -> goal == null || p.getGoal() == goal).filter(p -> level == null || p.getExperience() == level).filter(p -> location == null || p.getLocation() == location).filter(p -> needle.isEmpty() || (p.getName() + " " + p.getDescription()).toLowerCase(java.util.Locale.ROOT).contains(needle)).toList());
-        m.addAttribute("q", search);
+    public String library(@RequestParam(required = false) com.fitpulse.model.enums.FitnessGoal goal, @RequestParam(required = false) com.fitpulse.model.enums.ExperienceLevel level, @RequestParam(required = false) com.fitpulse.model.enums.TrainingLocation location, Model m) {
+        m.addAttribute("templates", service.library());
         m.addAttribute("goal", goal);
         m.addAttribute("level", level);
         m.addAttribute("location", location);
         m.addAttribute("goals", com.fitpulse.model.enums.FitnessGoal.values());
-        m.addAttribute("levels", com.fitpulse.model.enums.ExperienceLevel.values());
-        m.addAttribute("locations", com.fitpulse.model.enums.TrainingLocation.values());
         return "programs/library";
     }
 
@@ -150,13 +150,10 @@ public class ProgramController {
 
     @GetMapping("/meal-plans")
     public String meals(@RequestParam(defaultValue = "") String q, @RequestParam(required = false) com.fitpulse.model.enums.FitnessGoal goal, Model m) {
-        String search = q.strip();
         var library = service.mealLibrary();
-        String needle = search.toLowerCase(java.util.Locale.ROOT);
-        var filtered = library.stream().filter(p -> goal == null || p.getGoal() == goal)
-                .filter(p -> needle.isEmpty() || (p.getDisplayName() + " " + p.getName() + " " + p.getDisplayDescription() + " " + p.getExampleFoods()).toLowerCase(java.util.Locale.ROOT).contains(needle)).toList();
+        var filtered = library.stream().filter(p -> goal == null || p.getGoal() == goal).toList();
         m.addAttribute("mealTemplates", filtered);
-        m.addAttribute("q", search);
+
         m.addAttribute("goal", goal);
         var covers = new java.util.LinkedHashMap<Long, String>();
         var fallbackCovers = new java.util.LinkedHashMap<Long, String>();
@@ -206,7 +203,7 @@ public class ProgramController {
 
     @InitBinder("personalization")
     public void personalizationFields(org.springframework.web.bind.WebDataBinder binder) {
-        binder.setAllowedFields("sex", "age", "height", "weight", "activity", "eligible");
+        binder.setAllowedFields("sex", "birthDate", "height", "weight", "activity", "eligible");
     }
 
     @GetMapping("/meal-plans/{id}/personalize")
@@ -214,11 +211,26 @@ public class ProgramController {
         synchronized (session) {
             session.removeAttribute(MEAL_DRAFT);
         }
-        model.addAttribute("personalization", new com.fitpulse.model.dto.MealPersonalizationForm());
+        var form=new com.fitpulse.model.dto.MealPersonalizationForm();
+        loadPersonalData(form);
+        model.addAttribute("personalization", form);
         return personalizationPage(id, model);
     }
 
+    private void loadPersonalData(com.fitpulse.model.dto.MealPersonalizationForm form) {
+        form.setEligible(true);
+        var user=personalizationUsers.getCurrentUser();
+        if(user.getSex()!=null)form.setSex(user.getSex());
+        if(user.getBirthDate()!=null)form.setBirthDate(user.getBirthDate());
+        if(user.getHeight()!=null)form.setHeight(user.getHeight());
+        var currentWeight=personalData.weight(user);
+        if(currentWeight!=null)form.setWeight(currentWeight);
+        if(form.getBirthDate()!=null)form.setAge(java.time.Period.between(form.getBirthDate(),java.time.LocalDate.now()).getYears());
+    }
+
     private String personalizationPage(Long id, Model model) {
+        model.addAttribute("personalProfile", personalizationUsers.getCurrentUser());
+        model.addAttribute("profileWeight", personalData.weight(personalizationUsers.getCurrentUser()));
         var meal = service.mealTemplate(id);
         if (!meal.isActive())
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
@@ -228,15 +240,34 @@ public class ProgramController {
         return "programs/personalize-meal";
     }
 
+    @PostMapping("/meal-plans/{id}/weight")
+    public org.springframework.http.ResponseEntity<?> updateWeight(@PathVariable Long id, @RequestParam java.math.BigDecimal weight, jakarta.servlet.http.HttpServletRequest request) {
+        service.mealTemplate(id);
+        if(weight.compareTo(new java.math.BigDecimal("35"))<0 || weight.compareTo(new java.math.BigDecimal("300"))>0 || weight.stripTrailingZeros().scale()>2)
+            return org.springframework.http.ResponseEntity.badRequest().body(java.util.Map.of("error","Въведи тегло от 35 до 300 кг с до два десетични знака."));
+        personalData.saveWeight(personalizationUsers.getCurrentUser(),weight);
+        request.getSession().removeAttribute(MEAL_DRAFT);
+        if(java.util.Optional.ofNullable(request.getHeader("Accept")).orElse("").contains("application/json"))
+            return org.springframework.http.ResponseEntity.ok().cacheControl(org.springframework.http.CacheControl.noStore()).body(java.util.Map.of("weight",weight));
+        return org.springframework.http.ResponseEntity.status(303).location(java.net.URI.create(request.getContextPath()+"/meal-plans/"+id+"/personalize")).build();
+    }
+
     @PostMapping("/meal-plans/{id}/copy")
     public String copyMeal(@PathVariable Long id,
-                           @Valid @ModelAttribute("personalization") com.fitpulse.model.dto.MealPersonalizationForm form,
+                           @ModelAttribute("personalization") com.fitpulse.model.dto.MealPersonalizationForm form,
                            org.springframework.validation.BindingResult binding, @RequestParam(defaultValue = "calculate") String action,
                            @RequestParam(defaultValue = "") String previewToken, Model model, jakarta.servlet.http.HttpSession session,
                            org.springframework.security.core.Authentication authentication, org.springframework.web.servlet.mvc.support.RedirectAttributes flash) {
         synchronized (session) {
             if (authentication == null || !authentication.isAuthenticated() || authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)
                 throw new org.springframework.security.access.AccessDeniedException("Необходим е вход.");
+            loadPersonalData(form);
+            if(action.equals("confirm"))form.setWeight(personalData.weight(personalizationUsers.getCurrentUser()));
+            if(form.getBirthDate()==null)binding.rejectValue("birthDate","required","Въведи дата на раждане.");
+            for(var violation:validator.validate(form)) {
+                String field=violation.getPropertyPath().toString();
+                if(!binding.hasFieldErrors(field))binding.rejectValue(field,"invalid",violation.getMessage());
+            }
             if (binding.hasErrors() || (!action.equals("calculate") && !action.equals("confirm"))) {
                 session.removeAttribute(MEAL_DRAFT);
                 if (!binding.hasErrors()) model.addAttribute("error", "Изберете изчисляване или добавяне.");
@@ -248,6 +279,9 @@ public class ProgramController {
                 if (action.equals("calculate")) {
                     session.removeAttribute(MEAL_DRAFT);
                     var preview = service.mealPreview(id, form);
+                    var profile=personalizationUsers.getCurrentUserProfileUpdateRequest();
+                    profile.setSex(form.getSex());profile.setBirthDate(form.getBirthDate());profile.setHeight(form.getHeight());profile.setWeight(form.getWeight());
+                    personalizationUsers.updateCurrentUserProfile(profile);
                     String token = java.util.UUID.randomUUID().toString();
                     session.setAttribute(MEAL_DRAFT, new MealDraft(userId, id, inputKey, token, preview, null));
                     model.addAttribute("preview", preview);

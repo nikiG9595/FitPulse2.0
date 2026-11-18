@@ -13,6 +13,8 @@ public interface UserService {
 
     User getCurrentUser();
 
+    boolean consumeFirstLogin();
+
     List<User> getAllUsers();
 
     void changeRole(UUID userId, UserRole newRole);

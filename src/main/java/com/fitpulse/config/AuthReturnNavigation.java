@@ -66,7 +66,7 @@ public class AuthReturnNavigation implements AuthenticationSuccessHandler {
     public String pending(HttpServletRequest request) {
         Object value = request.getSession().getAttribute(KEY);
         String safe = internal(value instanceof String ? (String) value : null, request);
-        return safe == null ? "/" : safe;
+        return safe == null ? "/profile" : safe;
     }
 
     public void beginAuthentication(HttpServletRequest request, HttpServletResponse response) throws java.io.IOException {
@@ -101,10 +101,9 @@ public class AuthReturnNavigation implements AuthenticationSuccessHandler {
         if (explicit != null) target = internal(explicit, request);
         else if (request.getParameter("error") != null || request.getParameter("registered") != null)
             target = pending(request);
-        // A direct /login or /register deliberately resets any stale destination to home.
+        // A direct /login or /register deliberately resets any stale destination to the profile.
         // Security's entry point supplies returnTo explicitly for intercepted protected GET pages.
-        cache.removeRequest(request, response);
-        request.getSession().setAttribute(KEY, target == null ? "/" : target);
+        request.getSession().setAttribute(KEY, target == null ? "/profile" : target);
         return pending(request);
     }
 
@@ -189,11 +188,34 @@ public class AuthReturnNavigation implements AuthenticationSuccessHandler {
         return safe;
     }
 
+    public void clear(HttpServletRequest request, HttpServletResponse response) {
+        cache.removeRequest(request,response);
+        request.getSession().removeAttribute(KEY);
+    }
+
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws java.io.IOException {
-        String explicit = internal(request.getParameter("returnTo"), request);
-        String target = accessible(explicit == null ? pending(request) : explicit, authentication, request);
+        var saved = cache.getRequest(request, response);
+        String savedTarget = null;
+        if(saved!=null){
+            try { var uri=URI.create(saved.getRedirectUrl()); savedTarget=internal(uri.getRawPath()+(uri.getRawQuery()==null?"":"?"+uri.getRawQuery()),request); }
+            catch(IllegalArgumentException ignored) { }
+        }
+        String target = savedTarget==null ? "/profile" : accessible(savedTarget, authentication, request);
+        if(target.equals("/"))target="/profile";
+        boolean firstLogin=users.consumeFirstLogin();
+        if(firstLogin){
+            request.getSession().setAttribute("FITPULSE_NEW_USER",true);
+        }
+        if(!firstLogin) {
+            String greeting=switch(java.util.Objects.toString(users.getCurrentUser().getSex(),"")) {
+                case "MALE" -> "Добре дошъл отново!";
+                case "FEMALE" -> "Добре дошла отново!";
+                default -> "Здравей отново!";
+            };
+            request.getSession().setAttribute("FITPULSE_LOGIN_TOAST",greeting);
+        }
         cache.removeRequest(request, response);
         request.getSession().removeAttribute(KEY);
         request.getSession().removeAttribute("SPRING_SECURITY_LAST_EXCEPTION");
