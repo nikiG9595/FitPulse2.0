@@ -12,18 +12,53 @@ import com.fitpulse.exception.FitPulseException; import com.fitpulse.model.dto.*
  public Gym published(String slug){return gyms.findBySlugAndStatus(slug,ContentStatus.PUBLISHED).orElseThrow(()->new FitPulseException("Фитнесът не е намерен."));}
  public Gym byId(Long id){return gyms.findById(id).orElseThrow(()->new FitPulseException("Фитнесът не е намерен."));}
  public Gym publishedById(Long id){Gym gym=byId(id);if(gym.getStatus()!=ContentStatus.PUBLISHED)throw new FitPulseException("Фитнесът не е публикуван.");return gym;}
- public Review ownReview(Gym gym){return reviews.findByGymAndUser(gym,users.getCurrentUser()).orElse(null);}
- public List<Review> reviews(Gym gym){return reviews.findAllByGymAndStatusOrderByCreatedAtDesc(gym,ContentStatus.PUBLISHED);}
- public double rating(Gym gym){return reviews.averageForGym(gym);}
+ public Review ownReview(Gym gym){
+  return reviews.findByGymAndUser(gym,users.getCurrentUser())
+          .filter(review -> !isRemoved(review) && !GymContent.text(review.getComment()).isBlank())
+          .orElse(null);
+ }
+ public List<Review> reviews(Gym gym){
+  return reviews.findAllByGymAndStatusOrderByCreatedAtDescIdDesc(gym,ContentStatus.PUBLISHED).stream()
+          .filter(review -> !GymContent.text(review.getComment()).isBlank()).toList();
+ }
  public boolean favorite(Gym gym){return favorites.findByUserAndGym(users.getCurrentUser(),gym).isPresent();}
  @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public void toggleFavorite(Long gymId){User u=userLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();Gym g=publishedById(gymId);favorites.findByUserAndGym(u,g).ifPresentOrElse(favorites::delete,()->{FavoriteGym f=new FavoriteGym();f.setUser(u);f.setGym(g);favorites.save(f);});}
  public List<FavoriteGym> favorites(){return favorites.findAllByUserOrderByCreatedAtDesc(users.getCurrentUser()).stream().filter(f->f.getGym().getStatus()==ContentStatus.PUBLISHED).toList();}
  @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public Review review(Long gymId,ReviewForm form){
-  if(form.getRating()<1||form.getRating()>5||GymContent.text(form.getComment()).length()>2000)throw new FitPulseException("Изберете оценка от 1 до 5 и ревю до 2000 знака.");
+  String text = GymContent.text(form.getComment());
+  if (text.isBlank() || text.length() > 2000) {
+   throw new FitPulseException("Въведи коментар от 1 до 2000 знака.");
+  }
   User u=userLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();Gym g=publishedById(gymId);
-  Review r=reviews.lockOwned(g,u).orElseGet(Review::new);r.setGym(g);r.setUser(u);r.setRating(form.getRating());r.setComment(GymContent.text(form.getComment()));
-  if(r.getStatus()==ContentStatus.HIDDEN||r.getStatus()==ContentStatus.PENDING)r.setStatus(ContentStatus.PENDING);else r.setStatus(ContentStatus.PUBLISHED);
+  Review r = reviews.lockOwned(g,u).orElseGet(Review::new);
+  boolean needsModeration = r.getStatus() == ContentStatus.HIDDEN || r.getStatus() == ContentStatus.PENDING
+          || r.getStatus() == ContentStatus.REJECTED;
+  if (r.getId() != null && (isRemoved(r) || GymContent.text(r.getComment()).isBlank())) {
+   r.setCreatedAt(java.time.LocalDateTime.now());
+  }
+  r.setGym(g);
+  r.setUser(u);
+  r.setComment(text);
+  r.setAdminReviewed(false);
+  r.setStatus(needsModeration ? ContentStatus.PENDING : ContentStatus.PUBLISHED);
   return reviews.save(r);
+ }
+ @Transactional public String deleteComment(Long id) {
+  User user = users.getCurrentUser();
+  Review review = reviews.lockById(id).orElseThrow(() -> new FitPulseException("Коментарът не е намерен."));
+  boolean admin = user.getRole() == com.fitpulse.model.enums.UserRole.ADMIN;
+  if (!admin && !review.getUser().getId().equals(user.getId())) {
+   throw new org.springframework.security.access.AccessDeniedException("Нямаш право да изтриеш този коментар.");
+  }
+  if (!isRemoved(review)) {
+   boolean publishable = review.getStatus() == ContentStatus.PUBLISHED && !admin;
+   review.setStatus(publishable ? ContentStatus.ARCHIVED : ContentStatus.REJECTED);
+   review.setAdminReviewed(true);
+  }
+  return review.getGym().getSlug();
+ }
+ private static boolean isRemoved(Review review) {
+  return review.getStatus() == ContentStatus.ARCHIVED || review.getStatus() == ContentStatus.REJECTED;
  }
  @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED) public String report(Long reviewId,String reason){User u=userLocks.lockForLibrary(users.getCurrentUser().getId()).orElseThrow();Review r=reviews.findById(reviewId).orElseThrow(()->new FitPulseException("Ревюто не е намерено."));if(r.getStatus()!=ContentStatus.PUBLISHED||r.getGym().getStatus()!=ContentStatus.PUBLISHED)throw new FitPulseException("Ревюто не е достъпно.");String message=GymContent.text(reason);if(message.isBlank()||message.length()>500)throw new FitPulseException("Въведете причина до 500 знака.");if(reports.existsByReviewAndReporter(r,u))throw new FitPulseException("Вече сте докладвали това ревю.");ReviewReport x=new ReviewReport();x.setReview(r);x.setReporter(u);x.setReason(message);reports.save(x);return r.getGym().getSlug();}
  @Transactional public void suggest(GymSuggestionForm f){GymSuggestion s=new GymSuggestion();s.setSubmittedBy(users.getCurrentUser());s.setName(GymContent.text(f.getName()));s.setCityName(GymContent.text(f.getCityName()));s.setAddress(GymContent.text(f.getAddress()));s.setWebsiteUrl(GymContent.text(f.getWebsiteUrl()));s.setDetails(GymContent.text(f.getDetails()));s.setPhone(GymContent.text(f.getPhone()));s.setPriceInfo(GymContent.text(f.getPriceInfo()));s.setImageUrl(GymContent.text(f.getImageUrl()));s.setStatus(ContentStatus.PENDING);suggestions.save(s);}
@@ -62,7 +97,7 @@ import com.fitpulse.exception.FitPulseException; import com.fitpulse.model.dto.*
   }
   s.setStatus(status);s.setAdminNote(GymContent.text(note));
  }
- @Transactional public void reviewStatus(Long id,ContentStatus status){if(!Set.of(ContentStatus.PUBLISHED,ContentStatus.HIDDEN,ContentStatus.PENDING).contains(status))throw new FitPulseException("Невалиден статус на ревю.");Review r=reviews.lockById(id).orElseThrow(()->new FitPulseException("Ревюто не е намерено."));r.setStatus(status);}
+ @Transactional public void reviewStatus(Long id,ContentStatus status){if(!Set.of(ContentStatus.PUBLISHED,ContentStatus.HIDDEN,ContentStatus.PENDING).contains(status))throw new FitPulseException("Невалиден статус на ревю.");Review r=reviews.lockById(id).orElseThrow(()->new FitPulseException("Ревюто не е намерено."));if(isRemoved(r))throw new FitPulseException("Коментарът е изтрит.");r.setStatus(status);}
  @Transactional public void resolveReport(Long id){reports.findById(id).orElseThrow(()->new FitPulseException("Сигналът не е намерен.")).setStatus(ContentStatus.RESOLVED);}
  public long publishedCount(){return gyms.countByStatus(ContentStatus.PUBLISHED);} public long pendingCount(){return suggestions.countByStatus(ContentStatus.PENDING);} public long reportCount(){return reports.countByStatus(ContentStatus.OPEN);}
  private City cityForGym(GymForm form){

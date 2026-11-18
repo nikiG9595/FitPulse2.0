@@ -1,19 +1,99 @@
-<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head th:replace="~{fragments/head :: head(${gym.name})}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page">
-<a class="back-link" th:href="@{/gyms}">← Каталог с фитнеси</a><div th:if="${success}" class="alert alert-success" th:text="${success}" role="status"></div><div th:if="${error}" class="alert alert-warning" th:text="${error}" role="alert"></div>
-<div class="fit-card"><div class="row g-4"><div class="col-lg-7"><div class="photo-grid"><div th:each="p:${gymPhotos}"><img loading="lazy" th:src="${p.imageUrl}" th:alt="${p.altText}" onerror="this.hidden=true;this.nextElementSibling.hidden=false;"><p hidden>Снимката не може да се зареди.</p></div></div><p class="text-muted" th:if="${#lists.isEmpty(gymPhotos)}">Все още няма добавени снимки на тази зала.</p></div>
-<div class="col-lg-5"><span class="eyebrow" th:text="${gym.city.name}"></span><h1 th:text="${gym.name}"></h1><p th:text="${#strings.isEmpty(#strings.trim(gym.description))?'Няма добавено описание.':gym.description}"></p><dl>
-<dt>Град</dt><dd th:text="${gym.city.name}"></dd><dt>Адрес</dt><dd th:text="${#strings.isEmpty(#strings.trim(gym.address))?'Няма публикуван адрес.':gym.address}"></dd>
-<dt>Телефон</dt><dd><a th:if="${!#strings.isEmpty(#strings.trim(gym.phone))}" th:href="${'tel:'+gym.phone}" th:text="${gym.phone}"></a><span th:if="${#strings.isEmpty(#strings.trim(gym.phone))}">Няма публикуван телефон.</span></dd>
-<dt>Уебсайт</dt><dd><a th:if="${websiteUsable}" th:href="${gym.websiteUrl}" target="_blank" rel="noopener noreferrer" th:text="${gym.websiteUrl}"></a><span th:unless="${websiteUsable}">Няма публикуван валиден уебсайт.</span></dd>
-<dt>Работно време</dt><dd th:text="${#strings.isEmpty(#strings.trim(gym.openingHours))?'Няма публикувано работно време.':gym.openingHours}"></dd><dt>Услуги</dt><dd th:text="${#strings.isEmpty(#strings.trim(gym.services))?'Няма публикувана информация.':gym.services}"></dd>
-<dt>Цени</dt><dd th:text="${#strings.isEmpty(#strings.trim(gym.priceInfo))?'Няма публикувани цени. Свържете се със залата.':gym.priceInfo}"></dd></dl>
-<a class="btn btn-outline-dark" target="_blank" rel="noopener noreferrer" th:if="${gym.latitude!=null and gym.longitude!=null}" th:href="@{'https://www.openstreetmap.org/?mlat='+${gym.latitude}+'&mlon='+${gym.longitude}+'#map=17/'+${gym.latitude}+'/'+${gym.longitude}}">Отвори картата</a>
-<form sec:authorize="isAuthenticated()" class="d-inline" method="post" th:action="@{/gyms/{id}/favorite(id=${gym.id})}"><button class="btn btn-pulse" th:text="${favorite?'Премахни от любими':'Добави в любими'}"></button></form></div></div></div>
-<section class="mt-5" id="reviews" style="scroll-margin-top:120px"><h2>Оценки и ревюта</h2><p th:if="${#lists.isEmpty(reviews)}">Все още няма публикувани оценки за тази зала.</p><p th:unless="${#lists.isEmpty(reviews)}"><strong th:text="${#numbers.formatDecimal(averageRating,1,1)}+' / 5 ★'"></strong> · <span th:text="${#lists.size(reviews)}+' оценки'"></span></p>
-<p sec:authorize="isAnonymous()"><a class="link-pulse" th:href="@{/login(returnTo=${'/gyms/'+gym.slug+'#reviews'})}">Влез в профила си</a>, за да оставиш оценка или ревю.</p>
-<form sec:authorize="isAuthenticated()" class="fit-card mb-4" method="post" th:action="@{/gyms/{id}/review(id=${gym.id})}" th:object="${reviewForm}"><h3 class="h5" th:text="${ownReview!=null?'Редактирай своята оценка и ревю':'Твоята оценка и ревю'}"></h3><p>Един потребител има една оценка за залата. Следващият запис редактира съществуващата.</p><p th:if="${ownReview!=null and ownReview.status.name()!='PUBLISHED'}">Твоето ревю е скрито или очаква модерация. Редакцията няма да го публикува автоматично.</p>
-<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}" role="alert"><ul><li th:each="e:${#fields.detailedErrors()}" th:text="${e.message}"></li></ul></div>
-<fieldset><legend class="h6">Оценка от 1 до 5 звезди</legend><div class="d-flex flex-wrap gap-3"><label th:each="n:${#numbers.sequence(1,5)}"><input type="radio" th:field="*{rating}" th:value="${n}" required> <span th:text="${n}+' ★'"></span></label></div></fieldset>
-<label for="gym-comment" class="mt-3">Ревю (по желание)</label><textarea id="gym-comment" class="form-control" th:field="*{comment}" maxlength="2000" rows="4"></textarea><button class="btn btn-pulse mt-3" th:text="${ownReview!=null?'Запази промените':'Запази оценката'}"></button></form>
-<article class="fit-card mb-3" th:each="r:${reviews}"><strong th:text="${r.user.displayName?:r.user.username}"></strong><span class="ms-2" th:text="${r.rating}+' / 5 ★'"></span><p th:if="${!#strings.isEmpty(r.comment)}" th:text="${r.comment}"></p><details sec:authorize="isAuthenticated()"><summary class="small link-pulse">Докладвай ревюто</summary><form method="post" th:action="@{/reviews/{id}/report(id=${r.id})}"><label th:for="'report-'+${r.id}">Причина</label><input th:id="'report-'+${r.id}" class="form-control form-control-sm" name="reason" required maxlength="500"><button class="btn btn-link btn-sm">Изпрати сигнал</button></form></details></article>
-</section></main></body></html>
+<!doctype html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head(${gym.name})}"></head>
+<body class="page-bg">
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page">
+    <a class="back-link" th:href="@{/gyms}">← Каталог с фитнеси</a>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}" role="status"></div>
+    <div th:if="${error}" class="alert alert-warning" th:text="${error}" role="alert"></div>
+
+    <div class="gym-detail-layout">
+        <section class="fit-card gym-detail-info" aria-labelledby="gym-title">
+            <header class="gym-detail-heading">
+                <span th:replace="~{fragments/gym-wordmark :: wordmark(${gym.name})}"></span>
+                <div>
+                    <span class="eyebrow" th:text="${gym.city.name}"></span>
+                    <h1 id="gym-title" th:text="${gym.name}"></h1>
+                    <p th:if="${!#strings.isEmpty(#strings.trim(gym.address))}" th:text="${gym.address}"></p>
+                </div>
+            </header>
+            <p class="gym-detail-description" th:if="${!#strings.isEmpty(#strings.trim(gym.description))}" th:text="${gym.description}"></p>
+            <dl class="gym-detail-facts">
+                <div th:if="${!#strings.isEmpty(#strings.trim(gym.phone))}">
+                    <dt>Телефон</dt>
+                    <dd><a class="gym-text-link" th:href="${'tel:'+gym.phone}" th:text="${gym.phone}"></a></dd>
+                </div>
+                <div th:if="${websiteUsable}">
+                    <dt>Уебсайт</dt>
+                    <dd><a class="gym-text-link" th:href="${gym.websiteUrl}" target="_blank" rel="noopener noreferrer">Посети сайта</a></dd>
+                </div>
+                <div th:if="${!#strings.isEmpty(#strings.trim(gym.openingHours))}">
+                    <dt>Работно време</dt><dd th:text="${gym.openingHours}"></dd>
+                </div>
+                <div th:if="${!#strings.isEmpty(#strings.trim(gym.services))}">
+                    <dt>Услуги</dt><dd th:text="${gym.services}"></dd>
+                </div>
+                <div th:if="${!#strings.isEmpty(#strings.trim(gym.priceInfo))}">
+                    <dt>Цени</dt><dd th:text="${gym.priceInfo}"></dd>
+                </div>
+            </dl>
+            <div class="gym-detail-actions">
+                <a class="gym-text-link" th:if="${mapsUrl}" th:href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                   th:text="${hotelMap ? 'Виж комплекса в Google Maps' : 'Виж в Google Maps'}"></a>
+                <a class="gym-text-link" th:if="${mapsUrl==null and gym.latitude!=null and gym.longitude!=null}" target="_blank" rel="noopener noreferrer"
+                   th:href="@{'https://www.openstreetmap.org/?mlat='+${gym.latitude}+'&mlon='+${gym.longitude}+'#map=17/'+${gym.latitude}+'/'+${gym.longitude}}">Отвори картата</a>
+                <form sec:authorize="isAuthenticated()" method="post" th:action="@{/gyms/{id}/favorite(id=${gym.id})}">
+                    <button class="btn btn-outline-dark btn-sm" th:text="${favorite?'Премахни от любими':'Добави в любими'}"></button>
+                </form>
+            </div>
+            <div class="gym-detail-photos" th:unless="${#lists.isEmpty(gymPhotos)}">
+                <img th:each="photo:${gymPhotos}" loading="lazy" th:src="@{${photo.imageUrl}}" th:alt="${photo.altText}" onerror="this.hidden=true;">
+            </div>
+        </section>
+
+        <section class="fit-card gym-comments" id="reviews" aria-labelledby="gym-comments-heading">
+            <h2 id="gym-comments-heading">Коментари</h2>
+            <p sec:authorize="isAnonymous()">
+                <a class="gym-text-link" th:href="@{/login(returnTo=${'/gyms/'+gym.slug+'#reviews'})}">Влез в профила си</a>, за да добавиш коментар.
+            </p>
+            <div sec:authorize="isAuthenticated()" class="gym-comment-editor">
+                <form method="post" th:action="@{/gyms/{id}/review(id=${gym.id})}" th:object="${reviewForm}">
+                    <label for="gym-comment" th:text="${ownReview==null?'Добави коментар':'Редактирай своя коментар'}"></label>
+                    <p class="small text-muted" th:if="${ownReview!=null and ownReview.status.name()!='PUBLISHED'}">Коментарът ти е скрит или очаква преглед от администратор.</p>
+                    <textarea id="gym-comment" class="form-control" th:field="*{comment}" th:errorclass="is-invalid"
+                              maxlength="2000" rows="3" required></textarea>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" role="alert"></p>
+                    <button class="btn btn-pulse btn-sm mt-2" th:text="${ownReview==null?'Публикувай коментара':'Запази промените'}"></button>
+                </form>
+                <form th:if="${ownReview!=null}" method="post" class="mt-2" th:action="@{/reviews/{id}/delete(id=${ownReview.id})}">
+                    <button class="gym-text-link" type="submit">Изтрий своя коментар</button>
+                </form>
+            </div>
+            <p class="text-muted mb-0" th:if="${#lists.isEmpty(reviews)}">Все още няма коментари. Бъди първият, който ще сподели мнение.</p>
+            <article class="gym-comment" th:each="comment:${reviews}">
+                <header>
+                    <strong th:text="${comment.user.username}"></strong>
+                    <time th:attr="datetime=${comment.createdAt}" th:text="${#temporals.format(comment.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
+                </header>
+                <p class="gym-comment-text" th:text="${comment.comment}"></p>
+                <div class="gym-comment-actions" sec:authorize="isAuthenticated()">
+                    <details>
+                        <summary class="gym-text-link">Докладвай</summary>
+                        <form method="post" class="mt-2" th:action="@{/reviews/{id}/report(id=${comment.id})}">
+                            <label th:for="'report-'+${comment.id}">Причина</label>
+                            <input th:id="'report-'+${comment.id}" class="form-control form-control-sm" name="reason" required maxlength="500">
+                            <button class="gym-text-link mt-2" type="submit">Изпрати сигнал</button>
+                        </form>
+                    </details>
+                    <form sec:authorize="hasRole('ADMIN')" th:if="${ownReview==null or ownReview.id!=comment.id}"
+                          method="post" th:action="@{/reviews/{id}/delete(id=${comment.id})}">
+                        <button class="gym-text-link" type="submit">Изтрий коментара</button>
+                    </form>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
+</body>
+</html>

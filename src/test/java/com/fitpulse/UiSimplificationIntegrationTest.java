@@ -62,31 +62,75 @@ class UiSimplificationIntegrationTest {
         MealPlanTemplate t=new MealPlanTemplate();t.setName("Оригинален режим");t.setDescription("Описание");t.setGoal(FitnessGoal.MUSCLE);t.setMeals("Меню");t.setDisclaimer("Пример");t.setWeeklyMenu(mapper.writeValueAsString(new WeeklyMenu("FitPulse","",days)));return meals.saveAndFlush(t);
     }
 
-    @Test void gymCatalogSortsAndDisplaysOnlyPublishedFitPulseRatings() throws Exception {
+    @Test void gymCatalogLinksToGymDetailsAndTheExactMapsPlaceIsOnTheDetailsPage() throws Exception {
         City city = new City();
         city.setName("Catalog test city");
         city.setSlug("catalog-test-city");
         entityManager.persist(city);
 
-        Gym firstByName = catalogGym(city, "Alpha Gym", "alpha-gym-test");
-        Gym firstByRating = catalogGym(city, "Zeta Gym", "zeta-gym-test");
-        firstByRating.setPriceInfo("7 €");
-        for (Gym gym : List.of(firstByName, firstByRating)) {
-            Review review = new Review();
-            review.setGym(gym);
-            review.setUser(account);
-            review.setRating(gym == firstByName ? 5 : 4);
-            review.setStatus(gym == firstByName ? ContentStatus.HIDDEN : ContentStatus.PUBLISHED);
-            entityManager.persist(review);
-        }
+        catalogGym(city, "Zeta Gym", "fitness-flex-ruse");
+        catalogGym(city, "Alpha Gym", "alpha-gym-test");
         entityManager.flush();
 
-        var rated = mvc.perform(get("/gyms").param("city", city.getSlug()))
+        var alphabetical = mvc.perform(get("/gyms").param("city", city.getSlug()))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        assertThat(rated).containsPattern("(?s)Zeta Gym.*7 €.*4,0 / 5.*Alpha Gym.*Все още няма оценки");
-        var alphabetical = mvc.perform(get("/gyms").param("city", city.getSlug()).param("sort", "name"))
+        assertThat(alphabetical).containsPattern("(?s)Alpha Gym.*Zeta Gym")
+                .contains("href=\"/gyms/fitness-flex-ruse\"")
+                .doesNotContain("query_place_id=");
+        var details = mvc.perform(get("/gyms/fitness-flex-ruse"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        assertThat(alphabetical).containsPattern("(?s)Alpha Gym.*Zeta Gym");
+        assertThat(details).contains("query_place_id=ChIJsdlNI-9hrkARq0LNbzWxlCg", "target=\"_blank\"");
+    }
+
+    @Test void gymCommentsValidateEscapeAndEnforceDeletionRights() throws Exception {
+        City city = new City();
+        city.setName("Comment test city");
+        city.setSlug("comment-test-city");
+        entityManager.persist(city);
+        Gym gym = catalogGym(city, "Comment test gym", "comment-test-gym");
+        Review legacy = new Review();
+        legacy.setGym(gym);
+        legacy.setUser(account);
+        legacy.setRating(5);
+        legacy.setComment("Old gym review");
+        entityManager.persist(legacy);
+
+        User moderator = new User();
+        moderator.setUsername("gym-comment-moderator");
+        moderator.setEmail("gym-comment-moderator@example.com");
+        moderator.setPassword(account.getPassword());
+        moderator.setRole(UserRole.MEMBER);
+        users.saveAndFlush(moderator);
+        String page = "/gyms/" + gym.getSlug();
+        String commentUrl = "/gyms/" + gym.getId() + "/review";
+        String deleteUrl = "/reviews/" + legacy.getId() + "/delete";
+
+        mvc.perform(get(page)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Old gym review")));
+        mvc.perform(post(commentUrl).with(user(account.getUsername())).with(csrf()).param("comment", "  "))
+                .andExpect(model().attributeHasFieldErrors("reviewForm", "comment"));
+        mvc.perform(post(commentUrl).with(user(account.getUsername())).with(csrf()).param("comment", "<script>alert(1)</script>"))
+                .andExpect(redirectedUrl(page + "#reviews"));
+        mvc.perform(get(page)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("&lt;script&gt;alert(1)&lt;/script&gt;")));
+        assertThat(legacy.getRating()).isEqualTo(5);
+
+        mvc.perform(post(deleteUrl).with(user(moderator.getUsername()).roles("MEMBER")).with(csrf()))
+                .andExpect(status().isForbidden());
+        mvc.perform(post(deleteUrl).with(user(account.getUsername()).roles("MEMBER")).with(csrf()))
+                .andExpect(redirectedUrl(page + "#reviews"));
+        assertThat(legacy.getStatus()).isEqualTo(ContentStatus.ARCHIVED);
+        assertThat(legacy.getRating()).isEqualTo(5);
+
+        mvc.perform(post(commentUrl).with(user(account.getUsername()).roles("MEMBER")).with(csrf()).param("comment", "New gym comment"))
+                .andExpect(redirectedUrl(page + "#reviews"));
+        moderator.setRole(UserRole.ADMIN);
+        users.saveAndFlush(moderator);
+        mvc.perform(post(deleteUrl).with(user(moderator.getUsername()).roles("ADMIN")).with(csrf()))
+                .andExpect(redirectedUrl(page + "#reviews"));
+        mvc.perform(get(page)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Все още няма коментари.")));
+        assertThat(legacy.getRating()).isEqualTo(5);
     }
 
     private Gym catalogGym(City city, String name, String slug) {
@@ -116,6 +160,22 @@ class UiSimplificationIntegrationTest {
         mvc.perform(get("/gyms").session(session)).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("Добре дошъл отново!")));
         mvc.perform(get("/profile").session(session)).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("id=\"login-toast\""))));
     }
+    @Test void loginAcceptsEmailIgnoringCaseAndUsesExistingAccount() throws Exception {
+        String email = account.getEmail().toUpperCase(Locale.ROOT);
+        var result = mvc.perform(post("/login").with(csrf())
+                        .param("username", email).param("password", "password123"))
+                .andExpect(redirectedUrl("/profile")).andReturn();
+        var session = (MockHttpSession) result.getRequest().getSession(false);
+        var context = (org.springframework.security.core.context.SecurityContext)
+                session.getAttribute("SPRING_SECURITY_CONTEXT");
+        assertThat(context.getAuthentication().getName()).isEqualTo(account.getUsername());
+
+        mvc.perform(post("/login").with(csrf()).param("username", email).param("password", "incorrect"))
+                .andExpect(redirectedUrl("/login?error"));
+        mvc.perform(get("/login").param("error", "")).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Невалидни данни за вход")));
+    }
+
     @Test void protectedSavedRequestWinsOverLoginOrigin() throws Exception {
         account.setWelcomeShown(false);users.saveAndFlush(account);
         var initial=mvc.perform(get("/progress")).andExpect(status().is3xxRedirection()).andReturn();

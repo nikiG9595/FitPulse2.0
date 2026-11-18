@@ -5,7 +5,26 @@ import com.fitpulse.exception.FitPulseException; import com.fitpulse.model.dto.*
  @BeforeEach void setup(){service=new GymDirectoryService(cities,gyms,photos,reviews,favorites,reports,suggestions,users);}
  @Test void publishedGymOnly(){Gym g=new Gym();when(gyms.findBySlugAndStatus("x",ContentStatus.PUBLISHED)).thenReturn(Optional.of(g));assertSame(g,service.published("x"));assertThrows(FitPulseException.class,()->service.published("missing"));}
  @Test void favoriteToggleIsIdempotent(){User u=new User();Gym g=new Gym();when(users.getCurrentUser()).thenReturn(u);when(gyms.findById(1L)).thenReturn(Optional.of(g));when(favorites.findByUserAndGym(u,g)).thenReturn(Optional.empty());service.toggleFavorite(1L);verify(favorites).save(any());FavoriteGym f=new FavoriteGym();when(favorites.findByUserAndGym(u,g)).thenReturn(Optional.of(f));service.toggleFavorite(1L);verify(favorites).delete(f);}
- @Test void reviewCreatesOrUpdatesOneRecord(){User u=new User();Gym g=new Gym();when(users.getCurrentUser()).thenReturn(u);when(gyms.findById(1L)).thenReturn(Optional.of(g));ReviewForm form=new ReviewForm();form.setRating(5);form.setComment("Great");service.review(1L,form);ArgumentCaptor<Review> c=ArgumentCaptor.forClass(Review.class);verify(reviews).save(c.capture());assertEquals(5,c.getValue().getRating());assertSame(u,c.getValue().getUser());}
+ @Test void editingACommentPreservesItsOldRating() {
+  User user = new User();
+  Gym gym = new Gym();
+  gym.setStatus(ContentStatus.PUBLISHED);
+  UserRepository locks = mock(UserRepository.class);
+  org.springframework.test.util.ReflectionTestUtils.setField(service, "userLocks", locks);
+  when(locks.lockForLibrary(user.getId())).thenReturn(Optional.of(user));
+  when(users.getCurrentUser()).thenReturn(user);
+  when(gyms.findById(1L)).thenReturn(Optional.of(gym));
+  Review review = new Review();
+  review.setRating(5);
+  when(reviews.lockOwned(gym, user)).thenReturn(Optional.of(review));
+  ReviewForm form = new ReviewForm();
+  form.setComment("Great");
+  service.review(1L, form);
+  verify(reviews).save(review);
+  assertEquals(5, review.getRating());
+  assertEquals("Great", review.getComment());
+  assertSame(user, review.getUser());
+ }
  @Test void duplicateReportRejected(){User u=new User();Review r=new Review();when(users.getCurrentUser()).thenReturn(u);when(reviews.findById(1L)).thenReturn(Optional.of(r));when(reports.existsByReviewAndReporter(r,u)).thenReturn(true);assertThrows(FitPulseException.class,()->service.report(1L,"spam"));}
  @Test void suggestionStartsPending(){GymSuggestionForm f=new GymSuggestionForm();f.setName("Gym");f.setCityName("Sofia");f.setAddress("Address");f.setDetails("Details");service.suggest(f);ArgumentCaptor<GymSuggestion> c=ArgumentCaptor.forClass(GymSuggestion.class);verify(suggestions).save(c.capture());assertEquals(ContentStatus.PENDING,c.getValue().getStatus());}
  @Test void photoRequiresSafeUrl(){assertThrows(FitPulseException.class,()->service.addPhoto(1L,"javascript:alert(1)","x"));Gym g=new Gym();when(gyms.findById(1L)).thenReturn(Optional.of(g));service.addPhoto(1L,"https://example.com/gym.jpg","Gym");verify(photos).save(any());}

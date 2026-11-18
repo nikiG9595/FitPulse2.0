@@ -1,1 +1,13 @@
-package com.fitpulse.model.dto; import jakarta.validation.constraints.*; public class ReviewForm { @Min(value=1,message="Изберете оценка от 1 до 5.") @Max(value=5,message="Изберете оценка от 1 до 5.") private int rating; @Size(max=2000,message="Полето допуска най-много {max} знака.") private String comment; public int getRating(){return rating;} public void setRating(int v){rating=v;} public String getComment(){return comment;} public void setComment(String v){comment=v;} }
+package com.fitpulse.model.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class ReviewForm {
+    @NotBlank(message = "Въведи коментар.")
+    @Size(max = 2000, message = "Коментарът допуска най-много {max} знака.")
+    private String comment;
+
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment = comment; }
+}

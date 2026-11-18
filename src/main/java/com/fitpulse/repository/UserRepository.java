@@ -3,6 +3,7 @@ package com.fitpulse.repository;
 import com.fitpulse.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @org.springframework.data.jpa.repository.Query("select u from User u where u.id=:id")
     Optional<User> lockForLibrary(@org.springframework.data.repository.query.Param("id") UUID id);
     Optional<User> findByUsername(String username);
+    List<User> findTop2ByEmailIgnoreCase(String email);
 
     boolean existsByUsername(String username);
 

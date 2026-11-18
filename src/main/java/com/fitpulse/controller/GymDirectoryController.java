@@ -12,8 +12,35 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
 @Controller
 public class GymDirectoryController {
+    private static final Map<String, String> PLACE_IDS = Map.ofEntries(
+            Map.entry("fitness-flex-ruse", "ChIJsdlNI-9hrkARq0LNbzWxlCg"),
+            Map.entry("max-gym-ruse", "ChIJ-6LXRZVgrkARtlxlBIz-WnM"),
+            Map.entry("ego-fitness-spa-ruse", "ChIJIwN4bM9grkARhQLzr6bjJ6Y"),
+            Map.entry("fitness-sila-borisova-ruse", "ChIJqzeE779grkARlyLbJcTp7cw"),
+            Map.entry("fitness-sila-vazrazhdane-ruse", "ChIJW7XppTVnrkARqfqH244I1Ac"),
+            Map.entry("cosmo-gym-ruse", "ChIJn-7HKithrkARrZncows27zA"),
+            Map.entry("atlet-fitness-ruse", "ChIJ1WthJ3FhrkARwZJQ0B1BjI0"),
+            Map.entry("fitness-tri-set-ruse", "ChIJG9yWi0lnrkAR-zBudMTWhuU"),
+            Map.entry("big-dogs-gym-ruse", "ChIJNcciYsRgrkARlCIitJnfvZk"),
+            Map.entry("fitness-olimpia-ruse", "ChIJrYDxlSderkARjjQ-bU96444"),
+            Map.entry("fitness-titan-ruse", "ChIJPxkaAcRgrkARvZ-M6HzvAb0"),
+            Map.entry("rhea-sport-beauty-ruse", "ChIJOcElElRnrkARsQtOf7a5rmo")
+    );
+    private static final Map<String, String> MAP_LINKS = Map.of(
+            "move-gym-ruse", "https://www.google.com/maps?cid=1263603533349454735",
+            "onyx-sport-center-ruse", "https://maps.app.goo.gl/71oE3rfJ1KyDMH217"
+    );
+    // The two hotel gyms share their operator's map listing with the hotel.
+    private static final Map<String, String> HOTEL_MAP_LINKS = Map.of(
+            "adeo-sport-spa-ruse", "https://goo.gl/maps/WaX3749mtuvjviTd9",
+            "millennia-24-7-ruse", "https://www.google.com/maps?cid=17229037103883905181"
+    );
     private final GymDirectoryService service;
 
     public GymDirectoryController(GymDirectoryService s) {
@@ -22,23 +49,21 @@ public class GymDirectoryController {
 
     @GetMapping("/gyms")
     public String list(@RequestParam(required = false) String city, @RequestParam(required = false) String q,
-                       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "rating") String sort, Model m) {
-        boolean byName = "name".equals(sort);
-        var result = service.search(city, q, page, !byName);
+                       @RequestParam(defaultValue = "0") int page, Model m) {
+        var result = service.search(city, q, page);
         m.addAttribute("gyms", result);
-        var covers = new java.util.LinkedHashMap<Long, com.fitpulse.model.entity.GymPhoto>();
-        var ratings = new java.util.LinkedHashMap<Long, Double>();
-        for (var gym : result.getContent()) {
-            gym.getPhotos().stream().filter(p -> !com.fitpulse.service.GymContent.text(p.getImageUrl()).isBlank() && com.fitpulse.service.GymContent.imageUrl(p.getImageUrl())).findFirst().ifPresent(p -> covers.put(gym.getId(), p));
-            ratings.put(gym.getId(), service.rating(gym));
-        }
-        m.addAttribute("covers", covers);
-        m.addAttribute("ratings", ratings);
-        m.addAttribute("sort", byName ? "name" : "rating");
         m.addAttribute("cities", service.activeCities());
         m.addAttribute("city", city);
         m.addAttribute("q", q);
         return "gyms/list";
+    }
+
+    private String mapsUrl(Gym gym) {
+        String placeId = PLACE_IDS.get(gym.getSlug());
+        if (placeId == null) return MAP_LINKS.getOrDefault(gym.getSlug(), HOTEL_MAP_LINKS.get(gym.getSlug()));
+        String query = gym.getName() + ", " + gym.getAddress() + ", " + gym.getCity().getName();
+        return "https://www.google.com/maps/search/?api=1&query="
+                + URLEncoder.encode(query, StandardCharsets.UTF_8) + "&query_place_id=" + placeId;
     }
 
     @GetMapping("/gyms/{slug}")
@@ -51,14 +76,14 @@ public class GymDirectoryController {
         var own = member ? service.ownReview(g) : null;
         m.addAttribute("gym", g);
         m.addAttribute("reviews", service.reviews(g));
-        m.addAttribute("averageRating", service.rating(g));
+        m.addAttribute("mapsUrl", mapsUrl(g));
+        m.addAttribute("hotelMap", HOTEL_MAP_LINKS.containsKey(g.getSlug()));
         m.addAttribute("ownReview", own);
         m.addAttribute("gymPhotos", g.getPhotos().stream().filter(p -> !com.fitpulse.service.GymContent.text(p.getImageUrl()).isBlank() && com.fitpulse.service.GymContent.imageUrl(p.getImageUrl())).toList());
         m.addAttribute("websiteUsable", !com.fitpulse.service.GymContent.text(g.getWebsiteUrl()).isBlank() && com.fitpulse.service.GymContent.webUrl(g.getWebsiteUrl()));
         if (!m.containsAttribute("reviewForm")) {
             ReviewForm form = new ReviewForm();
             if (own != null) {
-                form.setRating(own.getRating());
                 form.setComment(own.getComment());
             }
             m.addAttribute("reviewForm", form);
@@ -79,8 +104,16 @@ public class GymDirectoryController {
         var gym = service.publishedById(id);
         if (errors.hasErrors()) return detailsModel(gym, model, authentication);
         var saved = service.review(id, reviewForm);
-        ra.addFlashAttribute("success", saved.getStatus() == com.fitpulse.model.enums.ContentStatus.PENDING ? "Редактираното ревю е запазено и очаква преглед от администратор." : "Оценката и ревюто са запазени.");
+        ra.addFlashAttribute("success", saved.getStatus() == com.fitpulse.model.enums.ContentStatus.PENDING
+                ? "Коментарът е запазен и очаква преглед от администратор." : "Коментарът е запазен.");
         return "redirect:/gyms/" + gym.getSlug() + "#reviews";
+    }
+
+    @PostMapping("/reviews/{id}/delete")
+    public String deleteComment(@PathVariable Long id, RedirectAttributes ra) {
+        String slug = service.deleteComment(id);
+        ra.addFlashAttribute("success", "Коментарът е изтрит.");
+        return "redirect:/gyms/" + slug + "#reviews";
     }
 
     @PostMapping("/reviews/{id}/report")

@@ -254,9 +254,110 @@ a:hover { color:var(--fp-focus); }
 
 @media (min-width: 768px) {
     .gym-catalog-filters {
-        grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto auto;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto auto;
         align-items: center;
     }
+}
+
+.gym-catalog-card {
+    display: grid;
+    grid-template-columns: minmax(88px, 32%) minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    text-decoration: none;
+    transition: border-color .15s ease;
+}
+
+.fit-card.gym-catalog-card:hover { border-color: var(--fp-accent); }
+.gym-catalog-card:focus-visible { outline: 2px solid var(--fp-focus); outline-offset: 3px; }
+.gym-wordmark {
+    display: grid;
+    place-items: center;
+    min-height: 76px;
+    padding: 10px;
+    border-radius: 10px;
+    border-block-end: 2px solid var(--fp-accent);
+    background: var(--fp-bg);
+    color: var(--fp-text);
+    font-size: .76rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+.gym-catalog-card:hover .gym-wordmark { background: var(--fp-field); }
+
+.gym-catalog-card-content h2 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.gym-catalog-card-content p { margin: 0; font-size: .875rem; }
+
+.gym-text-link {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #FF6728;
+    font-size: .875rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-underline-offset: 3px;
+}
+.gym-text-link:hover { color: var(--fp-accent-hover); text-decoration: underline; }
+
+.gym-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: 20px;
+}
+.gym-detail-info,.gym-comments { padding: clamp(16px, 3vw, 26px); }
+.gym-detail-heading {
+    display: grid;
+    grid-template-columns: minmax(86px, 26%) minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.gym-detail-heading h1 {
+    margin: 0 0 4px;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    overflow-wrap: anywhere;
+}
+.gym-detail-heading p { margin: 0; }
+.gym-detail-facts > div {
+    display: grid;
+    grid-template-columns: minmax(0, 110px) minmax(0, 1fr);
+    gap: 8px;
+    padding-block: 8px;
+    border-block-start: 1px solid var(--fp-border);
+}
+.gym-detail-facts dd { margin: 0; overflow-wrap: anywhere; }
+.gym-detail-actions,.gym-comment-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 16px;
+}
+.gym-detail-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.gym-detail-photos img { width: min(100%, 136px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
+.gym-comments { scroll-margin-top: calc(var(--fitpulse-header-height, 96px) + 16px); }
+.gym-comments h2 { font-size: 1.25rem; margin-bottom: 16px; }
+.gym-comment-editor { margin-bottom: 16px; }
+.gym-comment-editor label { display: block; margin-bottom: 6px; font-weight: 600; }
+.gym-comment { padding-block: 12px; border-block-start: 1px solid var(--fp-border); }
+.gym-comment:last-child { padding-bottom: 0; }
+.gym-comment header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.gym-comment time { color: var(--fp-muted); font-size: .8rem; }
+.gym-comment-text { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gym-comment-actions { margin-top: 6px; }
+
+@media (max-width: 767px) {
+    .gym-detail-layout { grid-template-columns: minmax(0, 1fr); }
 }
 
 .profile-overview .profile-header {
