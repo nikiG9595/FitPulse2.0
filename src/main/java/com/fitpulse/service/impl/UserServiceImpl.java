@@ -1,6 +1,7 @@
 package com.fitpulse.service.impl;
 
 import com.fitpulse.exception.FitPulseException;
+import com.fitpulse.config.LegalTerms;
 import com.fitpulse.model.dto.ProfileUpdateRequest;
 import com.fitpulse.model.dto.RegisterRequest;
 import com.fitpulse.model.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(RegisterRequest request) {
+        if (!request.isTermsAccepted() || !LegalTerms.VERSION.equals(request.getTermsVersion()))
+            throw new FitPulseException("Приеми текущата версия на условията за ползване.");
         if (!request.getPassword().equals(request.getConfirmPassword()))
             throw new FitPulseException("Паролите не съвпадат.");
         if (userRepository.existsByUsername(request.getUsername()))
@@ -45,6 +49,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.MEMBER);
         user.setWelcomeShown(false);
+        user.acceptTerms(LegalTerms.VERSION, Instant.now());
         userRepository.save(user);
         LOGGER.info("User registered: userId={}", user.getId());
     }

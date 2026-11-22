@@ -1,5 +1,6 @@
 package com.fitpulse.controller;
 
+import com.fitpulse.config.UiText;
 import com.fitpulse.model.entity.Exercise;
 import com.fitpulse.service.ExerciseLibraryService;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,12 @@ import java.util.List;
 public class ExerciseLibraryController {
     private final ExerciseLibraryService library;
     private final com.fitpulse.service.ExerciseVideos videos;
+    private final UiText text;
 
-    public ExerciseLibraryController(ExerciseLibraryService library, com.fitpulse.service.ExerciseVideos videos) {
+    public ExerciseLibraryController(ExerciseLibraryService library, com.fitpulse.service.ExerciseVideos videos, UiText text) {
         this.library = library;
         this.videos = videos;
+        this.text = text;
     }
 
     @GetMapping
@@ -48,7 +51,10 @@ public class ExerciseLibraryController {
     @GetMapping("/search")
     @ResponseBody
     public List<Choice> search(@RequestParam(defaultValue = "") String q) {
-        return library.search(q, null, null, null, null, 0).getContent().stream().map(e -> new Choice(e.getId(), e.getCode(), e.getName(), e.getMuscle(), e.getEquipment())).toList();
+        return library.search(q, null, null, null, null, 0).getContent().stream()
+                .map(e -> new Choice(e.getId(), e.getCode(), text.catalog(e.getName()),
+                        text.catalog(e.getMuscle()), text.catalog(e.getEquipment())))
+                .toList();
     }
 
     @GetMapping("/{code}")

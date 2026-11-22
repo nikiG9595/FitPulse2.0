@@ -1,6 +1,10 @@
 package com.fitpulse.service;
 
+import com.fitpulse.model.entity.Gym;
+import com.fitpulse.model.entity.GymPhoto;
 import java.net.URI;
+import java.util.Comparator;
+import java.util.List;
 
 /** Shared validation for optional links supplied through the gym forms. Never fetches external URLs. */
 public final class GymContent {
@@ -17,5 +21,13 @@ public final class GymContent {
             try{var uri=URI.create(value);return uri.getQuery()==null&&uri.getFragment()==null&&uri.normalize().getPath().equals(value)&&!value.contains("\\");}catch(IllegalArgumentException e){return false;}
         }
         return webUrl(value);
+    }
+
+    public static List<GymPhoto> orderedPhotos(Gym gym) {
+        return gym.getPhotos().stream()
+                .filter(photo -> !text(photo.getImageUrl()).isBlank() && imageUrl(photo.getImageUrl()))
+                .sorted(Comparator.comparing(GymPhoto::isCoverPhoto).reversed()
+                        .thenComparingInt(GymPhoto::getSortOrder))
+                .toList();
     }
 }

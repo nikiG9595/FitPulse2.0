@@ -1,31 +1,31 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Съобщения')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.messages.2})}"></head>
 <body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page support-admin">
-    <a class="back-link" th:href="@{/admin}">← Администрация</a><h1>Съобщения</h1>
+    <a class="back-link" th:href="@{/admin}">[[#{ui.administration}]]</a><h1>[[#{ui.messages.2}]]</h1>
     <form method="get" th:action="@{/admin/messages}" class="fit-card support-filters">
-        <div><label for="category">Категория</label><select id="category" name="category" class="form-select">
-            <option value="">Всички категории</option><option th:each="c:${categories}" th:value="${c}" th:text="${c.displayName}" th:selected="${c==category}"></option>
+        <div><label for="category">[[#{ui.category}]]</label><select id="category" name="category" class="form-select">
+            <option value="">[[#{ui.all.categories}]]</option><option th:each="c:${categories}" th:value="${c}" th:text="${@uiText.label(c.displayName)}" th:selected="${c==category}"></option>
         </select></div>
-        <div><label for="status">Статус</label><select id="status" name="status" class="form-select">
-            <option value="" th:selected="${status==null}">Всички</option>
-            <option value="NEW" th:selected="${status!=null and status.name()=='NEW'}">Нови</option>
-            <option value="IN_PROGRESS" th:selected="${status!=null and status.name()=='IN_PROGRESS'}">Прочетени</option>
-            <option value="RESOLVED" th:selected="${status!=null and status.name()=='RESOLVED'}">Приключени</option>
-        </select></div><button class="btn btn-pulse" type="submit">Филтрирай</button>
-        <a class="link-pulse" th:href="@{/admin/messages}">Изчисти</a>
+        <div><label for="status">[[#{ui.status}]]</label><select id="status" name="status" class="form-select">
+            <option value="" th:selected="${status==null}">[[#{ui.all}]]</option>
+            <option value="NEW" th:selected="${status!=null and status.name()=='NEW'}">[[#{ui.new}]]</option>
+            <option value="IN_PROGRESS" th:selected="${status!=null and status.name()=='IN_PROGRESS'}">[[#{ui.read}]]</option>
+            <option value="RESOLVED" th:selected="${status!=null and status.name()=='RESOLVED'}">[[#{ui.resolved}]]</option>
+        </select></div><button class="btn btn-pulse" type="submit">[[#{ui.filter.2}]]</button>
+        <a class="link-pulse" th:href="@{/admin/messages}">[[#{ui.clear}]]</a>
     </form>
-    <p th:text="'Общо: '+${messages.totalElements}"></p><p class="fit-card" th:if="${messages.empty}">Няма съобщения по избраните критерии.</p>
+    <p th:text="#{ui.total}+${messages.totalElements}"></p><p class="fit-card" th:if="${messages.empty}">[[#{ui.no.messages.match.these.filters}]]</p>
     <article class="fit-card mb-3" th:each="m:${messages.content}">
-        <div class="d-flex flex-wrap gap-2"><span class="badge text-bg-dark" th:text="${m.category.displayName}"></span><span class="badge text-bg-dark" th:text="${m.status.displayName}"></span></div>
+        <div class="d-flex flex-wrap gap-2"><span class="badge text-bg-dark" th:text="${@uiText.label(m.category.displayName)}"></span><span class="badge text-bg-dark" th:text="${@uiText.label(m.status.displayName)}"></span></div>
         <h2 class="h5 mt-2"><a class="link-pulse" th:href="@{/admin/messages/{id}(id=${m.id})}" th:text="${m.subject}"></a></h2>
         <p class="support-wrap" th:text="${m.replyEmail}"></p><p class="small" th:text="${#temporals.format(m.createdAt,'dd.MM.yyyy HH:mm')}"></p>
-        <span th:if="${m.attachmentKey!=null}">Има прикачена снимка</span>
+        <span th:if="${m.attachmentKey!=null}">[[#{ui.image.attached}]]</span>
     </article>
-    <nav aria-label="Страници със съобщения" class="d-flex flex-wrap gap-3">
-        <a class="link-pulse" th:if="${messages.hasPrevious()}" th:href="@{/admin/messages(page=${messages.number-1},category=${category},status=${status})}">← Предишна</a>
-        <span th:if="${messages.totalPages>0}" th:text="'Страница '+${messages.number+1}+' от '+${messages.totalPages}"></span>
-        <a class="link-pulse" th:if="${messages.hasNext()}" th:href="@{/admin/messages(page=${messages.number+1},category=${category},status=${status})}">Следваща →</a>
+    <nav th:aria-label="#{ui.message.pages}" class="d-flex flex-wrap gap-3">
+        <a class="link-pulse" th:if="${messages.hasPrevious()}" th:href="@{/admin/messages(page=${messages.number-1},category=${category},status=${status})}">[[#{ui.previous}]]</a>
+        <span th:if="${messages.totalPages>0}" th:text="#{ui.page}+${messages.number+1}+#{ui.of}+${messages.totalPages}"></span>
+        <a class="link-pulse" th:if="${messages.hasNext()}" th:href="@{/admin/messages(page=${messages.number+1},category=${category},status=${status})}">[[#{ui.next}]]</a>
     </nav>
-</main></body></html>
+</main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

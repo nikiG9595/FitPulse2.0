@@ -1,50 +1,50 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Персонализирай хранителния режим')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.personalize.the.meal.plan})}"></head>
 <body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page module-page">
-<a class="back-link" th:href="@{/meal-plans/{id}(id=${meal.id})}">← Избраният режим</a>
+<a class="back-link" th:href="@{/meal-plans/{id}(id=${meal.id})}">[[#{ui.selected.plan}]]</a>
 <header class="module-heading">
 <div>
-<h1>Персонализирай хранителния режим</h1>
-<p th:if="${savedCopy!=null}" th:text="${meal.displayName}"></p>
+<h1>[[#{ui.personalize.the.meal.plan}]]</h1>
+<p th:if="${savedCopy!=null}" th:text="${@uiText.catalog(meal.displayName)}"></p>
 </div>
 </header>
 
-<div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></div>
+<div class="alert alert-danger" role="alert" th:if="${error}" th:text="${@uiText.label(error)}"></div>
 <section class="module-panel" th:if="${savedCopy!=null}">
-<h2>Вече имаш този режим в профила си</h2><p>Отвори личното си копие, за да го редактираш. Ново копие може да се добави след окончателно изтриване на текущото.</p>
-<a class="btn btn-pulse" th:if="${savedCopy.listed}" th:href="${savedCopy.weeklyMenu==null}?@{/meal-plans/my}:@{/meal-plans/my/{id}(id=${savedCopy.id})}">Отвори моя режим</a>
+<h2>[[#{ui.you.already.have.this.plan.in.your}]]</h2><p>[[#{ui.open.your.personal.copy.to.edit.it}]]</p>
+<a class="btn btn-pulse" th:if="${savedCopy.listed}" th:href="${savedCopy.weeklyMenu==null}?@{/meal-plans/my}:@{/meal-plans/my/{id}(id=${savedCopy.id})}">[[#{ui.open.my.plan}]]</a>
 
 </section>
 <form id="meal-personalization" th:if="${savedCopy==null}" class="module-panel" method="post" th:action="@{/meal-plans/{id}/copy(id=${meal.id})}" th:object="${personalization}">
 <div id="personalization-fields" th:attr="hidden=${preview!=null ? 'hidden' : null}">
-<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}"><p>Проверете въведените данни:</p><ul><li th:each="e:${#fields.detailedErrors()}" th:text="${e.message}"></li></ul></div>
-<p th:text="${meal.displayName}"></p>
-<p th:if="${personalProfile.sex==null || personalProfile.birthDate==null || personalProfile.height==null || profileWeight==null}">Попълни данните си, за да изчислим хранителния режим специално за теб.</p>
+<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}"><p>[[#{ui.check.the.information.you.entered}]]</p><ul><li th:each="e:${#fields.detailedErrors()}" th:text="${@uiText.label(e.message)}"></li></ul></div>
+<p th:text="${@uiText.catalog(meal.displayName)}"></p>
+<p th:if="${personalProfile.sex==null || personalProfile.birthDate==null || personalProfile.height==null || profileWeight==null}">[[#{ui.enter.your.details.so.we.can.personalize}]]</p>
 <div class="row g-3">
-<div class="col-sm-6" th:if="${personalProfile.sex==null}"><label for="sex">Пол</label><select class="form-select" th:field="*{sex}" required><option value="">Избери</option><option value="MALE">Мъж</option><option value="FEMALE">Жена</option></select></div>
-<div class="col-sm-6" th:if="${personalProfile.birthDate==null}"><label for="birthDate">Дата на раждане</label><input class="form-control" type="date" th:field="*{birthDate}" th:max="${#temporals.format(#temporals.createToday(),'yyyy-MM-dd')}" required></div>
-<div class="col-sm-6" th:if="${personalProfile.height==null}"><label for="height">Ръст (см)</label><input class="form-control" type="number" th:field="*{height}" min="120" max="230" step=".01" required></div>
+<div class="col-sm-6" th:if="${personalProfile.sex==null}"><label for="sex">[[#{ui.sex}]]</label><select class="form-select" th:field="*{sex}" required><option value="">[[#{ui.select}]]</option><option value="MALE">[[#{ui.male}]]</option><option value="FEMALE">[[#{ui.female}]]</option></select></div>
+<div class="col-sm-6" th:if="${personalProfile.birthDate==null}"><label for="birthDate">[[#{ui.date.of.birth}]]</label><input class="form-control" type="date" th:field="*{birthDate}" th:max="${#temporals.format(#temporals.createToday(),'yyyy-MM-dd')}" required></div>
+<div class="col-sm-6" th:if="${personalProfile.height==null}"><label for="height">[[#{ui.height.cm}]]</label><input class="form-control" type="number" th:field="*{height}" min="120" max="230" step=".01" required></div>
 </div>
-<dl class="personalization-estimates mt-3"><div th:if="${personalProfile.sex!=null}"><dt>Пол</dt><dd th:text="${personalProfile.sex=='MALE'?'Мъж':'Жена'}"></dd></div><div th:if="${personalProfile.age!=null}"><dt>Възраст</dt><dd th:text="${personalProfile.age}+' г.'"></dd></div><div th:if="${personalProfile.height!=null}"><dt>Ръст</dt><dd th:text="${personalProfile.height}+' см'"></dd></div></dl>
-<div class="row g-3 mb-3"><div class="col-sm-6"><label for="weight">Тегло (кг)</label><div class="d-flex gap-2 align-items-center"><input class="form-control" type="number" th:field="*{weight}" th:readonly="${profileWeight!=null}" min="35" max="300" step=".01" required><button th:if="${profileWeight!=null}" class="btn btn-sm btn-outline-dark" type="button" id="change-weight">Промени</button><button class="btn btn-sm btn-pulse" id="save-weight" type="submit" th:formaction="@{/meal-plans/{id}/weight(id=${meal.id})}" formnovalidate hidden>Запази</button></div><small id="weight-status" role="status"></small></div>
-<div class="col-sm-6"><label for="activity">Физическа активност</label><select class="form-select meal-activity-select" th:field="*{activity}" required><option value="">Избери</option><option value="LOW">Ниска — предимно седя</option><option value="MODERATE">Умерена — движа се и тренирам редовно</option><option value="HIGH">Висока — тренирам интензивно</option></select></div></div>
-<button class="btn btn-pulse mt-2" name="action" value="calculate" type="submit">Изчисли калориите</button>
+<dl class="personalization-estimates mt-3"><div th:if="${personalProfile.sex!=null}"><dt>[[#{ui.sex}]]</dt><dd th:text="${personalProfile.sex=='MALE'?#messages.msg('ui.male'):#messages.msg('ui.female')}"></dd></div><div th:if="${personalProfile.age!=null}"><dt>[[#{ui.age}]]</dt><dd th:text="${personalProfile.age}+#{ui.g.3}"></dd></div><div th:if="${personalProfile.height!=null}"><dt>[[#{ui.height}]]</dt><dd th:text="${personalProfile.height}+#{ui.cm}"></dd></div></dl>
+<div class="row g-3 mb-3"><div class="col-sm-6"><label for="weight">[[#{ui.weight.kg.2}]]</label><div class="d-flex gap-2 align-items-center"><input class="form-control" type="number" th:field="*{weight}" th:readonly="${profileWeight!=null}" min="35" max="300" step=".01" required><button th:if="${profileWeight!=null}" class="btn btn-sm btn-outline-dark" type="button" id="change-weight">[[#{ui.change}]]</button><button class="btn btn-sm btn-pulse" id="save-weight" type="submit" th:formaction="@{/meal-plans/{id}/weight(id=${meal.id})}" formnovalidate hidden>[[#{action.save}]]</button></div><small id="weight-status" role="status"></small></div>
+<div class="col-sm-6"><label for="activity">[[#{ui.physical.activity}]]</label><select class="form-select meal-activity-select" th:field="*{activity}" required><option value="">[[#{ui.select}]]</option><option value="LOW">[[#{ui.low.mostly.sedentary}]]</option><option value="MODERATE">[[#{ui.moderate.active.and.exercising.regularly}]]</option><option value="HIGH">[[#{ui.high.training.intensely}]]</option></select></div></div>
+<button class="btn btn-pulse mt-2" name="action" value="calculate" type="submit">[[#{ui.calculate.calories}]]</button>
 </div>
-<p id="personalization-stale" class="mt-3" role="status" hidden>Данните са променени. Натисни „Изчисли калориите“ отново преди добавяне.</p>
-<section id="personalization-result" class="personalization-summary" th:if="${preview!=null}" aria-live="polite" aria-label="Резултат от персонализирането">
+<p id="personalization-stale" class="mt-3" role="status" hidden>[[#{ui.your.details.changed.select.calculate.calories.again}]]</p>
+<section id="personalization-result" class="personalization-summary" th:if="${preview!=null}" aria-live="polite" th:aria-label="#{ui.personalization.result}">
 <dl class="personalization-estimates">
-<div><dt>В покой (BMR)</dt><dd><strong th:text="${preview.resting}"></strong> <span>ккал</span></dd></div>
-<div><dt>Поддържане (TDEE)</dt><dd><strong th:text="${preview.daily}"></strong> <span>ккал</span></dd></div>
-<div><dt>Дневна цел</dt><dd><strong th:text="${preview.target}"></strong> <span>ккал</span></dd></div>
+<div><dt>[[#{ui.at.rest.bmr}]]</dt><dd><strong th:text="${preview.resting}"></strong> <span>[[#{ui.kcal.2}]]</span></dd></div>
+<div><dt>[[#{ui.maintenance.tdee}]]</dt><dd><strong th:text="${preview.daily}"></strong> <span>[[#{ui.kcal.2}]]</span></dd></div>
+<div><dt>[[#{ui.daily.goal}]]</dt><dd><strong th:text="${preview.target}"></strong> <span>[[#{ui.kcal.2}]]</span></dd></div>
 </dl>
-<p class="personalization-energy"><span>Адаптирано меню — средно на ден:</span> <strong th:text="${preview.calories}+' ккал'"></strong></p>
-<p class="small text-muted">Стойностите са средни за целия хранителен режим. Калориите за отделните дни могат да варират.</p>
-<p class="personalization-macros"><span>Белтъци: <strong th:text="${preview.protein}+' г'"></strong></span><span aria-hidden="true">|</span><span>Въглехидрати: <strong th:text="${preview.carbs}+' г'"></strong></span><span aria-hidden="true">|</span><span>Мазнини: <strong th:text="${preview.fat}+' г'"></strong></span></p>
+<p class="personalization-energy"><span>[[#{ui.adjusted.menu.daily.average}]]</span> <strong th:text="${preview.calories}+#{ui.kcal}"></strong></p>
+<p class="small text-muted">[[#{ui.values.are.averaged.across.the.whole.meal}]]</p>
+<p class="personalization-macros"><span>[[#{ui.protein}]] <strong th:text="${preview.protein}+#{ui.g}"></strong></span><span aria-hidden="true">|</span><span>[[#{ui.carbohydrates}]] <strong th:text="${preview.carbs}+#{ui.g}"></strong></span><span aria-hidden="true">|</span><span>[[#{ui.fat}]] <strong th:text="${preview.fat}+#{ui.g}"></strong></span></p>
 <input th:if="${preview.canSave}" type="hidden" name="previewToken" th:value="${previewToken}">
-<button id="add-personal-meal" th:if="${preview.canSave}" class="btn btn-pulse" type="submit" name="action" value="confirm">Добави към моите хранителни режими</button>
+<button id="add-personal-meal" th:if="${preview.canSave}" class="btn btn-pulse" type="submit" name="action" value="confirm">[[#{ui.add.to.my.meal.plans}]]</button>
 </section>
 </form>
-</main><script th:src="@{/js/personalize-meal.js}" defer></script></body></html>
+</main><script th:src="@{/js/personalize-meal.js}" defer></script><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>
 

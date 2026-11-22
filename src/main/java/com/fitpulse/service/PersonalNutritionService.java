@@ -1,6 +1,7 @@
 package com.fitpulse.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fitpulse.config.UiText;
 import com.fitpulse.exception.FitPulseException;
 import com.fitpulse.model.dto.WeeklyMenu;
 import com.fitpulse.model.entity.*;
@@ -15,7 +16,8 @@ import java.util.*;
 @Service @Transactional(readOnly=true)
 public class PersonalNutritionService {
     private final UserMealPlanRepository plans;private final FoodRepository foods;private final ShoppingCheckRepository checks;private final UserService users;private final ObjectMapper mapper;
-    public PersonalNutritionService(UserMealPlanRepository plans,FoodRepository foods,ShoppingCheckRepository checks,UserService users,ObjectMapper mapper){this.plans=plans;this.foods=foods;this.checks=checks;this.users=users;this.mapper=mapper;}
+    private final UiText text;
+    public PersonalNutritionService(UserMealPlanRepository plans,FoodRepository foods,ShoppingCheckRepository checks,UserService users,ObjectMapper mapper,UiText text){this.plans=plans;this.foods=foods;this.checks=checks;this.users=users;this.mapper=mapper;this.text=text;}
     public UserMealPlan owned(Long id){return plans.findByIdAndUser(id,users.getCurrentUser()).filter(UserMealPlan::isListed).orElseThrow(()->new FitPulseException("Личният режим не е намерен."));}
     private UserMealPlan locked(Long id){return plans.findOwnedForUpdate(id,users.getCurrentUser()).filter(UserMealPlan::isListed).orElseThrow(()->new FitPulseException("Личният режим не е намерен."));}
     @Transactional public void rename(Long id,String name){if(name==null||name.isBlank()||name.strip().length()>150)throw new FitPulseException("Въведи име до 150 знака.");locked(id).setName(name.strip());}
@@ -45,7 +47,7 @@ public class PersonalNutritionService {
         if(day<0||day>=menu.days().size()||meal<0||meal>=menu.days().get(day).meals().size()||item<0||item>=menu.days().get(day).meals().get(meal).ingredients().size())throw new FitPulseException("Съставката не е намерена.");return menu.days().get(day).meals().get(meal).ingredients().get(item);
     }
     public WeeklyMenu.Meal mealAt(Long id,int day,int meal){var menu=menu(owned(id));selected(menu,day,meal,0);return menu.days().get(day).meals().get(meal);}
-    public List<RecipeAssets.Recipe> mealAlternatives(Long id,int day,int meal,String q){var current=mealAt(id,day,meal);String bucket=RecipeAssets.bucket(current.label());String needle=q==null?"":q.strip().toLowerCase(Locale.ROOT);return RecipeAssets.all().stream().filter(r->RecipeAssets.bucket(r.label()).equals(bucket)).filter(r->!r.name().equals(current.name())).filter(r->r.name().toLowerCase(Locale.ROOT).contains(needle)).toList();}
+    public List<RecipeAssets.Recipe> mealAlternatives(Long id,int day,int meal,String q){var current=mealAt(id,day,meal);String bucket=RecipeAssets.bucket(current.label());String needle=q==null?"":q.strip().toLowerCase(Locale.ROOT);return RecipeAssets.all().stream().filter(r->RecipeAssets.bucket(r.label()).equals(bucket)).filter(r->!r.name().equals(current.name())).filter(r->matchesCatalogName(r.name(),needle)).toList();}
     @Transactional public void replaceMeal(Long id,int day,int meal,String code){
         var plan=locked(id);var menu=menu(plan);selected(menu,day,meal,0);var current=menu.days().get(day).meals().get(meal);
         var recipe=RecipeAssets.all().stream().filter(r->r.code().equals(code)&&RecipeAssets.bucket(r.label()).equals(RecipeAssets.bucket(current.label()))).findFirst().orElseThrow(()->new FitPulseException("Избери подходяща рецепта за това хранене."));
@@ -65,7 +67,12 @@ public class PersonalNutritionService {
         meals.set(meal,new WeeklyMenu.Meal(selectedMeal.label(),title,ingredients,selectedMeal.preparation(),selectedMeal.substitution(),selectedMeal.recipeCode()));days.set(day,new WeeklyMenu.Day(selectedDay.title(),meals));
         WeeklyMenu changed=new WeeklyMenu(menu.author(),menu.methodology(),days);plan.setWeeklyMenu(json(changed));plan.setMeals(plainText(changed));
     }
-    public List<Food> alternatives(Long id,int day,int meal,int item,String q){var old=selected(menu(owned(id)),day,meal,item);Food current=foods.findByCode(old.foodCode()).orElseThrow();String query=q==null?"":q.strip().toLowerCase(Locale.ROOT);return foods.findAllByOrderByCategoryAscNameAsc().stream().filter(f->compatible(current,f)&&!f.getCode().equals(current.getCode())).filter(f->f.getName().toLowerCase(Locale.ROOT).contains(query)).toList();}
+    public List<Food> alternatives(Long id,int day,int meal,int item,String q){var old=selected(menu(owned(id)),day,meal,item);Food current=foods.findByCode(old.foodCode()).orElseThrow();String query=q==null?"":q.strip().toLowerCase(Locale.ROOT);return foods.findAllByOrderByCategoryAscNameAsc().stream().filter(f->compatible(current,f)&&!f.getCode().equals(current.getCode())).filter(f->matchesCatalogName(f.getName(),query)).toList();}
+
+    private boolean matchesCatalogName(String name, String query) {
+        return name.toLowerCase(Locale.ROOT).contains(query)
+                || text.catalog(name).toLowerCase(Locale.ROOT).contains(query);
+    }
     public record ShoppingItem(String code,String name,String state,String category,BigDecimal grams,boolean checked){}
     @Transactional public List<Integer> resetShopping(Long id,List<Integer> requested){
         var plan=locked(id);var selected=shopping(id,requested).days();

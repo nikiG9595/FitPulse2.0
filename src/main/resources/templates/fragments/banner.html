@@ -1,2 +1,5 @@
 <div class="fitpulse-banner" th:fragment="banner" xmlns:th="http://www.thymeleaf.org"
-     role="img" aria-label="FitPulse. Откривай. Планирай. Напредвай."></div>
+     role="img" th:aria-label="#{ui.fitpulse.explore.plan.progress}">
+    <span class="fitpulse-banner-slogan" th:if="${#locale.language == 'en'}"
+          th:text="#{ui.explore.plan.progress}" aria-hidden="true"></span>
+</div>

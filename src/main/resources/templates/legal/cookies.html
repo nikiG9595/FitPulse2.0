@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{legal.cookies.title})}"></head>
+<body class="page-bg">
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page legal-page">
+    <article class="fit-card">
+        <h1 th:text="#{legal.cookies.title}"></h1>
+        <h2 th:text="#{legal.cookies.necessary.title}"></h2>
+        <p th:text="#{legal.cookies.session}"></p>
+        <p th:text="#{legal.cookies.language}"></p>
+        <p th:text="#{legal.cookies.browser}"></p>
+        <p th:text="#{legal.cookies.choice}"></p>
+        <h2 th:text="#{legal.media.title}"></h2>
+        <p th:text="#{legal.cookies.external}"></p>
+        <p th:text="#{legal.cookies.withdraw}"></p>
+        <p><a href="https://policies.google.com/privacy" rel="noreferrer" th:text="#{legal.cookies.google}"></a></p>
+        <button type="button" class="btn btn-outline-light" data-media-settings hidden th:text="#{legal.media.settings}"></button>
+    </article>
+</main>
+<div th:replace="~{fragments/footer :: footer(false)}"></div>
+</body>
+</html>

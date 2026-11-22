@@ -1,0 +1,52 @@
+Exercise artwork / Изображения за упражнения
+
+Artwork by Bryl Lim (Workout Guide), with original pose artwork by Everkinetic.
+Изображения от Bryl Lim (Workout Guide), с оригинални фигури от Everkinetic.
+Copyright holders license the artwork under CC BY-SA 4.0:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+FitPulse selected the frames, resized the PNGs to 420×420 pixels and converted them to lossless WebP.
+The local artwork is distributed under the same CC BY-SA 4.0 license.
+https://github.com/bryllim/workout-guide/blob/main/ATTRIBUTION.md
+https://github.com/everkinetic/data
+
+Local exercise code, frame positions, and source folder:
+bodyweight-squat (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/bodyweight-squat
+goblet-squat (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/goblet-squat
+barbell-squat (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/squat
+leg-press (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/leg-press
+forward-lunge (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/forward-lunge
+romanian-deadlift (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/dumbbell-romanian-deadlift
+leg-curl (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/lying-leg-curl
+leg-extension (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/leg-extension
+glute-bridge (start, finish: 3, 2): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/glute-bridge
+hip-thrust (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/hip-thrust
+side-leg-raise (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/side-lying-leg-raise
+push-up (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/push-up
+incline-push-up (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/incline-push-up
+bench-press (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/bench-press
+dumbbell-bench (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/dumbbell-bench-press
+incline-dumbbell (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/incline-dumbbell-press
+dips (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/dip
+pull-up (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/pull-up
+lat-pulldown (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/lat-pulldown
+dumbbell-row (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/one-arm-dumbbell-row
+barbell-row (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/barbell-row
+cable-row (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/seated-row
+back-extension (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/back-extension
+shoulder-press (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/standing-dumbbell-press
+lateral-raise (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/lateral-raise
+reverse-fly (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/bent-over-rear-delt-raise
+face-pull (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/face-pull
+biceps-curl (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/bicep-curl
+hammer-curl (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/hammer-curl
+triceps-pushdown (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/rope-tricep-pushdown
+overhead-triceps (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/dumbbell-overhead-tricep-extension
+plank (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/plank
+leg-raise (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/lying-leg-raise
+dead-bug (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/dead-bug
+bird-dog (start, finish: 2, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/bird-dog
+stationary-bike (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/cycling
+elliptical (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/elliptical
+mountain-climber (start, finish: 2, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/mountain-climber
+wall-sit (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/wall-sit

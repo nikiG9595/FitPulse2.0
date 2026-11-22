@@ -4,7 +4,7 @@ import com.fitpulse.model.enums.UserRole;
 import jakarta.validation.constraints.NotNull;
 
 public class RoleChangeRequest {
-    @NotNull(message = "Изберете валидна роля.")
+    @NotNull(message = "{ui.select.a.valid.role}")
     private UserRole role;
 
     public UserRole getRole() {

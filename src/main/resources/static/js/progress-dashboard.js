@@ -1,18 +1,12 @@
 (() => {
+    const messages = window.fitPulseMessages;
     const dashboard = document.getElementById('progress-dashboard');
     if (!dashboard) return;
     const period = document.getElementById('progress-period');
     const bodyType = document.getElementById('body-type');
     const error = document.getElementById('progress-error');
-    const number = new Intl.NumberFormat('bg-BG', {maximumFractionDigits: 2});
-    const date = value => new Date(value + 'T12:00:00').toLocaleDateString('bg-BG');
-    const theme=getComputedStyle(document.documentElement);
-    const chartColors={
-        accent:theme.getPropertyValue('--fp-accent').trim() || '#FF6728',
-        fill:theme.getPropertyValue('--fp-chart-fill').trim() || '#FF672818',
-        text:theme.getPropertyValue('--fp-muted').trim() || '#BFC7D5',
-        grid:theme.getPropertyValue('--fp-chart-grid').trim() || '#46526766'
-    };
+    const number = new Intl.NumberFormat(document.documentElement.lang, {maximumFractionDigits: 2});
+    const date = value => new Date(value + 'T12:00:00').toLocaleDateString(document.documentElement.lang);
     const charts = {};
     let data, request;
     function text(id, value) { document.getElementById(id).textContent = value; }
@@ -25,12 +19,19 @@
         if (!points.length) return;
         if (!window.Chart) {
             canvas.hidden = true; empty.hidden = false;
-            empty.textContent = 'Графиката не може да се зареди. Записите ти са запазени и са достъпни в историята.';
+            empty.textContent = messages['ui.the.chart.could.not.load.your.entries'];
             return;
         }
+        const theme = getComputedStyle(document.documentElement);
+        const chartColors = {
+            accent: theme.getPropertyValue('--fp-accent').trim(),
+            fill: theme.getPropertyValue('--fp-chart-fill').trim(),
+            text: theme.getPropertyValue('--fp-muted').trim(),
+            grid: theme.getPropertyValue('--fp-chart-grid').trim()
+        };
         charts[name] = new Chart(canvas, {
             type: 'line', data: {labels: points.map(p => date(p.date)), datasets: [{label, data: points.map(p => Number(p.value)), borderColor: chartColors.accent, backgroundColor: chartColors.fill, fill: true, tension: .18, pointRadius: points.length > 100 ? 1 : 4, pointHoverRadius: 7}]},
-            options: {responsive: true, maintainAspectRatio: false, animation: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {duration: 250}, interaction: {mode: 'index', intersect: false}, plugins: {legend: {display: false}, tooltip: {callbacks: {label: context => `${label}: ${number.format(context.parsed.y)} ${unit}`}}}, scales: {x: {title: {display: true, text: 'Дата', color: chartColors.text}, ticks: {color: chartColors.text, maxTicksLimit: 8}, grid: {color: chartColors.grid}}, y: {title: {display: true, text: unit, color: chartColors.text}, ticks: {color: chartColors.text}, grid: {color: chartColors.grid}}}}
+            options: {responsive: true, maintainAspectRatio: false, animation: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {duration: 250}, interaction: {mode: 'index', intersect: false}, plugins: {legend: {display: false}, tooltip: {callbacks: {label: context => `${label}: ${number.format(context.parsed.y)} ${unit}`}}}, scales: {x: {title: {display: true, text: messages['ui.date'], color: chartColors.text}, ticks: {color: chartColors.text, maxTicksLimit: 8}, grid: {color: chartColors.grid}}, y: {title: {display: true, text: unit, color: chartColors.text}, ticks: {color: chartColors.text}, grid: {color: chartColors.grid}}}}
         });
     }
     function metric(label, value) {
@@ -42,7 +43,12 @@
     }
     function body() {
         if (!data) return;
-        graph('body', data.body[bodyType.value] || [], 'Сантиметри', bodyType.selectedOptions[0].textContent);
+        graph('body', data.body[bodyType.value] || [], messages['ui.centimeters'], bodyType.selectedOptions[0].textContent);
+    }
+    function renderCharts() {
+        if (!data) return;
+        graph('weight', data.weights, messages['ui.kilograms'], messages['ui.weight']);
+        body();
     }
     async function load() {
         histories.forEach(history=>history.reset());
@@ -55,18 +61,17 @@
             const nextData = await response.json();
             if(activeRequest!==request || activeRequest.signal.aborted)return;
             data = nextData; error.hidden = true;
-            text('current-weight', data.current == null ? '—' : number.format(data.current) + ' кг');
-            text('weight-date', data.lastDate ? date(data.lastDate) : 'Няма измерване');
-            text('weight-change', data.change == null ? '—' : (Number(data.change) > 0 ? '+' : '') + number.format(data.change) + ' кг');
-            graph('weight', data.weights, 'Килограми', 'Тегло');
+            text('current-weight', data.current == null ? '—' : number.format(data.current) + messages['ui.kg']);
+            text('weight-date', data.lastDate ? date(data.lastDate) : messages['ui.no.measurement']);
+            text('weight-change', data.change == null ? '—' : (Number(data.change) > 0 ? '+' : '') + number.format(data.change) + messages['ui.kg']);
+            renderCharts();
             const metrics = document.getElementById('weight-metrics'); metrics.replaceChildren();
             if (data.weights.length) {
                 const values = data.weights.map(p => Number(p.value));
-                metrics.append(metric('Начално за периода', number.format(values[0]) + ' кг'), metric('Последно за периода', number.format(values.at(-1)) + ' кг'), metric('Минимум', number.format(Math.min(...values)) + ' кг'), metric('Максимум', number.format(Math.max(...values)) + ' кг'));
+                metrics.append(metric(messages['ui.first.in.period'], number.format(values[0]) + messages['ui.kg']), metric(messages['ui.last.in.period'], number.format(values.at(-1)) + messages['ui.kg']), metric(messages['ui.minimum'], number.format(Math.min(...values)) + messages['ui.kg']), metric(messages['ui.maximum'], number.format(Math.max(...values)) + messages['ui.kg']));
             }
-            body();
         } catch (e) {
-            if (e.name !== 'AbortError') {error.hidden = false; error.textContent = 'Не успяхме да заредим графиките. Опитай отново или използвай историята по-долу.';}
+            if (e.name !== 'AbortError') {error.hidden = false; error.textContent = messages['ui.the.charts.could.not.load.try.again'];}
         }
     }
     const histories=[...document.querySelectorAll('[data-history]')].map(section=>{
@@ -85,5 +90,6 @@
         more.addEventListener('click',()=>{limit+=5;render();});
         return {reset(){limit=5;render();}};
     });
-    period.addEventListener('change', load); bodyType.addEventListener('change', body); body(); load();
+    document.addEventListener('fitpulse:themechange', renderCharts);
+    period.addEventListener('change', load); bodyType.addEventListener('change', body); load();
 })();

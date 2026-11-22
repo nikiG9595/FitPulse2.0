@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
+import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -35,6 +36,18 @@ public class User {
     @Column(nullable = false)
     @NotNull
     private UserRole role;
+
+    @Column(length = 32)
+    private String acceptedTermsVersion;
+    private Instant termsAcceptedAt;
+
+    public String getAcceptedTermsVersion() { return acceptedTermsVersion; }
+    public Instant getTermsAcceptedAt() { return termsAcceptedAt; }
+
+    public void acceptTerms(String version, Instant acceptedAt) {
+        this.acceptedTermsVersion = version;
+        this.termsAcceptedAt = acceptedAt;
+    }
 
     @Column(nullable = false) private boolean welcomeShown = true;
     public boolean isWelcomeShown(){return welcomeShown;}
@@ -98,9 +111,9 @@ public class User {
     public void setPublicProfile(boolean publicProfile) { this.publicProfile = publicProfile; }
 
 
-    @jakarta.validation.constraints.Pattern(regexp="MALE|FEMALE", message="Избери пол.")
+    @jakarta.validation.constraints.Pattern(regexp="MALE|FEMALE", message = "{ui.select.a.sex.2}")
     private String sex;
-    @jakarta.validation.constraints.Past(message="Въведи минала дата на раждане.")
+    @jakarta.validation.constraints.Past(message = "{ui.enter.a.date.of.birth.in.the}")
     @org.springframework.format.annotation.DateTimeFormat(iso=org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
     private java.time.LocalDate birthDate;
     @jakarta.validation.constraints.DecimalMin("120")

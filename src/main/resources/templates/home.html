@@ -1,35 +1,24 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head('FitPulse 2.0')}"></head>
 <body class="home-page">
 <div th:replace="~{fragments/nav :: nav}"></div>
 <main>
     <section class="home-intro">
         <div class="container home-intro-content">
-            <h1>Открий своя режим. Изгради своя <span>ритъм.</span></h1>
-            <p>Каталог с фитнеси, хранителни режими, лични тренировки и прогрес на едно място.</p>
-            <div class="home-actions home-actions-v12">
-                <a class="btn btn-outline-light btn-lg" th:href="@{/meal-plans}">Хранителни режими</a>
-                <a class="btn btn-outline-light btn-lg" sec:authorize="isAuthenticated()" th:href="@{/profile}">Моят профил</a>
-                <a class="btn btn-outline-light btn-lg" sec:authorize="isAnonymous()" th:href="@{/login(returnTo='/profile')}" data-fixed-return>Моят профил</a>
-                <a class="btn btn-outline-light btn-lg" th:href="@{/programs}">Тренировъчни програми</a>
+            <h1>[[#{ui.explore.plan}]] <span>[[#{ui.progress}]]</span></h1>
+            <div class="home-actions">
+                <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo='/profile')}" data-fixed-return>[[#{ui.get.started}]]</a>
+                <a class="btn btn-pulse" sec:authorize="isAuthenticated()" th:href="@{/profile}">[[#{ui.get.started}]]</a>
+                <a class="btn btn-outline-light" th:href="@{/about}">[[#{ui.learn.more}]]</a>
             </div>
         </div>
     </section>
-    <figure class="home-hero-image" aria-label="Мъж и жена тренират с дъмбели пред логото на FitPulse">
+    <figure class="home-hero-image" th:aria-label="#{ui.a.man.and.a.woman.train.with}">
         <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
-             alt="Мъж и жена тренират с дъмбели пред светещото лого FP">
+             th:alt="#{ui.a.man.and.a.woman.train.with.2}">
     </figure>
-    <section class="section section-soft home-section home-access-section" sec:authorize="isAnonymous()">
-        <div class="container"><div class="row align-items-center g-5"><div class="col-lg-8">
-            <h2>Регистрирай се и получи достъп до тренировъчни програми и хранителни режими</h2>
-            <p>След вход избираш сам от всички активни програми и режими и създаваш лично редактируемо копие.</p>
-            <p class="small home-muted">Хранителните режими са общи образователни примери, а не медицински или индивидуални препоръки.</p>
-            <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo=${authReturnTo})}">Регистрация</a>
-        </div></div></div>
-    </section>
 </main>
-<footer class="home-support-footer"><div class="container"><a th:href="@{/support}">Помощ и обратна връзка</a></div></footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<div th:replace="~{fragments/footer :: footer(true)}"></div>
 </body>
 </html>

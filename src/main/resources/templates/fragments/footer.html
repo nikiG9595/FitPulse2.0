@@ -1,0 +1,33 @@
+<th:block th:fragment="footer(home)" xmlns:th="http://www.thymeleaf.org">
+    <footer class="fitpulse-footer" th:classappend="${home ? 'home-support-footer' : ''}">
+        <nav class="container" th:aria-label="#{legal.footer}">
+            <a th:if="${home}" class="btn btn-outline-light" th:href="@{/suggest-gym}" th:text="#{ui.suggest.a.gym}"></a>
+            <a th:if="${home}" th:href="@{/support}" th:text="#{ui.help.and.feedback}"></a>
+            <a th:href="@{/terms}" th:text="#{legal.terms.title}"></a>
+            <a th:href="@{/privacy}" th:text="#{legal.privacy.title}"></a>
+            <a th:href="@{/cookies}" th:text="#{legal.cookies.title}"></a>
+            <button type="button" class="legal-settings-link" data-media-settings hidden th:text="#{legal.media.settings}"></button>
+        </nav>
+    </footer>
+    <section class="fit-card media-choice" data-media-banner hidden aria-labelledby="media-choice-title">
+        <h2 id="media-choice-title" class="h6" th:text="#{legal.media.title}"></h2>
+        <p th:text="#{legal.media.description}"></p>
+        <div class="media-choice-actions">
+            <button type="button" class="btn btn-outline-light" data-media-choice="allow" th:text="#{legal.media.accept}"></button>
+            <button type="button" class="btn btn-outline-light" data-media-choice="deny" th:text="#{legal.media.reject}"></button>
+            <button type="button" class="btn btn-outline-light" data-media-settings th:text="#{legal.media.settings.short}"></button>
+        </div>
+    </section>
+    <dialog class="fit-card media-dialog" data-media-dialog aria-labelledby="media-dialog-title">
+        <h2 id="media-dialog-title" class="h5" th:text="#{legal.media.settings}"></h2>
+        <p th:text="#{legal.media.description}"></p>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="allow-external-media" data-media-checkbox>
+            <label class="form-check-label" for="allow-external-media" th:text="#{legal.media.allow}"></label>
+        </div>
+        <div class="media-choice-actions mt-3">
+            <button type="button" class="btn btn-pulse" data-media-save th:text="#{action.save}"></button>
+            <form method="dialog"><button type="submit" class="btn btn-outline-light" th:text="#{action.cancel}"></button></form>
+        </div>
+    </dialog>
+</th:block>

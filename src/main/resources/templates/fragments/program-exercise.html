@@ -1,0 +1,36 @@
+<details th:fragment="row(item, title, reps, notes, restLabel, video)" class="exercise-detail program-exercise"
+         xmlns:th="http://www.thymeleaf.org">
+    <summary th:text="${title}"></summary>
+    <div class="program-exercise-content">
+        <div class="program-exercise-body">
+            <th:block th:if="${item.exercise != null}">
+                <th:block th:with="frames=${@exerciseImages.forCode(item.exercise.code)}">
+                    <div th:if="${!#lists.isEmpty(frames)}" class="program-exercise-images">
+                        <figure th:each="frame:${frames}">
+                            <img th:src="@{${frame.path}}" th:alt="${title + ' — ' + #messages.msg(frame.labelKey)}"
+                                 loading="lazy" decoding="async">
+                            <figcaption th:text="${#messages.msg(frame.labelKey)}"></figcaption>
+                        </figure>
+                        <a class="program-exercise-image-credit" th:href="@{/images/exercises/attribution.txt}"
+                           th:text="#{exercise.image.credit}"></a>
+                    </div>
+                </th:block>
+                <p th:if="${!#strings.isEmpty(item.exercise.startPosition)}"
+                   th:text="${@uiText.catalog(item.exercise.startPosition)}"></p>
+                <ol th:if="${!#strings.isEmpty(item.exercise.steps)}" class="exercise-steps">
+                    <li th:each="step:${#strings.arraySplit(item.exercise.steps, '|')}"
+                        th:text="${@uiText.catalog(step)}"></li>
+                </ol>
+                <a class="back-link program-exercise-library" th:href="@{/exercises/{code}(code=${item.exercise.code})}"
+                   th:text="#{ui.view.exercise}"></a>
+                <div th:replace="~{fragments/exercise-video :: player(${video})}"></div>
+            </th:block>
+            <div class="exercise-prescription">
+                <span th:text="${item.setsCount}+#{ui.sets.2}"></span>
+                <span th:text="${reps}+#{ui.reps.time}"></span>
+                <span th:text="${restLabel}+${item.restSeconds}+#{ui.sec}"></span>
+            </div>
+            <p th:if="${!#strings.isEmpty(notes)}" th:text="${notes}"></p>
+        </div>
+    </div>
+</details>

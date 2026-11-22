@@ -1,13 +1,14 @@
 (() => {
-    const format = new Intl.NumberFormat('bg-BG', {maximumFractionDigits: 0});
+    const messages = window.fitPulseMessages;
+    const format = new Intl.NumberFormat(document.documentElement.lang, {maximumFractionDigits: 0});
     const calories = v => 4 * v.protein + 9 * v.fat + 4 * v.carbs;
     const zero = () => ({protein: 0, fat: 0, carbs: 0});
     function show(container, prefix, values) {
-        for (const [key, label] of [['protein','Б'], ['fat','М'], ['carbs','В']]) {
+        for (const [key, label] of [['protein',messages['ui.p.2']], ['fat',messages['ui.f.2']], ['carbs',messages['ui.c.2']]]) {
             const element = container.querySelector(`[data-${prefix}-${key}]`);
-            if (element) element.textContent = `${label} ${format.format(values[key])} г`;
+            if (element) element.textContent = `${label} ${format.format(values[key])}${messages['ui.g']}`;
         }
-        container.querySelector(`[data-${prefix}-calories]`).textContent = `${format.format(calories(values))} ккал`;
+        container.querySelector(`[data-${prefix}-calories]`).textContent = `${format.format(calories(values))}${messages['ui.kcal']}`;
     }
     function update(day) {
         let valid = true;
@@ -16,7 +17,7 @@
             input.form.querySelector('button[type="submit"]').disabled = !good;
             if (!good) {
                 valid = false;
-                input.closest('.nutrition-meal').querySelector('.unsaved-note').textContent = 'Въведи количество от 1 до 2000 г с до два десетични знака.';
+                input.closest('.nutrition-meal').querySelector('.unsaved-note').textContent = messages['ui.enter.an.amount.from.1.to.2000.2'];
             }
         });
         if (!valid) return;
@@ -39,7 +40,7 @@
         input.dataset.dirty = 'true';
         const day = input.closest('.interactive-day');
         input.closest('.nutrition-meal').querySelector('.unsaved-note').hidden = false;
-        input.closest('.nutrition-meal').querySelector('.unsaved-note').textContent = 'Преизчислено на екрана. Натисни „Запази“ до промененото количество.';
+        input.closest('.nutrition-meal').querySelector('.unsaved-note').textContent = messages['ui.values.were.recalculated.on.screen.select.save'];
         update(day);
     });});
     document.querySelectorAll('.interactive-ingredient form').forEach(form => form.addEventListener('submit', async event => {
@@ -51,7 +52,7 @@
         const button = form.querySelector('button[type="submit"]');
         const note = form.closest('.nutrition-meal').querySelector('.unsaved-note');
         const payload = new FormData(form);
-        button.disabled = true; button.textContent = 'Запис…'; note.hidden = false;
+        button.disabled = true; button.textContent = messages['ui.saving']; note.hidden = false;
         try {
             const response = await fetch(form.action, {method: 'POST', body: payload, headers: {'Accept': 'application/json'}, credentials: 'same-origin'});
             if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) throw new Error();
@@ -62,17 +63,17 @@
             const paintSaved=(container,prefix,totals)=>{
                 for(const key of ['calories','protein','fat','carbs']){
                     const element=container.querySelector(`[data-${prefix}-${key}]`);
-                    if(element)element.textContent=(key==='calories'?'':({protein:'Б ',fat:'М ',carbs:'В '})[key])+format.format(totals[key])+(key==='calories'?' ккал':' г');
+                    if(element)element.textContent=(key==='calories'?'':({protein:messages['ui.p'],fat:messages['ui.f'],carbs:messages['ui.c']})[key])+format.format(totals[key])+(key==='calories'?messages['ui.kcal']:messages['ui.g']);
                 }
             };
             if(saved.meal&&saved.day){paintSaved(form.closest('.nutrition-meal'),'meal',saved.meal);paintSaved(form.closest('.interactive-day'),'day',saved.day);}
             note.textContent = form.closest('.nutrition-meal').querySelector('[data-dirty="true"]')
-                ? 'Записано. Има и други незапазени количества в това хранене.' : 'Количеството е запазено в личния ти режим.';
+                ? messages['ui.saved.this.meal.still.has.other.unsaved'] : messages['ui.the.amount.was.saved.in.your.personal'];
         } catch (_) {
             input.value=input.dataset.savedValue;delete input.dataset.dirty;update(input.closest('.interactive-day'));
-            note.textContent = 'Количеството не е запазено. Провери стойността (1–2000 г), връзката и дали още си в профила си, след което опитай отново.';
+            note.textContent = messages['ui.the.amount.was.not.saved.check.the'];
         } finally {
-            form.dataset.saving = 'false'; button.disabled = !input.checkValidity(); button.textContent = 'Запази';
+            form.dataset.saving = 'false'; button.disabled = !input.checkValidity(); button.textContent = messages['action.save'];
         }
     }));
     // The same DOM remains open after gram saves; substitutions return to the exact meal anchor.
@@ -88,17 +89,17 @@
             const feedback = document.getElementById('shopping-feedback');
             input.disabled = true; row.setAttribute('aria-busy','true');
             row.classList.toggle('purchased',input.checked);
-            feedback.textContent = 'Запис…';
+            feedback.textContent = messages['ui.saving'];
             try {
                 const response = await fetch(form.action, {method:'POST',body:payload,headers:{Accept:'application/json'},credentials:'same-origin'});
                 if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) throw new Error();
                 const saved = await response.json();
                 if (!saved.saved || typeof saved.checked !== 'boolean') throw new Error();
                 input.checked = saved.checked; input.dataset.saved = String(saved.checked);
-                row.classList.toggle('purchased',saved.checked);feedback.textContent = 'Отметката е запазена.';
+                row.classList.toggle('purchased',saved.checked);feedback.textContent = messages['ui.checkmark.saved'];
             } catch (_) {
                 input.checked = previous; row.classList.toggle('purchased',previous);
-                feedback.textContent = 'Отметката не е запазена. Опитайте отново.';
+                feedback.textContent = messages['ui.the.checkmark.was.not.saved.try.again'];
             } finally {input.disabled = false; row.removeAttribute('aria-busy');}
             })();shoppingWrites.add(write);write.finally(()=>shoppingWrites.delete(write));
         });
@@ -116,15 +117,15 @@
     }});
     document.getElementById('print-shopping')?.addEventListener('click', () => window.print());
     document.getElementById('copy-shopping')?.addEventListener('click', async () => {
-        const lines = ['Списък за пазаруване — FitPulse', ...Array.from(document.querySelectorAll('[data-shopping-text]'), row => `${row.classList.contains('purchased') ? '[✓]' : '[ ]'} ${row.dataset.shoppingText}`)];
+        const lines = [messages['ui.shopping.list.fitpulse'], ...Array.from(document.querySelectorAll('[data-shopping-text]'), row => `${row.classList.contains('purchased') ? '[✓]' : '[ ]'} ${row.dataset.shoppingText}`)];
         const text = lines.join('\n');
         const status = document.getElementById('shopping-feedback');
         try {
             if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
             else {const area = document.createElement('textarea'); area.value = text; document.body.append(area); area.select(); const done = document.execCommand('copy'); area.remove(); if (!done) throw new Error();}
-            status.textContent = 'Списъкът е копиран.';
+            status.textContent = messages['ui.the.list.was.copied'];
         } catch (_) {
-            const area = document.createElement('textarea'); area.className = 'form-control'; area.value = text; area.setAttribute('aria-label', 'Списък за ръчно копиране'); status.replaceChildren(document.createTextNode('Маркирай и копирай списъка: '), area); area.select();
+            const area = document.createElement('textarea'); area.className = 'form-control'; area.value = text; area.setAttribute('aria-label', messages['ui.list.for.manual.copying']); status.replaceChildren(document.createTextNode(messages['ui.select.and.copy.the.list']), area); area.select();
         }
     });
 })();

@@ -1,76 +1,87 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head(${gym.name})}"></head>
 <body class="page-bg">
 <div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page">
-    <a class="back-link" th:href="@{/gyms}">← Каталог с фитнеси</a>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}" role="status"></div>
-    <div th:if="${error}" class="alert alert-warning" th:text="${error}" role="alert"></div>
+    <a class="back-link" th:href="@{/gyms}">[[#{ui.gym.directory.2}]]</a>
+    <div th:if="${success}" class="alert alert-success" th:text="${@uiText.label(success)}" role="status"></div>
+    <div th:if="${error}" class="alert alert-warning" th:text="${@uiText.label(error)}" role="alert"></div>
 
     <div class="gym-detail-layout">
         <section class="fit-card gym-detail-info" aria-labelledby="gym-title">
-            <header class="gym-detail-heading">
-                <span th:replace="~{fragments/gym-wordmark :: wordmark(${gym.name})}"></span>
+            <header class="gym-detail-heading" th:classappend="${#lists.isEmpty(gymPhotos) ? '' : 'gym-detail-heading-with-photo'}">
+                <th:block th:if="${#lists.isEmpty(gymPhotos)}">
+                    <span th:replace="~{fragments/gym-wordmark :: wordmark(${gym.name})}"></span>
+                </th:block>
                 <div>
                     <span class="eyebrow" th:text="${gym.city.name}"></span>
                     <h1 id="gym-title" th:text="${gym.name}"></h1>
                     <p th:if="${!#strings.isEmpty(#strings.trim(gym.address))}" th:text="${gym.address}"></p>
                 </div>
             </header>
+            <div class="gym-detail-media" th:unless="${#lists.isEmpty(gymPhotos)}" th:with="cover=${gymPhotos[0]}">
+                <img class="gym-detail-cover" th:src="${@browserMedia.local(cover.imageUrl)} ? @{${cover.imageUrl}} : null" th:data-external-src="${@browserMedia.external(cover.imageUrl)}" referrerpolicy="no-referrer" data-media-fallback th:alt="${cover.altText}"
+                     decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span th:hidden="${@browserMedia.local(cover.imageUrl)}" aria-hidden="true"><span th:replace="~{fragments/gym-wordmark :: wordmark(${gym.name})}"></span></span>
+                <div class="gym-detail-photos" th:if="${#lists.size(gymPhotos) > 1}">
+                    <a th:each="photo, row:${gymPhotos}" th:unless="${row.first}" th:href="@{${photo.imageUrl}}"
+                       target="_blank" rel="noopener noreferrer">
+                        <img loading="lazy" decoding="async" th:src="${@browserMedia.local(photo.imageUrl)} ? @{${photo.imageUrl}} : null" th:data-external-src="${@browserMedia.external(photo.imageUrl)}" referrerpolicy="no-referrer"
+                             th:alt="${photo.altText}" onerror="this.parentElement.hidden=true;">
+                    </a>
+                </div>
+            </div>
             <p class="gym-detail-description" th:if="${!#strings.isEmpty(#strings.trim(gym.description))}" th:text="${gym.description}"></p>
             <dl class="gym-detail-facts">
                 <div th:if="${!#strings.isEmpty(#strings.trim(gym.phone))}">
-                    <dt>Телефон</dt>
+                    <dt>[[#{ui.phone}]]</dt>
                     <dd><a class="gym-text-link" th:href="${'tel:'+gym.phone}" th:text="${gym.phone}"></a></dd>
                 </div>
                 <div th:if="${websiteUsable}">
-                    <dt>Уебсайт</dt>
-                    <dd><a class="gym-text-link" th:href="${gym.websiteUrl}" target="_blank" rel="noopener noreferrer">Посети сайта</a></dd>
+                    <dt>[[#{ui.website}]]</dt>
+                    <dd><a class="gym-text-link" th:href="${gym.websiteUrl}" target="_blank" rel="noopener noreferrer">[[#{ui.visit.website}]]</a></dd>
                 </div>
                 <div th:if="${!#strings.isEmpty(#strings.trim(gym.openingHours))}">
-                    <dt>Работно време</dt><dd th:text="${gym.openingHours}"></dd>
+                    <dt>[[#{ui.opening.hours}]]</dt><dd th:text="${gym.openingHours}"></dd>
                 </div>
                 <div th:if="${!#strings.isEmpty(#strings.trim(gym.services))}">
-                    <dt>Услуги</dt><dd th:text="${gym.services}"></dd>
+                    <dt>[[#{ui.services}]]</dt><dd th:text="${gym.services}"></dd>
                 </div>
                 <div th:if="${!#strings.isEmpty(#strings.trim(gym.priceInfo))}">
-                    <dt>Цени</dt><dd th:text="${gym.priceInfo}"></dd>
+                    <dt>[[#{ui.prices}]]</dt><dd th:text="${gym.priceInfo}"></dd>
                 </div>
             </dl>
             <div class="gym-detail-actions">
                 <a class="gym-text-link" th:if="${mapsUrl}" th:href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
-                   th:text="${hotelMap ? 'Виж комплекса в Google Maps' : 'Виж в Google Maps'}"></a>
+                   th:text="${hotelMap ? #messages.msg('ui.view.the.facility.in.google.maps') : #messages.msg('ui.view.in.google.maps')}"></a>
                 <a class="gym-text-link" th:if="${mapsUrl==null and gym.latitude!=null and gym.longitude!=null}" target="_blank" rel="noopener noreferrer"
-                   th:href="@{'https://www.openstreetmap.org/?mlat='+${gym.latitude}+'&mlon='+${gym.longitude}+'#map=17/'+${gym.latitude}+'/'+${gym.longitude}}">Отвори картата</a>
+                   th:href="@{'https://www.openstreetmap.org/?mlat='+${gym.latitude}+'&mlon='+${gym.longitude}+'#map=17/'+${gym.latitude}+'/'+${gym.longitude}}">[[#{ui.open.map}]]</a>
                 <form sec:authorize="isAuthenticated()" method="post" th:action="@{/gyms/{id}/favorite(id=${gym.id})}">
-                    <button class="btn btn-outline-dark btn-sm" th:text="${favorite?'Премахни от любими':'Добави в любими'}"></button>
+                    <button class="btn btn-outline-dark btn-sm" th:text="${favorite?#messages.msg('ui.remove.from.favorites'):#messages.msg('ui.add.to.favorites')}"></button>
                 </form>
-            </div>
-            <div class="gym-detail-photos" th:unless="${#lists.isEmpty(gymPhotos)}">
-                <img th:each="photo:${gymPhotos}" loading="lazy" th:src="@{${photo.imageUrl}}" th:alt="${photo.altText}" onerror="this.hidden=true;">
             </div>
         </section>
 
         <section class="fit-card gym-comments" id="reviews" aria-labelledby="gym-comments-heading">
-            <h2 id="gym-comments-heading">Коментари</h2>
+            <h2 id="gym-comments-heading">[[#{ui.comments}]]</h2>
             <p sec:authorize="isAnonymous()">
-                <a class="gym-text-link" th:href="@{/login(returnTo=${'/gyms/'+gym.slug+'#reviews'})}">Влез в профила си</a>, за да добавиш коментар.
+                <a class="gym-text-link" th:href="@{/login(returnTo=${'/gyms/'+gym.slug+'#reviews'})}">[[#{ui.sign.in}]]</a>[[#{ui.to.add.a.comment}]]
             </p>
             <div sec:authorize="isAuthenticated()" class="gym-comment-editor">
                 <form method="post" th:action="@{/gyms/{id}/review(id=${gym.id})}" th:object="${reviewForm}">
-                    <label for="gym-comment" th:text="${ownReview==null?'Добави коментар':'Редактирай своя коментар'}"></label>
-                    <p class="small text-muted" th:if="${ownReview!=null and ownReview.status.name()!='PUBLISHED'}">Коментарът ти е скрит или очаква преглед от администратор.</p>
+                    <label for="gym-comment" th:text="${ownReview==null?#messages.msg('ui.add.a.comment'):#messages.msg('ui.edit.your.comment')}"></label>
+                    <p class="small text-muted" th:if="${ownReview!=null and ownReview.status.name()!='PUBLISHED'}">[[#{ui.your.comment.is.hidden.or.awaiting.moderation}]]</p>
                     <textarea id="gym-comment" class="form-control" th:field="*{comment}" th:errorclass="is-invalid"
                               maxlength="2000" rows="3" required></textarea>
                     <p class="invalid-feedback" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" role="alert"></p>
-                    <button class="btn btn-pulse btn-sm mt-2" th:text="${ownReview==null?'Публикувай коментара':'Запази промените'}"></button>
+                    <button class="btn btn-pulse btn-sm mt-2" th:text="${ownReview==null?#messages.msg('ui.post.comment'):#messages.msg('ui.save.changes')}"></button>
                 </form>
                 <form th:if="${ownReview!=null}" method="post" class="mt-2" th:action="@{/reviews/{id}/delete(id=${ownReview.id})}">
-                    <button class="gym-text-link" type="submit">Изтрий своя коментар</button>
+                    <button class="gym-text-link" type="submit">[[#{ui.delete.your.comment}]]</button>
                 </form>
             </div>
-            <p class="text-muted mb-0" th:if="${#lists.isEmpty(reviews)}">Все още няма коментари. Бъди първият, който ще сподели мнение.</p>
+            <p class="text-muted mb-0" th:if="${#lists.isEmpty(reviews)}">[[#{ui.there.are.no.comments.yet.be.the}]]</p>
             <article class="gym-comment" th:each="comment:${reviews}">
                 <header>
                     <strong th:text="${comment.user.username}"></strong>
@@ -79,21 +90,21 @@
                 <p class="gym-comment-text" th:text="${comment.comment}"></p>
                 <div class="gym-comment-actions" sec:authorize="isAuthenticated()">
                     <details>
-                        <summary class="gym-text-link">Докладвай</summary>
+                        <summary class="gym-text-link">[[#{ui.report}]]</summary>
                         <form method="post" class="mt-2" th:action="@{/reviews/{id}/report(id=${comment.id})}">
-                            <label th:for="'report-'+${comment.id}">Причина</label>
+                            <label th:for="'report-'+${comment.id}">[[#{ui.reason}]]</label>
                             <input th:id="'report-'+${comment.id}" class="form-control form-control-sm" name="reason" required maxlength="500">
-                            <button class="gym-text-link mt-2" type="submit">Изпрати сигнал</button>
+                            <button class="gym-text-link mt-2" type="submit">[[#{ui.submit.report}]]</button>
                         </form>
                     </details>
                     <form sec:authorize="hasRole('ADMIN')" th:if="${ownReview==null or ownReview.id!=comment.id}"
                           method="post" th:action="@{/reviews/{id}/delete(id=${comment.id})}">
-                        <button class="gym-text-link" type="submit">Изтрий коментара</button>
+                        <button class="gym-text-link" type="submit">[[#{ui.delete.comment}]]</button>
                     </form>
                 </div>
             </article>
         </section>
     </div>
 </main>
-</body>
+<div th:replace="~{fragments/footer :: footer(false)}"></div></body>
 </html>

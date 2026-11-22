@@ -1,25 +1,35 @@
 package com.fitpulse.model.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
 
-    @NotBlank(message = "Потребителското име е задължително.")
-    @Size(min = 3, max = 30, message = "Потребителското име трябва да бъде между 3 и 30 знака.")
+    @NotBlank(message = "{ui.username.is.required}")
+    @Size(min = 3, max = 30, message = "{ui.username.must.be.between.3.and.30}")
     private String username;
 
-    @NotBlank(message = "Имейл адресът е задължителен.")
-    @Email(message = "Въведете валиден имейл адрес.")
+    @NotBlank(message = "{ui.email.is.required}")
+    @Email(message = "{ui.enter.a.valid.email.address}")
     private String email;
 
-    @NotBlank(message = "Паролата е задължителна.")
-    @Size(min = 6, message = "Паролата трябва да съдържа поне 6 знака.")
+    @NotBlank(message = "{ui.password.is.required}")
+    @Size(min = 6, message = "{ui.the.password.must.be.at.least.6}")
     private String password;
 
-    @NotBlank(message = "Потвърждението на паролата е задължително.")
+    @NotBlank(message = "{ui.password.confirmation.is.required}")
     private String confirmPassword;
+
+    @AssertTrue(message = "{legal.terms.required}")
+    private boolean termsAccepted;
+    private String termsVersion;
+
+    public boolean isTermsAccepted() { return termsAccepted; }
+    public void setTermsAccepted(boolean termsAccepted) { this.termsAccepted = termsAccepted; }
+    public String getTermsVersion() { return termsVersion; }
+    public void setTermsVersion(String termsVersion) { this.termsVersion = termsVersion; }
 
     public String getUsername() {
         return username;

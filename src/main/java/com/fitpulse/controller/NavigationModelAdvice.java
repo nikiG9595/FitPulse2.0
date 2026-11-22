@@ -37,7 +37,7 @@ public class NavigationModelAdvice {
     @ModelAttribute("showFitPulseBanner")
     public boolean showFitPulseBanner(HttpServletRequest request) {
         String path = request.getRequestURI().substring(request.getContextPath().length());
-        return !path.equals("/") && !path.equals("/login") && !path.equals("/register");
+        return !path.equals("/") && !path.equals("/about") && !path.equals("/login") && !path.equals("/register");
     }
 
     @ModelAttribute("authReturnTo")

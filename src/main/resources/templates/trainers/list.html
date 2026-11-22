@@ -1,11 +1,11 @@
-<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Треньори във FitPulse')}"></head>
+<!doctype html><html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.fitpulse.trainers})}"></head>
 <body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page library-page">
-    <header class="library-header"><div><span class="eyebrow">Опитът зад движението</span><h1>Треньори</h1><p>Запознай се с треньорите във FitPulse. Разгледай опита и представянето им в техните публични профили.</p></div></header>
-    <div class="empty-state fit-card" th:if="${#lists.isEmpty(trainers)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></span><h2>Подготвяме треньорските профили</h2><p>Все още няма публикувани треньори. Междувременно можеш да откриеш фитнес за следващата си тренировка.</p><a class="btn btn-pulse" th:href="@{/gyms}">Разгледай фитнесите</a></div>
-    <section class="trainer-grid" aria-label="Публични профили на треньори"><article class="trainer-card" th:each="t:${trainers}">
-        <a class="trainer-card-image" th:href="@{/trainers/{id}(id=${t.id})}"><img th:src="${t.photoUrl}" th:alt="'Профилна снимка на '+${t.name}" loading="lazy"><span class="trainer-experience" th:text="${t.experienceYears}+' години опит'"></span></a>
-        <div class="trainer-card-body"><span class="eyebrow" th:text="${t.country}"></span><h2><a th:href="@{/trainers/{id}(id=${t.id})}" th:text="${t.name}"></a></h2><p class="trainer-bio-preview" th:text="${t.bio}"></p><a class="btn btn-outline-dark" th:href="@{/trainers/{id}(id=${t.id})}">Виж профила <span aria-hidden="true">↗</span></a></div>
+    <header class="library-header"><div><span class="eyebrow">[[#{ui.experience.behind.the.training}]]</span><h1>[[#{ui.trainers}]]</h1><p>[[#{ui.meet.the.fitpulse.trainers.and.explore.their}]]</p></div></header>
+    <div class="empty-state fit-card" th:if="${#lists.isEmpty(trainers)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></span><h2>[[#{ui.trainer.profiles.are.being.prepared}]]</h2><p>[[#{ui.there.are.no.published.trainers.yet.in}]]</p><a class="btn btn-pulse" th:href="@{/gyms}">[[#{ui.browse.gyms}]]</a></div>
+    <section class="trainer-grid" th:aria-label="#{ui.public.trainer.profiles}"><article class="trainer-card" th:each="t:${trainers}">
+        <a class="trainer-card-image" th:href="@{/trainers/{id}(id=${t.id})}"><img th:src="${@browserMedia.local(t.photoUrl)} ? @{${t.photoUrl}} : null" th:data-external-src="${@browserMedia.external(t.photoUrl)}" referrerpolicy="no-referrer" th:alt="#{ui.profile.photo.of}+${t.name}" loading="lazy"><span class="trainer-experience" th:text="${t.experienceYears}+#{ui.years.of.experience.2}"></span></a>
+        <div class="trainer-card-body"><span class="eyebrow" th:text="${t.country}"></span><h2><a th:href="@{/trainers/{id}(id=${t.id})}" th:text="${t.name}"></a></h2><p class="trainer-bio-preview" th:text="${t.bio}"></p><a class="btn btn-outline-dark" th:href="@{/trainers/{id}(id=${t.id})}">[[#{ui.view.profile}]] <span aria-hidden="true">↗</span></a></div>
     </article></section>
-</main></body></html>
+</main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

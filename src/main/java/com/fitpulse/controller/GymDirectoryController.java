@@ -3,6 +3,8 @@ package com.fitpulse.controller;
 import com.fitpulse.model.dto.GymSuggestionForm;
 import com.fitpulse.model.dto.ReviewForm;
 import com.fitpulse.model.entity.Gym;
+import com.fitpulse.model.entity.GymPhoto;
+import com.fitpulse.service.GymContent;
 import com.fitpulse.service.GymDirectoryService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -51,7 +54,13 @@ public class GymDirectoryController {
     public String list(@RequestParam(required = false) String city, @RequestParam(required = false) String q,
                        @RequestParam(defaultValue = "0") int page, Model m) {
         var result = service.search(city, q, page);
+        Map<Long, GymPhoto> covers = new HashMap<>();
+        for (Gym gym : result) {
+            GymContent.orderedPhotos(gym).stream().findFirst()
+                    .ifPresent(photo -> covers.put(gym.getId(), photo));
+        }
         m.addAttribute("gyms", result);
+        m.addAttribute("gymCovers", covers);
         m.addAttribute("cities", service.activeCities());
         m.addAttribute("city", city);
         m.addAttribute("q", q);
@@ -79,7 +88,7 @@ public class GymDirectoryController {
         m.addAttribute("mapsUrl", mapsUrl(g));
         m.addAttribute("hotelMap", HOTEL_MAP_LINKS.containsKey(g.getSlug()));
         m.addAttribute("ownReview", own);
-        m.addAttribute("gymPhotos", g.getPhotos().stream().filter(p -> !com.fitpulse.service.GymContent.text(p.getImageUrl()).isBlank() && com.fitpulse.service.GymContent.imageUrl(p.getImageUrl())).toList());
+        m.addAttribute("gymPhotos", GymContent.orderedPhotos(g));
         m.addAttribute("websiteUsable", !com.fitpulse.service.GymContent.text(g.getWebsiteUrl()).isBlank() && com.fitpulse.service.GymContent.webUrl(g.getWebsiteUrl()));
         if (!m.containsAttribute("reviewForm")) {
             ReviewForm form = new ReviewForm();

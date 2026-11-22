@@ -79,7 +79,7 @@
             const sub=form.querySelector('[name="subgroup"]');if(sub)sub.value=subgroup;
             form.querySelector('[name="page"]')?.remove();form.requestSubmit();
         }
-        function choose(name){if(mode!=='library')return;preview=null;selected=normalize(name);subgroup='';paint();panel.querySelector('.anatomy-selection').textContent=selected||'Всички упражнения';submit();}
+        function choose(name){if(mode!=='library')return;preview=null;selected=normalize(name);subgroup='';paint();panel.querySelector('.anatomy-selection').textContent=([ ...panel.querySelectorAll('[data-muscle-select]') ].find(button => button.dataset.muscleSelect === selected)?.textContent || window.fitPulseMessages['ui.all.exercises']);submit();}
         panel.querySelectorAll('[data-muscle-select]').forEach(button=>button.addEventListener('click',()=>choose(button.getAttribute('data-muscle-select'))));
         panel.querySelectorAll('[data-subgroup-select]').forEach(button=>button.addEventListener('click',()=>{preview=null;subgroup=button.getAttribute('data-subgroup-select');if(subgroup&&!options.has(subgroup))subgroup='';paint();submit();}));
         panel.querySelectorAll('[data-muscle-select]').forEach(button=>previewOn(button,()=>zonesForGroup(button.getAttribute('data-muscle-select'))));

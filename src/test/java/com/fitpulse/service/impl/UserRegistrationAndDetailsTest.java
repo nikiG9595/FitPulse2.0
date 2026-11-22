@@ -42,7 +42,9 @@ class UserRegistrationAndDetailsTest {
         service.register(request);
         verify(repository).save(argThat(user -> user.getUsername().equals("newuser")
                 && user.getEmail().equals("new@example.com") && user.getPassword().equals("encoded")
-                && user.getRole() == UserRole.MEMBER));
+                && user.getRole() == UserRole.MEMBER
+                && com.fitpulse.config.LegalTerms.VERSION.equals(user.getAcceptedTermsVersion())
+                && user.getTermsAcceptedAt() != null));
     }
 
     @Test
@@ -64,7 +66,10 @@ class UserRegistrationAndDetailsTest {
 
     private static RegisterRequest request() {
         RegisterRequest r = new RegisterRequest(); r.setUsername("newuser"); r.setEmail("new@example.com");
-        r.setPassword("secret1"); r.setConfirmPassword("secret1"); return r;
+        r.setPassword("secret1"); r.setConfirmPassword("secret1");
+        r.setTermsAccepted(true);
+        r.setTermsVersion(com.fitpulse.config.LegalTerms.VERSION);
+        return r;
     }
 
     private static void assertMessage(String message, Runnable action) {

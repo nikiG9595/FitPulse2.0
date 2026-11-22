@@ -1,45 +1,55 @@
 <th:block th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
-<nav class="navbar navbar-dark fixed-top fit-nav" th:classappend="${(#authorization.expression('isAnonymous()') ? 'nav-public' : 'nav-member') + (showFitPulseBanner ? ' nav-with-banner' : '')}" aria-label="Основна навигация"
+<nav class="navbar navbar-dark fixed-top fit-nav" th:classappend="${(#authorization.expression('isAnonymous()') ? 'nav-public' : 'nav-member') + (showFitPulseBanner ? ' nav-with-banner' : '')}" th:aria-label="#{ui.main.navigation}"
      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="container nav-layout">
         <div class="nav-identity">
             <a class="navbar-brand" th:href="@{/}">Fit<span>Pulse</span></a>
         </div>
-        <span class="nav-slogan">Откривай. Планирай. Напредвай.</span>
+        <span class="nav-slogan">[[#{ui.explore.plan.progress}]]</span>
         <div class="nav-actions">
-            <a class="nav-icon-button" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}" title="Администрация" aria-label="Администрация" data-admin-shortcut th:with="hasTasks=${adminTaskIndicator != null and adminTaskIndicator.getAsBoolean()}">
+            <th:block sec:authorize="isAuthenticated()">
+                <button th:replace="~{fragments/nav :: languageToggle}"></button>
+                <button th:replace="~{fragments/nav :: themeToggle}"></button>
+            </th:block>
+            <a class="nav-icon-button" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}" th:title="#{nav.admin}" th:aria-label="#{nav.admin}" data-admin-shortcut th:with="hasTasks=${adminTaskIndicator != null and adminTaskIndicator.getAsBoolean()}">
                 <svg th:replace="~{fragments/icons :: icon('bell')}"></svg>
                 <span class="nav-notification-dot" th:if="${hasTasks}" aria-hidden="true"></span>
-                <span class="visually-hidden" th:if="${hasTasks}">Има нови административни задачи</span>
+                <span class="visually-hidden" th:if="${hasTasks}">[[#{ui.new.administrative.tasks}]]</span>
             </a>
-            <a class="nav-icon-button" sec:authorize="isAuthenticated()" th:href="@{/profile}" title="Моят профил" aria-label="Моят профил" data-profile-shortcut>
+            <a class="nav-icon-button" sec:authorize="isAuthenticated()" th:href="@{/profile}" th:title="#{ui.my.profile}" th:aria-label="#{ui.my.profile}" data-profile-shortcut>
                 <svg class="nav-profile-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                     <circle class="nav-profile-background" cx="16" cy="16" r="16"/>
                     <circle cx="16" cy="12" r="4.5" fill="currentColor"/>
                     <path d="M8 24v-1a8 8 0 0 1 16 0v1z" fill="currentColor"/>
                 </svg>
             </a>
-        <button class="navbar-toggler" type="button" aria-controls="fitpulse-menu" aria-expanded="false" aria-label="Отвори менюто" id="fitpulse-menu-toggle">
+        <button class="navbar-toggler" type="button" aria-controls="fitpulse-menu" aria-expanded="false" th:aria-label="#{ui.open.menu}"
+                th:data-open-label="#{ui.open.menu}" th:data-close-label="#{nav.menu.close}" id="fitpulse-menu-toggle">
             <svg class="nav-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
                 <path d="M4 6h16M4 12h16M4 18h16"/>
-            </svg><span class="menu-button-text">Меню</span>
+            </svg><span class="menu-button-text">[[#{ui.menu}]]</span>
         </button>
         </div>
         <div class="collapse navbar-collapse" id="fitpulse-menu">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/gyms}">Разгледай фитнесите</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">Тренировъчни програми</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">Хранителни режими</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/support}">Помощ и обратна връзка</a></li><li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/trainers}">Треньори</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>Профил</a></li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">Администрация</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login(returnTo=${authReturnTo})}">Вход</a></li>
-                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register(returnTo=${authReturnTo})}">Регистрация</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button class="btn btn-outline-light btn-sm" type="submit">Изход</button></form></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/about}">[[#{ui.about.fitpulse}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/gyms}">[[#{ui.browse.gyms}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">[[#{ui.training.programs}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">[[#{nav.meals}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/support}">[[#{ui.help.and.feedback}]]</a></li><li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/trainers}">[[#{ui.trainers}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>[[#{nav.profile}]]</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">[[#{nav.admin}]]</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login(returnTo=${authReturnTo})}">[[#{nav.login}]]</a></li>
+                <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register(returnTo=${authReturnTo})}">[[#{nav.register}]]</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button class="btn btn-outline-light btn-sm" type="submit">[[#{nav.logout}]]</button></form></li>
+                <li class="nav-item nav-preferences" sec:authorize="isAnonymous()">
+                    <button th:replace="~{fragments/nav :: languageToggle}"></button>
+                    <button th:replace="~{fragments/nav :: themeToggle}"></button>
+                </li>
             </ul>
         </div>
     </div>
-    <div class="fitpulse-toast" id="login-toast" th:if="${loginToast}" th:text="${loginToast}" role="status"></div>
+    <div class="fitpulse-toast" id="login-toast" th:if="${loginToast}" th:text="${@uiText.label(loginToast)}" role="status"></div>
     <script th:src="@{/js/navigation.js}" defer></script>
 
     <noscript><style>.fit-nav .navbar-collapse{display:block!important;position:static!important;grid-column:1/-1;width:100%!important}.fit-nav .navbar-toggler{display:none!important}</style></noscript>
@@ -48,3 +58,18 @@
     <div th:replace="~{fragments/banner :: banner}"></div>
 </th:block>
 </th:block>
+<button th:fragment="themeToggle" type="button" class="nav-icon-button theme-toggle" data-theme-toggle
+        th:aria-label="#{ui.light.theme}" aria-pressed="false" th:title="#{ui.light.theme}"
+        th:data-enable-dark="#{theme.enable.dark}" th:data-enable-light="#{theme.enable.light}" hidden>
+    <svg class="ui-icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>
+    </svg>
+    <svg class="ui-icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 13.3A9 9 0 0 1 10.7 3 9 9 0 1 0 21 13.3Z"/>
+    </svg>
+</button>
+<button th:fragment="languageToggle" type="button" class="nav-icon-button language-toggle" data-language-toggle
+        th:data-language-path="@{/}" th:data-language-blocked="#{language.unsaved}"
+        th:aria-label="#{language.switch}" th:title="#{language.switch}"
+        th:text="${#locale.language == 'en' ? 'BG' : 'EN'}" hidden></button>

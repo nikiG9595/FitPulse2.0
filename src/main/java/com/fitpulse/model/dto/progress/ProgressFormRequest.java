@@ -11,22 +11,22 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ProgressFormRequest {
-    @NotNull(message = "Теглото е задължително.")
-    @DecimalMin(value = "20.0", message = "Теглото трябва да бъде поне 20 кг.")
-    @DecimalMax(value = "400.0", message = "Теглото не може да надвишава 400 кг.")
-    @jakarta.validation.constraints.Digits(integer=3,fraction=2,message="Използвай до два десетични знака.")
+    @NotNull(message = "{ui.weight.is.required}")
+    @DecimalMin(value = "20.0", message = "{ui.weight.must.be.at.least.20.kg}")
+    @DecimalMax(value = "400.0", message = "{ui.weight.cannot.exceed.400.kg}")
+    @jakarta.validation.constraints.Digits(integer=3,fraction=2,message = "{ui.use.up.to.two.decimal.places}")
     private BigDecimal weight;
 
-    @DecimalMin(value = "1.0", message = "Телесните мазнини трябва да бъдат поне 1%.")
-    @DecimalMax(value = "80.0", message = "Телесните мазнини не могат да надвишават 80%.")
+    @DecimalMin(value = "1.0", message = "{ui.body.fat.must.be.at.least.1}")
+    @DecimalMax(value = "80.0", message = "{ui.body.fat.cannot.exceed.80}")
     private BigDecimal bodyFatPercentage;
 
-    @NotNull(message = "Датата е задължителна.")
-    @PastOrPresent(message = "Датата не може да бъде в бъдещето.")
+    @NotNull(message = "{ui.a.date.is.required}")
+    @PastOrPresent(message = "{ui.the.date.cannot.be.in.the.future.2}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate recordedAt;
 
-    @Size(max = 500, message = "Бележката не може да надвишава 500 знака.")
+    @Size(max = 500, message = "{ui.the.note.cannot.exceed.500.characters}")
     private String note;
 
     public BigDecimal getWeight() {

@@ -30,7 +30,7 @@
     const items = () => [...menu.querySelectorAll('a,button')].filter(e => e.getClientRects().length && !e.disabled);
     function open(value, focus) {
         menu.classList.toggle('show', value); toggle.setAttribute('aria-expanded', String(value));
-        toggle.setAttribute('aria-label', value ? 'Затвори менюто' : 'Отвори менюто');
+        toggle.setAttribute('aria-label', value ? toggle.dataset.closeLabel : toggle.dataset.openLabel);
         if (value && focus) {const list=items(); (focus==='last'?list.at(-1):list[0])?.focus();}
     }
     if (member) {toggle.setAttribute('aria-haspopup','menu');menu.querySelector('ul').setAttribute('role','menu');menu.querySelectorAll('li').forEach(e=>e.setAttribute('role','none'));menu.querySelectorAll('a,button').forEach(e=>e.setAttribute('role','menuitem'));}

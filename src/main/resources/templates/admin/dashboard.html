@@ -1,14 +1,14 @@
-<!doctype html><html lang="bg" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Администрация')}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page"><h1>Администрация</h1><div class="stats-grid admin-stats">
-<a class="fit-card admin-stat" th:href="@{/admin/gyms(status='PUBLISHED')}"><strong th:text="${gymCount}"></strong><span>Публикувани фитнеси</span></a>
-<a class="fit-card admin-stat" th:href="@{/admin/suggestions(status='PENDING')}"><strong th:text="${pendingCount}"></strong><span>Чакащи предложения</span></a>
-<a class="fit-card admin-stat" th:classappend="${unreadMessageCount > 0 ? 'admin-stat-unread' : ''}" th:href="@{/admin/messages(status='NEW')}"><strong th:text="${unreadMessageCount}"></strong><span>Нови съобщения</span><i class="admin-stat-dot" th:if="${unreadMessageCount > 0}" aria-hidden="true"></i></a>
-<a class="fit-card admin-stat" th:href="@{/admin/users}"><strong th:text="${userCount}"></strong><span>Потребители</span></a>
-<a class="fit-card admin-stat" th:href="@{/admin/programs(view='saved')}"><strong th:text="${savedProgramCount}"></strong><span>Тренировъчни програми</span></a>
-<a class="fit-card admin-stat" th:href="@{/admin/programs(view='personal')}"><strong th:text="${personalProgramCount}"></strong><span>Лични програми</span></a>
-<a class="fit-card admin-stat" th:href="@{/admin/reviews}"><strong th:text="${commentCount}"></strong><span>Коментари</span><small class="admin-stat-new-comments" th:if="${newCommentCount > 0}" th:text="${newCommentCount}+' нови коментара'"></small></a>
+<!doctype html><html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head(#{nav.admin})}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page"><h1>[[#{nav.admin}]]</h1><div class="stats-grid admin-stats">
+<a class="fit-card admin-stat" th:href="@{/admin/gyms(status='PUBLISHED')}"><strong th:text="${gymCount}"></strong><span>[[#{ui.published.gyms}]]</span></a>
+<a class="fit-card admin-stat" th:href="@{/admin/suggestions(status='PENDING')}"><strong th:text="${pendingCount}"></strong><span>[[#{ui.pending.suggestions}]]</span></a>
+<a class="fit-card admin-stat" th:classappend="${unreadMessageCount > 0 ? 'admin-stat-unread' : ''}" th:href="@{/admin/messages(status='NEW')}"><strong th:text="${unreadMessageCount}"></strong><span>[[#{ui.new.messages}]]</span><i class="admin-stat-dot" th:if="${unreadMessageCount > 0}" aria-hidden="true"></i></a>
+<a class="fit-card admin-stat" th:href="@{/admin/users}"><strong th:text="${userCount}"></strong><span>[[#{ui.users}]]</span></a>
+<a class="fit-card admin-stat" th:href="@{/admin/programs(view='saved')}"><strong th:text="${savedProgramCount}"></strong><span>[[#{ui.training.programs}]]</span></a>
+<a class="fit-card admin-stat" th:href="@{/admin/programs(view='personal')}"><strong th:text="${personalProgramCount}"></strong><span>[[#{ui.personal.programs}]]</span></a>
+<a class="fit-card admin-stat" th:href="@{/admin/reviews}"><strong th:text="${commentCount}"></strong><span>[[#{ui.comments}]]</span><small class="admin-stat-new-comments" th:if="${newCommentCount > 0}" th:text="${newCommentCount}+#{ui.new.comments}"></small></a>
 </div><div class="d-flex flex-wrap gap-2 mt-4">
-<a class="btn btn-pulse" th:href="@{/admin/gyms/create}">Добавяне на фитнес</a>
-<a class="btn btn-dark" th:href="@{/admin/programs/create}">Добавяне на програма</a>
-<a class="btn btn-dark" th:href="@{/admin/meal-plans/create}">Добавяне на хранителен режим</a>
-<a class="btn btn-dark" th:href="@{/admin/trainers/create}">Добавяне на треньор</a>
-</div></main></body></html>
+<a class="btn btn-pulse" th:href="@{/admin/gyms/create}">[[#{ui.add.a.gym}]]</a>
+<a class="btn btn-dark" th:href="@{/admin/programs/create}">[[#{ui.add.a.program}]]</a>
+<a class="btn btn-dark" th:href="@{/admin/meal-plans/create}">[[#{ui.add.a.meal.plan}]]</a>
+<a class="btn btn-dark" th:href="@{/admin/trainers/create}">[[#{ui.add.a.trainer}]]</a>
+</div></main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

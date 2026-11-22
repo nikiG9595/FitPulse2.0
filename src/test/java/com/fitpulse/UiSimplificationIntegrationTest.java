@@ -62,24 +62,160 @@ class UiSimplificationIntegrationTest {
         MealPlanTemplate t=new MealPlanTemplate();t.setName("Оригинален режим");t.setDescription("Описание");t.setGoal(FitnessGoal.MUSCLE);t.setMeals("Меню");t.setDisclaimer("Пример");t.setWeeklyMenu(mapper.writeValueAsString(new WeeklyMenu("FitPulse","",days)));return meals.saveAndFlush(t);
     }
 
+    @Test void languageCookieSelectsEnglishWithoutTranslatingProfileContent() throws Exception {
+        var english = new jakarta.servlet.http.Cookie("fitpulse-language", "en");
+        String home = mvc.perform(get("/")).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(home).contains("lang=\"bg\"", "Започни сега", ">EN</button>");
+
+        String about = mvc.perform(get("/about").cookie(english))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(about).contains("lang=\"en\"", "<h1>About FitPulse</h1>", "Personalized nutrition", ">BG</button>");
+
+        String registration = mvc.perform(post("/register").cookie(english).with(csrf()))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(registration).contains("Username is required.");
+
+        account.setDisplayName("Потребител на FitPulse");
+        users.saveAndFlush(account);
+        String profile = mvc.perform(get("/profile").cookie(english).with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(profile).contains("lang=\"en\"", "Edit your profile", account.getDisplayName());
+
+        for (String path : List.of("/gyms", "/exercises", "/programs", "/meal-plans", "/progress", "/admin")) {
+            String html = mvc.perform(get(path).cookie(english).with(user(account.getUsername()).roles("ADMIN")))
+                    .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+            assertThat(html).contains("lang=\"en\"", ">BG</button>");
+        }
+
+        var program = new ProgramTemplate();
+        program.setName("Старт у дома 3 дни");
+        program.setDescription("Основни движения за изграждане на навик.");
+        program.setGoal(FitnessGoal.GENERAL);
+        program.setExperience(ExperienceLevel.BEGINNER);
+        program.setLocation(TrainingLocation.HOME);
+        program.setTrainingDays(3);
+        entityManager.persist(program);
+
+        try (var library = getClass().getResourceAsStream("/content/exercises.json")) {
+            for (var exercise : mapper.readTree(library)) {
+                if ("glute-bridge".equals(exercise.path("code").asText())) {
+                    entityManager.persist(mapper.treeToValue(exercise, Exercise.class));
+                    break;
+                }
+            }
+        }
+        String workout = mvc.perform(get("/programs/{id}", program.getId()).cookie(english)
+                        .with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(workout).contains("Home Starter", "Chair squat", "Leave 2–3 reps in reserve");
+        assertThat(workout).containsPattern("<details class=\"exercise-detail program-exercise\">\\s*<summary>Glute bridge</summary>")
+                .contains("glute-bridge-start.webp", "glute-bridge-finish.webp", "Starting position", "End position")
+                .doesNotContain("chair-squat-start.webp");
+        mvc.perform(get("/images/exercises/glute-bridge-start.webp")).andExpect(status().isOk());
+        String copyUrl = mvc.perform(post("/programs/{id}/copy", program.getId()).with(csrf())
+                        .with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().is3xxRedirection()).andReturn().getResponse().getRedirectedUrl();
+        String copy = mvc.perform(get(copyUrl).with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(copy).contains("<summary>Глутеус мост</summary>", "glute-bridge-start.webp", "Начална позиция");
+        assertThat(program.getName()).isEqualTo("Старт у дома 3 дни");
+
+        var meal = new MealPlanTemplate();
+        meal.setName("Хранителен режим за отслабване");
+        meal.setDescription("Разнообразен седемдневен демонстрационен план с конкретни количества, приготвяне и ориентировъчни хранителни стойности.");
+        meal.setGoal(FitnessGoal.FAT_LOSS);
+        meal.setMeals("Пример");
+        meal.setDisclaimer("Пример");
+        meal.setDemoCode("fat-loss");
+        try (var menu = getClass().getResourceAsStream("/content/menus/fat-loss.json")) {
+            meal.setWeeklyMenu(new String(menu.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
+        }
+        entityManager.persist(meal);
+
+        String nutrition = mvc.perform(get("/meal-plans/{id}", meal.getId()).cookie(english)
+                        .with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(nutrition).contains("Weight Loss Meal Plan", "Skyr with apple, oats and flaxseed",
+                "Mix the oats into the dairy base");
+    }
+
+    @Test void sharedThemeLoadsBeforeStylesAndIsAvailableToGuestsAndMembers() throws Exception {
+        mvc.perform(get("/js/theme.js")).andExpect(status().isOk());
+
+        for (String path : List.of("/", "/about", "/login", "/register")) {
+            String html = mvc.perform(get(path)).andExpect(status().isOk())
+                    .andReturn().getResponse().getContentAsString();
+            assertThat(html).containsPattern("(?s)<script src=\"/js/theme.js\"></script>.*<link rel=\"stylesheet\"")
+                    .containsOnlyOnce("data-theme-toggle");
+        }
+
+        String profile = mvc.perform(get("/profile").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(profile).contains("src=\"/js/theme.js\"").containsOnlyOnce("data-theme-toggle");
+    }
+
+    @Test void homeAndAboutOfferTheExpectedLinksForGuestsAndMembers() throws Exception {
+        var guestHome = mvc.perform(get("/")).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(guestHome).contains("href=\"/register?returnTo=", "href=\"/about\">Научи повече",
+                "href=\"/suggest-gym\">Предложи фитнес", "Откривай. Планирай. <span>Напредвай.");
+
+        var memberHome = mvc.perform(get("/").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(memberHome).contains("href=\"/profile\">Започни сега").doesNotContain("href=\"/register");
+
+        var about = mvc.perform(get("/about")).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(about).contains("href=\"/about\">За FitPulse", "Персонализирано хранене", "Тренировъчни програми",
+                "Библиотека с упражнения", "Личен прогрес", "Каталог с фитнес зали").doesNotContain("href=\"/suggest-gym");
+
+        var gyms = mvc.perform(get("/gyms")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertThat(gyms).doesNotContain("href=\"/suggest-gym");
+    }
+
     @Test void gymCatalogLinksToGymDetailsAndTheExactMapsPlaceIsOnTheDetailsPage() throws Exception {
         City city = new City();
         city.setName("Catalog test city");
         city.setSlug("catalog-test-city");
         entityManager.persist(city);
 
-        catalogGym(city, "Zeta Gym", "fitness-flex-ruse");
+        Gym photographed = catalogGym(city, "Zeta Gym", "fitness-flex-ruse");
         catalogGym(city, "Alpha Gym", "alpha-gym-test");
+        GymPhoto gallery = new GymPhoto();
+        gallery.setGym(photographed);
+        gallery.setImageUrl("/images/gyms/fitness-flex-ruse-02.webp");
+        gallery.setAltText("Zeta Gym");
+        GymPhoto external = new GymPhoto();
+        external.setGym(photographed);
+        external.setImageUrl("https://example.com/external-photo.webp");
+        external.setAltText("External Zeta Gym photo");
+        external.setSortOrder(2);
+        GymPhoto cover = new GymPhoto();
+        cover.setGym(photographed);
+        cover.setImageUrl("/images/gyms/fitness-flex-ruse-01.webp");
+        cover.setAltText("Zeta Gym");
+        cover.setCoverPhoto(true);
+        cover.setSortOrder(1);
+        photographed.getPhotos().addAll(List.of(gallery, cover, external));
+        entityManager.persist(gallery);
+        entityManager.persist(cover);
+        entityManager.persist(external);
         entityManager.flush();
 
         var alphabetical = mvc.perform(get("/gyms").param("city", city.getSlug()))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         assertThat(alphabetical).containsPattern("(?s)Alpha Gym.*Zeta Gym")
                 .contains("href=\"/gyms/fitness-flex-ruse\"")
-                .doesNotContain("query_place_id=");
+                .contains("src=\"/images/gyms/fitness-flex-ruse-01.webp\"", "class=\"gym-wordmark\"")
+                .doesNotContain("query_place_id=", "fitness-flex-ruse-02.webp");
         var details = mvc.perform(get("/gyms/fitness-flex-ruse"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        assertThat(details).contains("query_place_id=ChIJsdlNI-9hrkARq0LNbzWxlCg", "target=\"_blank\"");
+        assertThat(details).contains("query_place_id=ChIJsdlNI-9hrkARq0LNbzWxlCg", "target=\"_blank\"")
+                .containsPattern("(?s)gym-detail-cover[^>]*fitness-flex-ruse-01.webp.*gym-detail-photos.*fitness-flex-ruse-02.webp")
+                .contains("data-external-src=\"https://example.com/external-photo.webp\"")
+                .doesNotContain(" src=\"https://example.com/external-photo.webp\"");
+        mvc.perform(get("/images/gyms/fitness-flex-ruse-01.webp")).andExpect(status().isOk());
     }
 
     @Test void gymCommentsValidateEscapeAndEnforceDeletionRights() throws Exception {
@@ -147,11 +283,38 @@ class UiSimplificationIntegrationTest {
 
     @Test void registrationSignsInAndOpensOptionalProfile() throws Exception {
         String name="new"+UUID.randomUUID().toString().substring(0,10);
-        var result=mvc.perform(post("/register").with(csrf()).param("username",name).param("email",name+"@example.com").param("password","password123").param("confirmPassword","password123")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile")).andReturn();
+        var registration = post("/register").with(csrf()).param("username",name).param("email",name+"@example.com")
+                .param("password","password123").param("confirmPassword","password123");
+        mvc.perform(registration).andExpect(status().isOk()).andExpect(view().name("auth/register"))
+                .andExpect(model().attributeHasFieldErrors("registerRequest", "termsAccepted"));
+        assertThat(users.findByUsername(name)).isEmpty();
+        mvc.perform(registration.param("termsAccepted","true").param("termsVersion","obsolete"))
+                .andExpect(status().isOk()).andExpect(model().attributeHasFieldErrors("registerRequest", "termsAccepted"));
+        assertThat(users.findByUsername(name)).isEmpty();
+        String version = com.fitpulse.config.LegalTerms.VERSION;
+        var result=mvc.perform(post("/register").with(csrf()).param("username",name).param("email",name+"@example.com")
+                        .param("password","password123").param("confirmPassword","password123")
+                        .param("termsAccepted","true").param("termsVersion",version))
+                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile")).andReturn();
+        var created = users.findByUsername(name).orElseThrow();
+        assertThat(created.getAcceptedTermsVersion()).isEqualTo(version);
+        assertThat(created.getTermsAcceptedAt()).isNotNull();
         var session=(MockHttpSession)result.getRequest().getSession();
         assertThat(session.getAttribute("FITPULSE_LOGIN_TOAST")).isNull();
         mvc.perform(get("/profile").session(session)).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("Добре дошъл във FitPulse!")));
         mvc.perform(get("/programs").session(session)).andExpect(status().isOk());
+    }
+
+    @Test void legalPagesAndSettingsArePublicAndEnglishFooterLinksAreRendered() throws Exception {
+        var english = new jakarta.servlet.http.Cookie("fitpulse-language", "en");
+        for (String path : List.of("/terms", "/privacy", "/cookies", "/login", "/register")) {
+            var page = mvc.perform(get(path).cookie(english)).andExpect(status().isOk())
+                    .andReturn().getResponse().getContentAsString();
+            assertThat(page).contains("href=\"/terms\"", "href=\"/privacy\"", "href=\"/cookies\"",
+                    "Privacy settings", "data-media-banner").doesNotContain("cdn.jsdelivr.net");
+        }
+        mvc.perform(get("/js/media-preferences.js")).andExpect(status().isOk());
+        mvc.perform(get("/css/bootstrap-5.3.3.min.css")).andExpect(status().isOk());
     }
     @Test void ordinaryLoginOpensProfileAndToastIsShownOnce() throws Exception {
         account.setSex("MALE");account.setDisplayName("Иван Петров");users.saveAndFlush(account);

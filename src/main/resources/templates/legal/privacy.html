@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{legal.privacy.title})}"></head>
+<body class="page-bg">
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page legal-page">
+    <article class="fit-card">
+        <h1 th:text="#{legal.privacy.title}"></h1>
+        <p th:text="#{legal.operator}"></p>
+        <h2 th:text="#{legal.privacy.data.title}"></h2>
+        <ul>
+            <li th:text="#{legal.privacy.data.account}"></li>
+            <li th:text="#{legal.privacy.data.fitness}"></li>
+            <li th:text="#{legal.privacy.data.content}"></li>
+            <li th:text="#{legal.privacy.data.technical}"></li>
+        </ul>
+        <p th:text="#{legal.privacy.visibility}"></p>
+        <p th:text="#{legal.privacy.calculation}"></p>
+        <h2 th:text="#{legal.privacy.bases.title}"></h2>
+        <p th:text="#{legal.privacy.bases}"></p>
+        <h2 th:text="#{legal.privacy.recipients.title}"></h2>
+        <p th:text="#{legal.privacy.recipients}"></p>
+        <p th:text="#{legal.privacy.services}"></p>
+        <h2 th:text="#{legal.privacy.retention.title}"></h2>
+        <p th:text="#{legal.privacy.retention}"></p>
+        <h2 th:text="#{legal.privacy.rights.title}"></h2>
+        <p th:text="#{legal.privacy.rights}"></p>
+        <p th:text="#{legal.privacy.contact}"></p>
+        <p><a th:href="@{/support}" th:text="#{ui.help.and.feedback}"></a> ·
+           <a href="https://cpdp.bg/" rel="noreferrer" th:text="#{legal.privacy.authority}"></a></p>
+    </article>
+</main>
+<div th:replace="~{fragments/footer :: footer(false)}"></div>
+</body>
+</html>

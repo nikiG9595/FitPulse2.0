@@ -4,14 +4,14 @@ import com.fitpulse.model.enums.SupportCategory;
 import jakarta.validation.constraints.*;
 
 public class SupportForm {
-    @NotNull(message="Избери категория.")
+    @NotNull(message = "{ui.select.a.category.2}")
     private SupportCategory category;
-    @NotBlank(message="Въведи тема.") @Size(max=150, message="Темата може да е до 150 знака.")
+    @NotBlank(message = "{ui.enter.a.subject}") @Size(max=150, message = "{ui.the.subject.can.contain.up.to.150}")
     private String subject;
-    @NotBlank(message="Въведи описание.") @Size(max=5000, message="Описанието може да е до 5000 знака.")
+    @NotBlank(message = "{ui.enter.a.description}") @Size(max=5000, message = "{ui.the.description.can.contain.up.to.5000}")
     private String description;
-    @NotBlank(message="Въведи имейл за обратна връзка.") @Email(message="Въведи валиден имейл.")
-    @Size(max=254, message="Имейлът е прекалено дълъг.")
+    @NotBlank(message = "{ui.enter.an.email.address.for.replies}") @Email(message = "{ui.enter.a.valid.email}")
+    @Size(max=254, message = "{ui.the.email.address.is.too.long}")
     private String replyEmail;
     public SupportCategory getCategory() { return category; }
     public void setCategory(SupportCategory v) { category=v; }

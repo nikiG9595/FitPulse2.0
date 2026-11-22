@@ -1,31 +1,31 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Помощ и обратна връзка')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.help.and.feedback})}"></head>
 <body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page support-page">
-    <h1>Помощ и обратна връзка</h1>
-    <p>Докладвай проблем, задай въпрос или сподели предложение. Не е необходима регистрация.</p>
+    <h1>[[#{ui.help.and.feedback}]]</h1>
+    <p>[[#{ui.report.a.problem.ask.a.question.or}]]</p>
     <div class="alert alert-success" th:if="${supportSuccess}" th:text="${supportSuccess}" role="status"></div>
     <div class="alert alert-danger" th:if="${supportError}" th:text="${supportError}" role="alert"></div>
     <form class="fit-card support-form" th:action="@{/support}" th:object="${supportForm}" method="post" enctype="multipart/form-data">
-        <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert"><p th:each="error:${#fields.globalErrors()}" th:text="${error}"></p></div>
-        <label for="category">Категория</label>
+        <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert"><p th:each="error:${#fields.globalErrors()}" th:text="${@uiText.label(error)}"></p></div>
+        <label for="category">[[#{ui.category}]]</label>
         <select class="form-select" th:field="*{category}" required aria-describedby="category-error">
-            <option value="">Избери категория</option><option th:each="c:${categories}" th:value="${c}" th:text="${c.displayName}"></option>
+            <option value="">[[#{ui.select.a.category}]]</option><option th:each="c:${categories}" th:value="${c}" th:text="${@uiText.label(c.displayName)}"></option>
         </select><div id="category-error" class="field-error" th:errors="*{category}"></div>
-        <label for="subject">Тема</label>
+        <label for="subject">[[#{ui.subject}]]</label>
         <input class="form-control" th:field="*{subject}" maxlength="150" required aria-describedby="subject-error">
         <div id="subject-error" class="field-error" th:errors="*{subject}"></div>
-        <label for="description">Описание</label>
+        <label for="description">[[#{ui.description}]]</label>
         <textarea class="form-control" th:field="*{description}" rows="7" maxlength="5000" required aria-describedby="description-error"></textarea>
         <div id="description-error" class="field-error" th:errors="*{description}"></div>
-        <label for="replyEmail">Имейл за обратна връзка</label>
+        <label for="replyEmail">[[#{ui.reply.email}]]</label>
         <input class="form-control" th:field="*{replyEmail}" type="email" maxlength="254" autocomplete="email" required th:readonly="${#authorization.expression('isAuthenticated()')}" aria-describedby="email-error">
         <div id="email-error" class="field-error" th:errors="*{replyEmail}"></div>
-        <label for="photo">Снимка (по желание)</label>
+        <label for="photo">[[#{ui.photo.optional}]]</label>
         <input class="form-control" type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" aria-describedby="photo-help">
-        <p id="photo-help" class="small">Една снимка JPG, PNG или WebP до 5 MB и 10 мегапиксела. При грешка избери файла отново. Прикачената снимка е видима само за администратори.</p>
-        <p class="small">До 5 опита за изпращане за 15 минути. Не включвай пароли или друга чувствителна информация.</p>
-        <button class="btn btn-pulse" type="submit">Изпрати съобщение</button>
+        <p id="photo-help" class="small">[[#{ui.one.jpg.png.or.webp.image.up}]]</p>
+        <p class="small">[[#{ui.up.to.five.submissions.in.15.minutes}]]</p>
+        <button class="btn btn-pulse" type="submit">[[#{ui.send.message}]]</button>
     </form>
-</main></body></html>
+</main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

@@ -5,12 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class ProfileUpdateRequest {
-    @NotBlank(message = "Потребителското име е задължително.")
-    @Size(min = 3, max = 30, message = "Потребителското име трябва да бъде между 3 и 30 знака.")
+    @NotBlank(message = "{ui.username.is.required}")
+    @Size(min = 3, max = 30, message = "{ui.username.must.be.between.3.and.30}")
     private String username;
 
-    @NotBlank(message = "Имейл адресът е задължителен.")
-    @Email(message = "Въведете валиден имейл адрес.")
+    @NotBlank(message = "{ui.email.is.required}")
+    @Email(message = "{ui.enter.a.valid.email.address}")
     private String email;
     @Size(max = 80) private String displayName;
     @Size(max = 500) private String bio;
@@ -44,9 +44,9 @@ public class ProfileUpdateRequest {
     public String getHomeCity(){return homeCity;} public void setHomeCity(String v){homeCity=v;}
     public boolean isPublicProfile(){return publicProfile;} public void setPublicProfile(boolean v){publicProfile=v;}
 
-    @jakarta.validation.constraints.Pattern(regexp="MALE|FEMALE", message="Избери пол.")
+    @jakarta.validation.constraints.Pattern(regexp="MALE|FEMALE", message = "{ui.select.a.sex.2}")
     private String sex;
-    @jakarta.validation.constraints.Past(message="Въведи минала дата на раждане.")
+    @jakarta.validation.constraints.Past(message = "{ui.enter.a.date.of.birth.in.the}")
     @org.springframework.format.annotation.DateTimeFormat(iso=org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
     private java.time.LocalDate birthDate;
     @jakarta.validation.constraints.DecimalMin("120")

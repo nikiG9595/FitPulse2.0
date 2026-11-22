@@ -1,4 +1,5 @@
 (() => {
+    const messages = window.fitPulseMessages;
     const form = document.getElementById('meal-personalization');
     if (!form) return;
     const result = document.getElementById('personalization-result');
@@ -24,9 +25,9 @@
             await response.json();
             weight.readOnly = true; saveWeight.hidden = true;
             if(editWeight) editWeight.hidden = false;
-            weightStatus.textContent = 'Теглото е запазено.';
+            weightStatus.textContent = messages['ui.weight.saved'];
             invalidate();
-        } catch { weightStatus.textContent = 'Не успяхме да запазим теглото. Опитай отново.'; }
+        } catch { weightStatus.textContent = messages['ui.could.not.save.your.weight.try.again']; }
         finally { saveWeight.disabled = false; }
     });
     let saving = false;

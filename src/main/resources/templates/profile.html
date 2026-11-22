@@ -1,71 +1,71 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Моят профил')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.my.profile})}"></head>
 <body class="page-bg">
 <div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page profile-page profile-overview">
-    <div th:if="${newUser}" class="alert alert-success" role="status">Добре дошъл във FitPulse! Попълни данните си, за да създаваме хранителни режими специално за теб.</div>
-    <div th:if="${param.updated}" class="alert alert-success" role="status">Профилът е обновен успешно.</div>
+    <div th:if="${newUser}" class="alert alert-success" role="status">[[#{ui.welcome.to.fitpulse.fill.in.your.details}]]</div>
+    <div th:if="${param.updated}" class="alert alert-success" role="status">[[#{ui.your.profile.was.updated}]]</div>
     <header class="profile-header fit-card">
         <div class="profile-identity">
             <div class="profile-avatar"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></div>
             <div class="profile-intro">
                 <h1 th:text="${#strings.isEmpty(user.displayName)?user.username:user.displayName}"></h1>
                 <p class="profile-username" th:text="'@'+${user.username}"></p>
-                <span class="privacy-badge"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><span th:text="${user.publicProfile?'Публичен профил':'Частен профил'}"></span></span>
+                <span class="privacy-badge"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><span th:text="${user.publicProfile?#messages.msg('ui.public.profile'):#messages.msg('ui.private.profile')}"></span></span>
                 <p class="profile-bio" th:if="${!#strings.isEmpty(user.bio)}" th:text="${user.bio}"></p>
             </div>
         </div>
         <div class="profile-progress">
             <span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('progress')}"></svg></span>
             <div>
-                <h2>Моят прогрес</h2>
-                <p>Тегло, обиколки и история на измерванията.</p>
-                <a class="btn btn-outline-light btn-sm" th:href="@{/progress}">Виж прогреса</a>
+                <h2>[[#{nav.progress}]]</h2>
+                <p>[[#{ui.weight.body.measurements.and.measurement.history}]]</p>
+                <a class="btn btn-outline-light btn-sm" th:href="@{/progress}">[[#{ui.view.progress}]]</a>
             </div>
         </div>
         <div class="profile-actions">
-            <a class="btn btn-pulse" th:href="@{/profile/edit}">Редактирай профила</a>
-            <a class="profile-settings-link" th:href="@{/profile/edit#privacy-settings}">Настройки за поверителност</a>
-            <a class="profile-settings-link" th:if="${user.publicProfile}" th:href="@{/users/{username}(username=${user.username})}">Виж публичния си профил</a>
+            <a class="btn btn-pulse" th:href="@{/profile/edit}">[[#{ui.edit.your.profile}]]</a>
+            <a class="profile-settings-link" th:href="@{/profile/edit#privacy-settings}">[[#{ui.privacy.settings}]]</a>
+            <a class="profile-settings-link" th:if="${user.publicProfile}" th:href="@{/users/{username}(username=${user.username})}">[[#{ui.view.your.public.profile}]]</a>
         </div>
     </header>
 
     <section aria-labelledby="profile-tools-heading">
         <div class="section-heading profile-section-heading">
             <div>
-                <span class="eyebrow">Лично пространство</span>
-                <h2 id="profile-tools-heading">Всичко за твоя напредък</h2>
+                <span class="eyebrow">[[#{ui.personal.space}]]</span>
+                <h2 id="profile-tools-heading">[[#{ui.everything.for.your.progress}]]</h2>
             </div>
         </div>
         <div class="profile-tools">
             <a class="profile-tool" th:href="@{/exercises}">
                 <span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('target')}"></svg></span>
-                <div><h3>Мускулен навигатор</h3><p>Открий упражнения по мускулна група.</p></div>
+                <div><h3>[[#{ui.muscle.navigator.2}]]</h3><p>[[#{ui.find.exercises.by.muscle.group}]]</p></div>
                 <svg th:replace="~{fragments/icons :: icon('arrow')}"></svg>
             </a>
             <a class="profile-tool" th:href="@{/programs/my#my-programs}">
                 <span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('program')}"></svg></span>
-                <div><h3>Моите тренировки</h3><p>Твоите програми по тренировъчни дни.</p></div>
+                <div><h3>[[#{ui.my.workouts}]]</h3><p>[[#{ui.your.programs.by.training.day}]]</p></div>
                 <svg th:replace="~{fragments/icons :: icon('arrow')}"></svg>
             </a>
             <a class="profile-tool" th:href="@{/meal-plans/my}">
                 <span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg></span>
-                <div><h3>Моят режим</h3><p>Твоите хранения, рецепти и количества.</p></div>
+                <div><h3>[[#{ui.my.plan}]]</h3><p>[[#{ui.your.meals.recipes.and.portions}]]</p></div>
                 <svg th:replace="~{fragments/icons :: icon('arrow')}"></svg>
             </a>
             <a class="profile-tool" th:href="@{/profile/favorites}">
                 <span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('heart')}"></svg></span>
-                <div><h3>Любими фитнеси</h3><p>Виж запазените си фитнес зали.</p></div>
+                <div><h3>[[#{ui.favorite.gyms}]]</h3><p>[[#{ui.see.your.saved.gyms}]]</p></div>
                 <svg th:replace="~{fragments/icons :: icon('arrow')}"></svg>
             </a>
         </div>
     </section>
 
-    <section class="fit-card mt-4 personal-data-panel" th:if="${!profileComplete}" th:object="${profileUpdateRequest}"><h2 class="h4">Лични данни</h2>
-        <form id="personal-data-form" th:action="@{/profile/personal-data}" method="post"><div class="alert alert-danger" th:if="${globalError}" th:text="${globalError}"></div><div th:replace="~{profile-edit :: personalFields}"></div><button class="btn btn-pulse mt-3" type="submit">Запази данните</button></form>
+    <section class="fit-card mt-4 personal-data-panel" th:if="${!profileComplete}" th:object="${profileUpdateRequest}"><h2 class="h4">[[#{ui.personal.details}]]</h2>
+        <form id="personal-data-form" th:action="@{/profile/personal-data}" method="post"><div class="alert alert-danger" th:if="${globalError}" th:text="${@uiText.label(globalError)}"></div><div th:replace="~{profile-edit :: personalFields}"></div><button class="btn btn-pulse mt-3" type="submit">[[#{ui.save.details}]]</button></form>
     </section>
-    <aside class="profile-privacy-note"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><p>Дневникът, календарът, личните планове и измерванията са само за теб. <span th:text="${user.publicProfile?'В публичния профил се показват името и описанието ти.':'Публичният ти профил е изключен.'}"></span> <span th:if="${user.publicProfile}" th:text="${user.showCity?'Градът е видим.':'Градът е скрит.'}"></span> <span th:if="${user.publicProfile}" th:text="${user.showFavorites?'Любимите фитнеси са видими.':'Любимите фитнеси са скрити.'}"></span></p></aside>
+    <aside class="profile-privacy-note"><svg th:replace="~{fragments/icons :: icon('lock')}"></svg><p>[[#{ui.your.journal.calendar.personal.plans.and.measurements}]] <span th:text="${user.publicProfile?#messages.msg('ui.your.public.profile.shows.your.name.and'):#messages.msg('ui.your.public.profile.is.disabled')}"></span> <span th:if="${user.publicProfile}" th:text="${user.showCity?#messages.msg('ui.your.city.is.visible'):#messages.msg('ui.your.city.is.hidden')}"></span> <span th:if="${user.publicProfile}" th:text="${user.showFavorites?#messages.msg('ui.your.favorite.gyms.are.visible'):#messages.msg('ui.your.favorite.gyms.are.hidden')}"></span></p></aside>
 
 </main>
-</body></html>
+<div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

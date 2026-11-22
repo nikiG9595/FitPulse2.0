@@ -1,33 +1,33 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Подробности за съобщение')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.message.details})}"></head>
 <body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page support-page support-admin">
-    <a class="back-link" th:href="@{/admin/messages}">← Съобщения</a>
-    <div class="alert alert-success" th:if="${success}" th:text="${success}" role="status"></div>
+    <a class="back-link" th:href="@{/admin/messages}">[[#{ui.messages}]]</a>
+    <div class="alert alert-success" th:if="${success}" th:text="${@uiText.label(success)}" role="status"></div>
     <article class="fit-card">
         <h1 class="support-wrap" th:text="${message.subject}"></h1>
-        <dl><dt>Категория</dt><dd th:text="${message.category.displayName}"></dd>
-            <dt>Статус</dt><dd th:text="${message.status.displayName}"></dd>
-            <dt>Имейл за обратна връзка</dt><dd class="support-wrap" th:text="${message.replyEmail}"></dd>
-            <dt>Получено</dt><dd th:text="${#temporals.format(message.createdAt,'dd.MM.yyyy HH:mm')}"></dd>
-            <dt>Последна промяна</dt><dd th:text="${#temporals.format(message.updatedAt,'dd.MM.yyyy HH:mm')}"></dd>
+        <dl><dt>[[#{ui.category}]]</dt><dd th:text="${@uiText.label(message.category.displayName)}"></dd>
+            <dt>[[#{ui.status}]]</dt><dd th:text="${@uiText.label(message.status.displayName)}"></dd>
+            <dt>[[#{ui.reply.email}]]</dt><dd class="support-wrap" th:text="${message.replyEmail}"></dd>
+            <dt>[[#{ui.received}]]</dt><dd th:text="${#temporals.format(message.createdAt,'dd.MM.yyyy HH:mm')}"></dd>
+            <dt>[[#{ui.last.updated}]]</dt><dd th:text="${#temporals.format(message.updatedAt,'dd.MM.yyyy HH:mm')}"></dd>
         </dl>
-        <h2 class="h5">Описание</h2><p class="support-description" th:text="${message.description}"></p>
+        <h2 class="h5">[[#{ui.description}]]</h2><p class="support-description" th:text="${message.description}"></p>
         <div th:if="${message.attachmentKey!=null}">
-            <h2 class="h5">Прикачена снимка</h2>
+            <h2 class="h5">[[#{ui.attached.image}]]</h2>
             <a th:href="@{/admin/messages/{id}/attachment(id=${message.id})}" target="_blank" rel="noopener noreferrer">
-                <img class="support-image" th:src="@{/admin/messages/{id}/attachment(id=${message.id})}" alt="Прикачена снимка към съобщението" loading="lazy">
-                <span class="link-pulse">Отвори снимката в пълен размер ↗</span>
+                <img class="support-image" th:src="@{/admin/messages/{id}/attachment(id=${message.id})}" th:alt="#{ui.image.attached.to.the.message}" loading="lazy">
+                <span class="link-pulse">[[#{ui.open.full.size.image}]]</span>
             </a>
         </div>
         <form class="mt-4" th:if="${message.status.name()!='RESOLVED'}" method="post" th:action="@{/admin/messages/{id}/status(id=${message.id})}">
-            <input type="hidden" name="status" value="RESOLVED"><button class="btn btn-pulse" type="submit">Маркирай като приключено</button>
+            <input type="hidden" name="status" value="RESOLVED"><button class="btn btn-pulse" type="submit">[[#{ui.mark.as.resolved}]]</button>
         </form>
         <form class="support-form mt-4" method="post" th:action="@{/admin/messages/{id}/status(id=${message.id})}">
-            <label for="status">Промени статус</label><select class="form-select" id="status" name="status" required>
-                <option th:each="s:${statuses}" th:value="${s}" th:text="${s.displayName}" th:selected="${s==message.status}"></option>
-            </select><button class="btn btn-pulse mt-3" type="submit">Запази статуса</button>
+            <label for="status">[[#{ui.change.status}]]</label><select class="form-select" id="status" name="status" required>
+                <option th:each="s:${statuses}" th:value="${s}" th:text="${@uiText.label(s.displayName)}" th:selected="${s==message.status}"></option>
+            </select><button class="btn btn-pulse mt-3" type="submit">[[#{ui.save.status}]]</button>
         </form>
     </article>
-</main></body></html>
+</main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

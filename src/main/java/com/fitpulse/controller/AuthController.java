@@ -1,6 +1,7 @@
 package com.fitpulse.controller;
 
 import com.fitpulse.exception.FitPulseException;
+import com.fitpulse.config.LegalTerms;
 import com.fitpulse.model.dto.RegisterRequest;
 import com.fitpulse.service.UserService;
 import jakarta.validation.Valid;
@@ -40,6 +41,10 @@ public class AuthController {
     public String doRegister(@Valid @ModelAttribute RegisterRequest registerRequest, BindingResult bindingResult, Model model, jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) {
         String destination = navigation.capture(request, response);
         model.addAttribute("authReturnTo", destination);
+        if (registerRequest.isTermsAccepted() && !LegalTerms.VERSION.equals(registerRequest.getTermsVersion())) {
+            registerRequest.setTermsAccepted(false);
+            bindingResult.rejectValue("termsAccepted", "legal.terms.changed");
+        }
         if (bindingResult.hasErrors()) return "auth/register";
         try {
             userService.register(registerRequest);
@@ -58,5 +63,10 @@ public class AuthController {
             model.addAttribute("globalError", e.getMessage());
             return "auth/register";
         }
+    }
+
+    @ModelAttribute("termsVersion")
+    String termsVersion() {
+        return LegalTerms.VERSION;
     }
 }

@@ -1,35 +1,35 @@
 <!doctype html>
-<html lang="bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Библиотека с хранителни режими')}"></head>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.meal.plan.library})}"></head>
 <body class="page-bg">
 <div th:replace="~{fragments/nav :: nav}"></div>
 <main class="container page library-page nutrition-catalog">
-    <div class="alert alert-warning" th:if="${error}" th:text="${error}" role="alert"></div>
+    <div class="alert alert-warning" th:if="${error}" th:text="${@uiText.label(error)}" role="alert"></div>
     <header class="library-header">
-        <div><span class="eyebrow">Хранене с посока</span><h1>Хранителни режими</h1></div>
-        <a class="btn btn-outline-dark" th:href="@{/meal-plans/my}">Моите хранителни режими <span aria-hidden="true">↗</span></a>
+        <div><span class="eyebrow">[[#{ui.eat.with.purpose}]]</span><h1>[[#{nav.meals}]]</h1></div>
+        <a class="btn btn-outline-dark" th:href="@{/meal-plans/my}">[[#{ui.my.meal.plans}]] <span aria-hidden="true">↗</span></a>
     </header>
     <section class="meal-catalog-personalization" aria-labelledby="meal-catalog-personalization-title">
         <svg th:replace="~{fragments/icons :: icon('target')}"></svg>
         <div>
-            <h2 id="meal-catalog-personalization-title">Режим, съобразен с твоите нужди</h2>
-            <p>Избери хранителен режим, а ние ще изчислим необходимите калории и ще адаптираме количествата на храните според твоите лични данни и физическа активност.</p>
+            <h2 id="meal-catalog-personalization-title">[[#{ui.a.plan.tailored.to.your.needs}]]</h2>
+            <p>[[#{ui.choose.a.meal.plan.and.fitpulse.will}]]</p>
         </div>
     </section>
-    <form class="library-filters" method="get" th:action="@{/meal-plans}" aria-label="Филтри за хранителни режими">
-        <div><label for="meal-goal">Твоята цел</label><select class="form-select" id="meal-goal" name="goal"><option value="">Всички цели</option><option th:each="g:${goals}" th:value="${g}" th:text="${g.displayName}" th:selected="${g==goal}"></option></select></div>
-        <button class="btn btn-pulse" type="submit">Покажи режимите</button>
+    <form class="library-filters" method="get" th:action="@{/meal-plans}" th:aria-label="#{ui.meal.plan.filters}">
+        <div><label for="meal-goal">[[#{ui.your.goal}]]</label><select class="form-select" id="meal-goal" name="goal"><option value="">[[#{ui.all.goals}]]</option><option th:each="g:${goals}" th:value="${g}" th:text="${@uiText.label(g.displayName)}" th:selected="${g==goal}"></option></select></div>
+        <button class="btn btn-pulse" type="submit">[[#{ui.show.meal.plans}]]</button>
     </form>
-    <div class="library-results"><p><strong th:text="${#lists.size(mealTemplates)}"></strong> <span>режима</span><span th:if="${goal!=null}" th:text="' · '+${goal.displayName}"></span></p><a class="link-pulse" th:if="${goal!=null}" th:href="@{/meal-plans}">Изчисти филтрите</a></div>
-    <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealTemplates)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('search')}"></svg></span><h2>Няма намерени режими</h2><p th:text="${total==0?'В момента няма публикувани режими. Разгледай личните си копия или се върни по-късно.':'Избери различна цел.'}"></p><a class="btn btn-outline-dark" th:href="${total==0}?@{/meal-plans/my}:@{/meal-plans}" th:text="${total==0?'Моите режими':'Всички режими'}"></a></div>
-    <section class="library-grid" aria-label="Готови хранителни режими" th:unless="${#lists.isEmpty(mealTemplates)}">
-        <article class="library-card meal-catalog-card" th:each="m:${mealTemplates}"><img class="meal-catalog-photo" th:src="@{${mealCovers[m.id]}}" th:alt="${m.displayName}" th:data-fallback="@{${mealFallbackCovers[m.id]}}" onerror="this.onerror=null;this.src=this.dataset.fallback;" loading="lazy">
-            <span class="eyebrow" th:text="${m.goal.displayName}"></span>
-            <h2 th:text="${m.displayName}"></h2>
-            <p class="meal-catalog-description" th:text="${m.displayDescription}"></p>
-            <a class="btn btn-outline-dark" th:unless="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/{id}(id=${m.id})}">Разгледай</a><a class="btn btn-pulse" th:if="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/my/{id}(id=${myMealLinks[m.id]})}">Отвори моя режим</a>
+    <div class="library-results"><p><strong th:text="${#lists.size(mealTemplates)}"></strong> <span>[[#{ui.meal.plans.2}]]</span><span th:if="${goal!=null}" th:text="' · '+${@uiText.label(goal.displayName)}"></span></p><a class="link-pulse" th:if="${goal!=null}" th:href="@{/meal-plans}">[[#{ui.clear.filters}]]</a></div>
+    <div class="empty-state fit-card" th:if="${#lists.isEmpty(mealTemplates)}"><span class="tool-icon"><svg th:replace="~{fragments/icons :: icon('search')}"></svg></span><h2>[[#{ui.no.meal.plans.found}]]</h2><p th:text="${total==0?#messages.msg('ui.no.meal.plans.are.currently.published.browse'):#messages.msg('ui.choose.another.goal')}"></p><a class="btn btn-outline-dark" th:href="${total==0}?@{/meal-plans/my}:@{/meal-plans}" th:text="${total==0?#messages.msg('ui.my.meal.plans.2'):#messages.msg('ui.all.meal.plans')}"></a></div>
+    <section class="library-grid" th:aria-label="#{ui.ready.made.meal.plans}" th:unless="${#lists.isEmpty(mealTemplates)}">
+        <article class="library-card meal-catalog-card" th:each="m:${mealTemplates}"><img class="meal-catalog-photo" th:src="@{${mealCovers[m.id]}}" th:alt="${@uiText.catalog(m.displayName)}" th:data-fallback="@{${mealFallbackCovers[m.id]}}" onerror="this.onerror=null;this.src=this.dataset.fallback;" loading="lazy">
+            <span class="eyebrow" th:text="${@uiText.label(m.goal.displayName)}"></span>
+            <h2 th:text="${@uiText.catalog(m.displayName)}"></h2>
+            <p class="meal-catalog-description" th:text="${@uiText.catalog(m.displayDescription)}"></p>
+            <a class="btn btn-outline-dark" th:unless="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/{id}(id=${m.id})}">[[#{ui.view}]]</a><a class="btn btn-pulse" th:if="${myMealLinks.containsKey(m.id)}" th:href="@{/meal-plans/my/{id}(id=${myMealLinks[m.id]})}">[[#{ui.open.my.plan}]]</a>
         </article>
     </section>
-    <aside class="library-footnote"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg><p>Режимите са общи примери за хранене. Съдържанието и уточненията са на страницата на всеки режим.</p></aside>
+    <aside class="library-footnote"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg><p>[[#{ui.meal.plans.are.general.examples.see.each}]]</p></aside>
 </main>
-</body></html>
+<div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

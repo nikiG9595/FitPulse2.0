@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{ui.about.fitpulse})}"></head>
+<body class="page-bg">
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container page about-page pb-4">
+    <header class="page-title mb-4">
+        <h1>[[#{ui.about.fitpulse}]]</h1>
+        <p>[[#{ui.fitpulse.helps.you.plan.your.meals.and}]]</p>
+    </header>
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-4">
+            <section class="module-panel h-100">
+                <svg th:replace="~{fragments/icons :: icon('meal')}"></svg>
+                <h2 class="h5">[[#{ui.personalized.nutrition}]]</h2>
+                <p>[[#{ui.choose.a.meal.plan.fitpulse.estimates.your}]]</p>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <section class="module-panel h-100">
+                <svg th:replace="~{fragments/icons :: icon('program')}"></svg>
+                <h2 class="h5">[[#{ui.training.programs}]]</h2>
+                <p>[[#{ui.choose.a.home.or.gym.program.suited}]]</p>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <section class="module-panel h-100">
+                <svg th:replace="~{fragments/icons :: icon('journal')}"></svg>
+                <h2 class="h5">[[#{ui.exercise.library}]]</h2>
+                <p>[[#{ui.find.exercises.by.muscle.group.and.learn}]]</p>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <section class="module-panel h-100">
+                <svg th:replace="~{fragments/icons :: icon('progress')}"></svg>
+                <h2 class="h5">[[#{ui.personal.progress}]]</h2>
+                <p>[[#{ui.record.your.weight.and.body.measurements.and}]]</p>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+            <section class="module-panel h-100">
+                <svg th:replace="~{fragments/icons :: icon('search')}"></svg>
+                <h2 class="h5">[[#{ui.gym.directory}]]</h2>
+                <p>[[#{ui.find.gyms.by.city.name.or.service}]]</p>
+            </section>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer(false)}"></div></body>
+</html>

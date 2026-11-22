@@ -1,0 +1,25 @@
+package com.fitpulse.controller;
+
+import com.fitpulse.config.LegalTerms;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class LegalController {
+    @GetMapping("/terms")
+    public String terms(Model model) {
+        model.addAttribute("termsVersion", LegalTerms.VERSION);
+        return "legal/terms";
+    }
+
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "legal/privacy";
+    }
+
+    @GetMapping("/cookies")
+    public String cookies() {
+        return "legal/cookies";
+    }
+}
