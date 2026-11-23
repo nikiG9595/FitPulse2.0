@@ -2,6 +2,7 @@ package com.fitpulse.service;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +18,12 @@ public class ExerciseImages {
     }
 
     private static List<Frame> findFrames(String code) {
-        return List.of(
-                new Frame("/images/exercises/" + code + "-start.webp", "exercise.image.start"),
-                new Frame("/images/exercises/" + code + "-finish.webp", "exercise.image.finish"),
-                new Frame("/images/exercises/" + code + "-hold.webp", "exercise.image.hold"))
-                .stream()
-                .filter(frame -> new ClassPathResource("static" + frame.path()).exists())
+        return Stream.of("start", "finish", "hold")
+                .flatMap(position -> Stream.of("webp", "png")
+                        .map(extension -> "/images/exercises/" + code + "-" + position + "." + extension)
+                        .filter(path -> new ClassPathResource("static" + path).exists())
+                        .limit(1)
+                        .map(path -> new Frame(path, "exercise.image." + position)))
                 .toList();
     }
 }

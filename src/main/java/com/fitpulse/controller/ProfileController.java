@@ -89,6 +89,16 @@ public class ProfileController {
         return "profile-edit";
     }
 
+    @PostMapping("/profile/password")
+    public String changePassword(@org.springframework.web.bind.annotation.RequestParam String currentPassword,
+                                 @org.springframework.web.bind.annotation.RequestParam String newPassword,
+                                 @org.springframework.web.bind.annotation.RequestParam String confirmPassword,
+                                 org.springframework.web.servlet.mvc.support.RedirectAttributes flash) {
+        boolean updated = userService.changePassword(currentPassword, newPassword, confirmPassword);
+        flash.addFlashAttribute(updated ? "passwordSuccess" : "passwordError", true);
+        return "redirect:/profile/edit#password-settings";
+    }
+
     @PostMapping("/profile/edit")
     public String update(@Valid @ModelAttribute ProfileUpdateRequest profileUpdateRequest,
                          BindingResult bindingResult,

@@ -8,7 +8,10 @@
     <div th:if="${param.updated}" class="alert alert-success" role="status">[[#{ui.your.profile.was.updated}]]</div>
     <header class="profile-header fit-card">
         <div class="profile-identity">
-            <div class="profile-avatar"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></div>
+            <div class="profile-avatar" th:with="hasPhoto=${@profilePhotos.exists(user.id)}">
+                <img th:if="${hasPhoto}" class="account-photo profile-avatar-image" th:src="@{/profile/photo}" alt="">
+                <th:block th:unless="${hasPhoto}"><svg th:replace="~{fragments/icons :: icon('user')}"></svg></th:block>
+            </div>
             <div class="profile-intro">
                 <h1 th:text="${#strings.isEmpty(user.displayName)?user.username:user.displayName}"></h1>
                 <p class="profile-username" th:text="'@'+${user.username}"></p>

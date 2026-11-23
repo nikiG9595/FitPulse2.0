@@ -3,21 +3,21 @@
 <head th:replace="~{fragments/head :: head('FitPulse 2.0')}"></head>
 <body class="home-page">
 <div th:replace="~{fragments/nav :: nav}"></div>
-<main>
-    <section class="home-intro">
-        <div class="container home-intro-content">
-            <h1>[[#{ui.explore.plan}]] <span>[[#{ui.progress}]]</span></h1>
-            <div class="home-actions">
+<main class="home-layout">
+    <section class="home-hero" aria-labelledby="home-slogan">
+        <div class="home-hero-visual">
+            <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
+                 th:alt="#{ui.a.man.and.a.woman.train.with.2}" width="1672" height="941" fetchpriority="high">
+            <h1 id="home-slogan">[[#{ui.explore.plan}]] <span>[[#{ui.progress}]]</span></h1>
+        </div>
+        <div class="home-hero-content">
+            <div class="home-hero-actions">
                 <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo='/profile')}" data-fixed-return>[[#{ui.get.started}]]</a>
                 <a class="btn btn-pulse" sec:authorize="isAuthenticated()" th:href="@{/profile}">[[#{ui.get.started}]]</a>
                 <a class="btn btn-outline-light" th:href="@{/about}">[[#{ui.learn.more}]]</a>
             </div>
         </div>
     </section>
-    <figure class="home-hero-image" th:aria-label="#{ui.a.man.and.a.woman.train.with}">
-        <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
-             th:alt="#{ui.a.man.and.a.woman.train.with.2}">
-    </figure>
 </main>
 <div th:replace="~{fragments/footer :: footer(true)}"></div>
 </body>

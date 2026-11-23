@@ -18,6 +18,13 @@
         <h2 th:text="#{legal.contact.title}"></h2>
         <p th:text="#{legal.terms.contact}"></p>
         <a th:href="@{/support}" th:text="#{ui.help.and.feedback}"></a>
+        <section id="licenses" class="mt-4">
+            <h2>[[#{legal.licenses}]]</h2>
+            <ul>
+                <li><a th:href="@{/images/anatomy/LICENSE.txt}">[[#{ui.outlines.musclemap.mit.license}]]</a></li>
+                <li><a th:href="@{/images/exercises/attribution.txt}">[[#{exercise.image.credit}]]</a></li>
+            </ul>
+        </section>
     </article>
 </main>
 <div th:replace="~{fragments/footer :: footer(false)}"></div>

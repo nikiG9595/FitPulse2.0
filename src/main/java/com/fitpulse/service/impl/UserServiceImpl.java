@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
+    public boolean changePassword(String current, String replacement, String confirmation) {
+        if (replacement.length() < 8 || !replacement.equals(confirmation)
+                || replacement.getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 72
+                || current.getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 72) return false;
+        User user = userRepository.lockForLibrary(getCurrentUser().getId()).orElseThrow();
+        if (!passwordEncoder.matches(current, user.getPassword())) return false;
+        user.setPassword(passwordEncoder.encode(replacement));
+        return true;
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

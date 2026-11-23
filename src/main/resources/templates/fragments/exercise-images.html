@@ -1,0 +1,11 @@
+<th:block th:fragment="gallery(code, title)" th:with="frames=${@exerciseImages.forCode(code)}">
+    <div th:if="${!#lists.isEmpty(frames)}" class="program-exercise-images">
+        <figure th:each="frame:${frames}">
+            <img th:src="@{${frame.path}}" th:alt="${title + ' — ' + #messages.msg(frame.labelKey)}"
+                 width="420" height="420" loading="lazy" decoding="async">
+            <figcaption th:text="${#messages.msg(frame.labelKey)}"></figcaption>
+        </figure>
+        <a class="program-exercise-image-credit" th:href="@{/images/exercises/attribution.txt}"
+           th:text="#{exercise.image.credit}"></a>
+    </div>
+</th:block>

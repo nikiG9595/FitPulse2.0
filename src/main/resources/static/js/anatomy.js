@@ -88,10 +88,6 @@
             return code&&options.has(code)?new Set([options.get(code)]):zonesForGroup(selected);
         }));
         document.querySelector('form.module-filter [name="muscle"]')?.addEventListener('change',event=>{selected=event.target.value;subgroup='';const hidden=document.querySelector('form.module-filter [name="subgroup"]');if(hidden)hidden.value='';document.querySelector('form.module-filter [name="page"]')?.remove();panel.querySelector('.anatomy-subgroups')?.setAttribute('hidden','');paint();});
-        panel.querySelector('.anatomy-scroll')?.addEventListener('click',event=>{
-            const results=document.getElementById('exercise-results');if(!results)return;event.preventDefault();
-            results.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});results.focus({preventScroll:true});
-        });
         for(const host of panel.querySelectorAll('[data-src]')){
             try{
                 const response=await fetch(host.getAttribute('data-src'),{cache:'no-cache',credentials:'same-origin'});if(!response.ok)throw new Error();

@@ -1,5 +1,7 @@
-<!doctype html><html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head(#{nav.gyms})}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page">
-<div class="section-heading"><div class="page-title"><h1>[[#{ui.gym.directory.3}]]</h1><p>[[#{ui.search.by.name.address.or.service.and}]]</p></div></div>
+<!doctype html><html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head th:replace="~{fragments/head :: head(#{nav.gyms})}"></head><body class="page-bg"><div th:replace="~{fragments/nav :: nav}"></div><main class="container page">
+<div class="section-heading"><div class="page-title"><h1>[[#{ui.gym.directory.3}]]</h1><p>[[#{ui.search.by.name.address.or.service.and}]]</p></div>
+<a sec:authorize="isAuthenticated()" class="btn btn-pulse" th:href="@{/suggest-gym}">[[#{ui.suggest.a.gym}]]</a>
+</div>
 <form class="filter-bar gym-catalog-filters" method="get" th:action="@{/gyms}" role="search"><label class="visually-hidden" for="gym-query">[[#{ui.name.address.or.service}]]</label><input id="gym-query" class="form-control" name="q" maxlength="150" th:value="${q}" th:placeholder="#{ui.gym.service.or.address}"><label class="visually-hidden" for="gym-city">[[#{ui.city}]]</label><select id="gym-city" class="form-select" name="city"><option value="">[[#{ui.all.cities}]]</option><option th:each="c:${cities}" th:value="${c.slug}" th:text="${c.name}" th:selected="${c.slug==city}"></option></select>
 <button class="btn btn-pulse">[[#{ui.search}]]</button><a class="link-pulse" th:href="@{/gyms}">[[#{ui.clear}]]</a></form>
 <p class="mt-3" th:text="${gyms.totalElements}+#{ui.gyms.found}"></p>

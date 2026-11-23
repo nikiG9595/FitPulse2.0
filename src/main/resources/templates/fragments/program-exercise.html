@@ -1,36 +1,60 @@
-<details th:fragment="row(item, title, reps, notes, restLabel, video)" class="exercise-detail program-exercise"
+<article th:fragment="row(item, title, reps, notes, restLabel, video)" class="exercise-detail program-exercise-card"
          xmlns:th="http://www.thymeleaf.org">
-    <summary th:text="${title}"></summary>
-    <div class="program-exercise-content">
-        <div class="program-exercise-body">
-            <th:block th:if="${item.exercise != null}">
-                <th:block th:with="frames=${@exerciseImages.forCode(item.exercise.code)}">
-                    <div th:if="${!#lists.isEmpty(frames)}" class="program-exercise-images">
-                        <figure th:each="frame:${frames}">
-                            <img th:src="@{${frame.path}}" th:alt="${title + ' — ' + #messages.msg(frame.labelKey)}"
-                                 loading="lazy" decoding="async">
-                            <figcaption th:text="${#messages.msg(frame.labelKey)}"></figcaption>
-                        </figure>
-                        <a class="program-exercise-image-credit" th:href="@{/images/exercises/attribution.txt}"
-                           th:text="#{exercise.image.credit}"></a>
-                    </div>
-                </th:block>
-                <p th:if="${!#strings.isEmpty(item.exercise.startPosition)}"
-                   th:text="${@uiText.catalog(item.exercise.startPosition)}"></p>
-                <ol th:if="${!#strings.isEmpty(item.exercise.steps)}" class="exercise-steps">
-                    <li th:each="step:${#strings.arraySplit(item.exercise.steps, '|')}"
-                        th:text="${@uiText.catalog(step)}"></li>
-                </ol>
-                <a class="back-link program-exercise-library" th:href="@{/exercises/{code}(code=${item.exercise.code})}"
-                   th:text="#{ui.view.exercise}"></a>
-                <div th:replace="~{fragments/exercise-video :: player(${video})}"></div>
-            </th:block>
-            <div class="exercise-prescription">
-                <span th:text="${item.setsCount}+#{ui.sets.2}"></span>
-                <span th:text="${reps}+#{ui.reps.time}"></span>
-                <span th:text="${restLabel}+${item.restSeconds}+#{ui.sec}"></span>
-            </div>
-            <p th:if="${!#strings.isEmpty(notes)}" th:text="${notes}"></p>
-        </div>
+    <h4 th:text="${title}"></h4>
+    <th:block th:if="${item.exercise != null}">
+        <div th:replace="~{fragments/exercise-images :: gallery(${item.exercise.code}, ${title})}"></div>
+    </th:block>
+    <div class="exercise-prescription">
+        <span th:text="${item.setsCount}+#{ui.sets.2}"></span>
+        <span th:text="${reps}+#{ui.reps.time}"></span>
+        <span th:text="${restLabel}+${item.restSeconds}+#{ui.sec}"></span>
     </div>
-</details>
+    <details class="program-exercise">
+        <summary th:text="#{exercise.how.to.perform}"></summary>
+        <div class="program-exercise-content">
+            <div class="program-exercise-body">
+                <p th:if="${!#strings.isEmpty(notes)}" th:text="${notes}"></p>
+                <p th:if="${item.exercise == null && #strings.isEmpty(notes)}"
+                   th:text="#{ui.use.controlled.pain.free.movement.and.leave}"></p>
+                <th:block th:if="${item.exercise != null}" th:with="exercise=${item.exercise}">
+                    <th:block th:if="${!#strings.isEmpty(exercise.startPosition)}">
+                        <h5>[[#{ui.starting.position}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.startPosition)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.steps)}">
+                        <h5>[[#{ui.step.by.step.instructions}]]</h5>
+                        <ol class="exercise-steps">
+                            <li th:each="step:${#strings.arraySplit(exercise.steps, '|')}"
+                                th:text="${@uiText.catalog(step)}"></li>
+                        </ol>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.breathing)}">
+                        <h5>[[#{ui.breathing}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.breathing)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.posture)}">
+                        <h5>[[#{ui.posture.and.control}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.posture)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.mistakes)}">
+                        <h5>[[#{ui.common.mistakes}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.mistakes)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.easier)}">
+                        <h5>[[#{ui.easier.variation}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.easier)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.harder)}">
+                        <h5>[[#{ui.harder.variation}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.harder)}"></p>
+                    </th:block>
+                    <th:block th:if="${!#strings.isEmpty(exercise.safety)}">
+                        <h5>[[#{ui.safety}]]</h5>
+                        <p th:text="${@uiText.catalog(exercise.safety)}"></p>
+                    </th:block>
+                    <div th:replace="~{fragments/exercise-video :: player(${video})}"></div>
+                </th:block>
+            </div>
+        </div>
+    </details>
+</article>

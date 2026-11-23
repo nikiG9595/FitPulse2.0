@@ -5,6 +5,9 @@
     <script th:src="@{/js/language.js}" defer></script>
     <script th:src="@{/js/media-preferences.js}" defer></script>
     <script th:inline="javascript">window.fitPulseMessages = /*[[${@uiText.clientMessages()}]]*/ {};</script>
+    <meta name="password-show" th:content="#{auth.password.show}">
+    <meta name="password-hide" th:content="#{auth.password.hide}">
+    <script th:src="@{/js/account.js}" defer></script>
     <title th:text="${title}">FitPulse</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap-5.3.3.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -17,4 +20,5 @@
     <link rel="stylesheet" th:href="@{/css/support.css}">
     <link rel="stylesheet" th:href="@{/css/final-ui.css}">
     <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" th:href="@{/css/fitpulse-2.css}">
 </head>

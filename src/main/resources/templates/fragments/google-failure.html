@@ -1,0 +1,4 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="message"
+          th:with="key=${@googleLogin.failureMessage(param.googleFailure)}">
+    <p th:if="${key != null}" th:text="#{${key}}" class="alert alert-danger mt-3" role="alert"></p>
+</th:block>

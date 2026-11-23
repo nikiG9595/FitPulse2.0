@@ -15,6 +15,8 @@ public interface UserService {
 
     boolean consumeFirstLogin();
 
+    boolean changePassword(String current, String replacement, String confirmation);
+
     List<User> getAllUsers();
 
     void changeRole(UUID userId, UserRole newRole);

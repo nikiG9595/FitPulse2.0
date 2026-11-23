@@ -65,6 +65,12 @@ public class User {
     public boolean isShowFavorites() { return showFavorites; }
     public void setShowFavorites(boolean showFavorites) { this.showFavorites = showFavorites; }
 
+    @Column(unique = true)
+    private String googleSubject;
+
+    public String getGoogleSubject() { return googleSubject; }
+    public void setGoogleSubject(String googleSubject) { this.googleSubject = googleSubject; }
+
     public UUID getId() {
         return id;
     }
@@ -82,7 +88,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null : email.strip().toLowerCase(java.util.Locale.ROOT);
     }
 
     public String getPassword() {

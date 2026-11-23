@@ -12,8 +12,21 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthReturnNavigation navigation) throws Exception {
-        return http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthReturnNavigation navigation, org.springframework.beans.factory.ObjectProvider<GoogleLogin> googleProvider) throws Exception {
+        GoogleLogin google = googleProvider.getIfAvailable();
+        if (google != null && google.isEnabled()) {
+            http.oauth2Login(login -> login.clientRegistrationRepository(google.clients()).loginPage("/login")
+                    .userInfoEndpoint(info -> info.oidcUserService(google::authenticate))
+                    .successHandler((request, response, authentication) -> {
+                        if (google.finish(request)) {
+                            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/profile/edit?googleLinked"));
+                        } else {
+                            navigation.onAuthenticationSuccess(request, response, authentication);
+                        }
+                    }).failureHandler(google::failure));
+        }
+        return http.addFilterBefore(new ProfilePhotoUploadFilter(),
+                        org.springframework.security.web.csrf.CsrfFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         // Match every HTTP method explicitly, independently of MVC handler matching.
                         // Keep these protected namespaces before all public/static-resource rules.
@@ -25,14 +38,14 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/training-sessions"),
                                 new AntPathRequestMatcher("/training-sessions/**")
                         ).authenticated()
-                        .requestMatchers("/suggest-gym").authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/suggest-gym"), new AntPathRequestMatcher("/suggest-gym/**")).authenticated()
                         .requestMatchers("/support", "/about").permitAll()
                         .requestMatchers(HttpMethod.GET, "/terms", "/privacy", "/cookies", "/js/media-preferences.js").permitAll()
                         .requestMatchers(HttpMethod.HEAD, "/terms", "/privacy", "/cookies").permitAll()
                         .requestMatchers(HttpMethod.POST, "/gyms/*/favorite", "/gyms/*/review", "/reviews/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/gyms", "/gyms/**", "/js/weekly-menu.js", "/js/program-accordion.js").permitAll()
                         .requestMatchers(HttpMethod.HEAD, "/gyms", "/gyms/**").permitAll()
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/images/**", "/exercises/**", "/js/anatomy.js", "/js/navigation.js", "/js/theme.js", "/js/language.js", "/users/**", "/trainers", "/trainers/*").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/register/google", "/js/account.js", "/css/**", "/images/**", "/exercises/**", "/js/anatomy.js", "/js/navigation.js", "/js/theme.js", "/js/language.js", "/users/**", "/trainers", "/trainers/*").permitAll()
                         .requestMatchers("/progress/**").hasAnyRole("MEMBER", "ADMIN")
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())

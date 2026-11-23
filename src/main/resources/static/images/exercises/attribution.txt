@@ -50,3 +50,17 @@ stationary-bike (hold: 1): https://github.com/bryllim/workout-guide/tree/main/pa
 elliptical (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/elliptical
 mountain-climber (start, finish: 2, 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/mountain-climber
 wall-sit (hold: 1): https://github.com/bryllim/workout-guide/tree/main/packages/workout-guide/assets/wall-sit
+
+Additional frames from Workout Guide, resized to 420×420 PNG and distributed under CC BY-SA 4.0:
+calf-raise (start, finish: 3, 1): https://github.com/bryllim/workout-guide/tree/15e873e/packages/workout-guide/assets/calf-raise
+chest-fly (start, finish: 1, 3): https://github.com/bryllim/workout-guide/tree/15e873e/packages/workout-guide/assets/dumbbell-fly
+barbell-curl (start, finish: 3, 1; EZ bar): https://github.com/bryllim/workout-guide/tree/15e873e/packages/workout-guide/assets/ez-bar-curl
+side-plank (hold: 1): https://github.com/bryllim/workout-guide/tree/15e873e/packages/workout-guide/assets/side-plank
+
+New FitPulse illustrations / Нови илюстрации за FitPulse
+Generated for FitPulse using the existing artwork as style references.
+Генерирани за FitPulse по визуални ориентири от съществуващите изображения.
+420×420 lossless WebP, transparent background / 420×420 WebP без загуби, прозрачен фон.
+Start and finish: reverse-lunge, step-up, crunch, fast-walk, hip-hinge, thoracic-rotation, hip-90-90,
+ankle-mobility, chair-squat, backpack-row, backpack-press, narrow-wall-push-up.
+Single position: stepper, knee-side-plank.
