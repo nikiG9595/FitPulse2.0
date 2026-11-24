@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{nav.register})}"></head>
+<body class="auth-bg">
+<div th:replace="~{fragments/nav :: nav}"></div>
+<main class="container auth-page">
+    <div class="auth-card">
+        <h1>[[#{ui.create.an.account}]]</h1>
+        <p class="text-muted" th:text="${signup.email()}"></p>
+        <p class="alert alert-danger" role="alert" th:if="${param.googleTerms}">[[#{auth.google.terms}]]</p>
+        <form method="post" th:action="@{/register/google}">
+            <input type="hidden" name="signupId" th:value="${signup.id()}">
+            <input type="hidden" name="termsVersion" th:value="${termsVersion}">
+            <div class="form-check">
+                <input class="form-check-input" id="google-terms" type="checkbox" name="termsAccepted" value="true" required>
+                <label class="form-check-label" for="google-terms">
+                    [[#{legal.terms.accept}]]
+                    <a th:href="@{/terms}" target="_blank" rel="noopener noreferrer">[[#{legal.terms.title}]]</a>
+                    [[#{auth.google.consent.and}]]
+                    <a th:href="@{/privacy}" target="_blank" rel="noopener noreferrer">[[#{legal.privacy.title}]]</a>
+                </label>
+            </div>
+            <button class="btn btn-pulse w-100 mt-4" type="submit">[[#{nav.register}]]</button>
+        </form>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: footer(false)}"></div>
+</body>
+</html>

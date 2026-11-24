@@ -159,6 +159,63 @@
     padding-top: var(--fitpulse-header-height, 64px);
 }
 
+:root body.home-page .fit-nav { background:#101318; }
+.home-page .fit-nav .navbar-brand { --bs-navbar-brand-hover-color:#fff; }
+:root body.home-page .fit-nav .navbar-brand span { color:#ff6728; }
+.home-page .fit-nav .navbar-brand,
+:root body.home-page .fit-nav.nav-public .nav-link,
+.home-page .fit-nav .nav-preferences .nav-icon-button,
+.home-page .fit-nav .nav-actions > .nav-icon-button { color:#fff; }
+
+.home-page .fit-nav .nav-layout {
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+}
+
+:root body.home-page .fit-nav .nav-layout .nav-slogan {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: max-content;
+    grid-area: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin: 0 auto;
+    color: #fff;
+    font-size: clamp(.875rem, 1.45vw, 1rem);
+    font-weight: 600;
+    letter-spacing: .015em;
+    text-transform: none;
+    white-space: nowrap;
+    visibility: hidden;
+}
+
+.home-page .nav-slogan-accent { color:#ff8552; }
+.home-page .nav-slogan::before,
+.home-page .nav-slogan::after {
+    content: "";
+    flex: 0 0 1.25rem;
+    height: 1px;
+    background: #ff8552;
+}
+
+@media (min-width: 768px) {
+    :root body.home-page .fit-nav .nav-layout.slogan-inline .nav-slogan {
+        visibility: visible;
+    }
+}
+
+@media (max-width: 560px) {
+    .home-page .fit-nav.nav-public .navbar-collapse {
+        grid-column:1 / -1;
+        grid-row:2;
+        width:100%;
+    }
+    .home-page .fit-nav.nav-public .navbar-nav { justify-content:center;flex-wrap:wrap; }
+}
+
 .home-hero {
     --home-hero-base: #0c0d10;
     display: grid;
@@ -189,25 +246,6 @@
     position: relative;
     padding: .125rem 1rem 1.5rem;
     text-align: center;
-}
-
-.home-hero h1 {
-    position: absolute;
-    z-index: 1;
-    inset: 5% .625rem auto;
-    margin: 0;
-    color: inherit;
-    font-size: clamp(1rem, 4.6vw, 2rem);
-    font-weight: 600;
-    line-height: 1.15;
-    letter-spacing: -.035em;
-    text-align: center;
-    text-shadow: 0 1px 3px #000, 0 2px 12px #000c;
-    text-wrap: balance;
-}
-
-.home-hero h1 span {
-    color: #ffb088;
 }
 
 .home-hero-actions {
@@ -307,10 +345,6 @@
         padding: 1rem 1.5rem clamp(1.25rem, 3.2vw, 3rem);
     }
 
-    .home-hero h1 {
-        font-size: clamp(1.9rem, 3.6vw, 3.5rem);
-    }
-
     .auth-bg .auth-page {
         min-height: calc(100svh - 4rem);
         place-items: center;
@@ -385,3 +419,5 @@
 .google-auth-icon {
     flex: none;
 }
+.fp-mobile-only { display:none; }
+.fp-install-dialog:not([open]) { display:none; }

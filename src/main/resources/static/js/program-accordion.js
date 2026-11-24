@@ -10,9 +10,9 @@
             CSS.supports('interpolate-size', 'allow-keywords')) return;
 
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    document.querySelectorAll('.program-exercise').forEach(exercise => {
+    document.querySelectorAll('.program-exercise-card, .program-exercise-card .exercise-video-disclosure').forEach(exercise => {
         const summary = exercise.querySelector(':scope > summary');
-        const content = exercise.querySelector('.program-exercise-content');
+        const content = summary.nextElementSibling;
         let animation;
         let expanding;
         summary.addEventListener('click', event => {
@@ -23,7 +23,7 @@
             animation?.cancel();
             exercise.open = true;
             animation = content.animate(
-                {height: [`${start}px`, expanding ? `${content.getBoundingClientRect().height}px` : '0px']},
+                {height: [`${start}px`, expanding ? `${content.getBoundingClientRect().height}px` : '0px'], overflow: 'hidden'},
                 {duration: 230, easing: 'ease', fill: 'both'}
             );
             animation.onfinish = () => {

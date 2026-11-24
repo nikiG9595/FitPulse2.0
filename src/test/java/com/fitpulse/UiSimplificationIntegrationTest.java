@@ -62,6 +62,95 @@ class UiSimplificationIntegrationTest {
         MealPlanTemplate t=new MealPlanTemplate();t.setName("Оригинален режим");t.setDescription("Описание");t.setGoal(FitnessGoal.MUSCLE);t.setMeals("Меню");t.setDisclaimer("Пример");t.setWeeklyMenu(mapper.writeValueAsString(new WeeklyMenu("FitPulse","",days)));return meals.saveAndFlush(t);
     }
 
+    @Test void dailyIntakeKeepsMarksScopedAndPreservesTheConsumedPortion() throws Exception {
+        LocalDate today = LocalDate.now(java.time.ZoneId.of("Europe/Sofia"));
+        var days = java.util.stream.IntStream.rangeClosed(1, 7).mapToObj(day ->
+                new WeeklyMenu.Day("Day " + day, List.of(new WeeklyMenu.Meal("Breakfast", "Recipe " + day,
+                        List.of(new WeeklyMenu.Ingredient("Oats", day * 100, "raw", 20, 10, 40, "oats")),
+                        "", "", "oats")))).toList();
+        var oldPlan = new UserMealPlan();
+        oldPlan.setName("Alternate plan");
+        oldPlan.setUser(account);
+        oldPlan.setMeals("Weekly meals");
+        oldPlan.setWeeklyMenu(mapper.writeValueAsString(new WeeklyMenu("", "", days)));
+        entityManager.persist(oldPlan);
+        var activePlan = new UserMealPlan();
+        activePlan.setName("Personal plan");
+        activePlan.setUser(account);
+        activePlan.setMeals("Weekly meals");
+        activePlan.setWeeklyMenu(oldPlan.getWeeklyMenu());
+        entityManager.persist(activePlan);
+        var member = user(account.getUsername()).roles("MEMBER");
+        String card = mvc.perform(get("/meal-plans/intake").with(member)).andExpect(status().isOk())
+                .andExpect(header().string("Cache-Control", "no-store"))
+                .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(card).contains("Recipe " + today.getDayOfWeek().getValue()).doesNotContain("checked=\"checked\"");
+        var revision = java.util.regex.Pattern.compile("name=\"revision\" value=\"([0-9a-f]{64})\"").matcher(card);
+        assertThat(revision.find()).isTrue();
+        String hash = revision.group(1);
+        var mark = post("/meal-plans/intake/meal").param("planId", activePlan.getId().toString())
+                .param("date", today.toString()).param("index", "0").param("revision", hash);
+        mvc.perform(mark.with(member)).andExpect(status().isForbidden());
+        mvc.perform(post("/meal-plans/intake/meal").with(member).with(csrf())
+                .param("planId", activePlan.getId().toString()).param("date", today.minusDays(1).toString())
+                .param("index", "0").param("revision", hash).param("eaten", "true")).andExpect(status().isConflict());
+        mvc.perform(post("/meal-plans/intake/meal").with(member).with(csrf())
+                .param("planId", activePlan.getId().toString()).param("date", today.toString())
+                .param("index", "0").param("revision", hash).param("eaten", "true")).andExpect(status().isNoContent());
+        var other = new User();
+        other.setUsername("intake" + UUID.randomUUID().toString().substring(0, 12));
+        other.setEmail(other.getUsername() + "@example.com");
+        other.setPassword(account.getPassword());
+        other.setRole(UserRole.MEMBER);
+        users.saveAndFlush(other);
+        mvc.perform(post("/meal-plans/intake/meal").with(user(other.getUsername()).roles("MEMBER")).with(csrf())
+                .param("planId", activePlan.getId().toString()).param("date", today.toString())
+                .param("index", "0").param("revision", hash)).andExpect(status().isConflict());
+        mvc.perform(get("/meal-plans/intake").with(member)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("checked=\"checked\"")));
+        mvc.perform(mark.with(member).with(csrf())).andExpect(status().isNoContent());
+        mvc.perform(get("/meal-plans/intake").with(member)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("checked=\"checked\""))));
+        mvc.perform(post("/meal-plans/intake/meal").with(member).with(csrf())
+                .param("planId", activePlan.getId().toString()).param("date", today.toString())
+                .param("index", "0").param("revision", hash).param("eaten", "true")).andExpect(status().isNoContent());
+        int grams = today.getDayOfWeek().getValue() * 100;
+        activePlan.setWeeklyMenu(activePlan.getWeeklyMenu().replace("\"grams\":" + grams + ".0", "\"grams\":" + (grams + 50) + ".0"));
+        entityManager.flush();
+        mvc.perform(get("/meal-plans/intake").with(member)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("fp-intake-note")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("checked=\"checked\""))));
+        mvc.perform(post("/meal-plans/intake/plan").with(member).with(csrf()).param("planId", oldPlan.getId().toString()))
+                .andExpect(status().isNoContent());
+        entityManager.clear();
+        mvc.perform(get("/meal-plans/intake").with(member)).andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("fp-intake-note"))));
+    }
+
+    @Test void mobileDashboardAndInstallAssetsUseExistingAuthenticatedRoutes() throws Exception {
+        String guest = mvc.perform(get("/")).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(guest).contains("href=\"/manifest.webmanifest\"", "href=\"/images/pwa/apple-touch-icon.png\"")
+                .doesNotContain("data-mobile-tab", "data-progress-url");
+        String member = mvc.perform(get("/").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
+        assertThat(member).contains("fp-mobile-home", account.getUsername(), "data-progress-url=\"/progress/data?period=90\"",
+                "data-mobile-tab=\"training\"", "data-mobile-tab=\"nutrition\"");
+        mvc.perform(get("/programs").param("goal", "FAT_LOSS").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("data-program-goal=\"FAT_LOSS\"")));
+        mvc.perform(get("/meal-plans").param("goal", "MUSCLE").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("fp-goal-shortcuts")));
+        mvc.perform(get("/profile").with(user(account.getUsername()).roles("MEMBER")))
+                .andExpect(status().isOk());
+        mvc.perform(get("/manifest.webmanifest")).andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("application/manifest+json"))
+                .andExpect(jsonPath("$.display").value("standalone"));
+        mvc.perform(get("/service-worker.js")).andExpect(status().isOk());
+        mvc.perform(get("/images/pwa/icon-512.png")).andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("image/png"));
+        mvc.perform(get("/progress/data")).andExpect(status().is3xxRedirection());
+    }
+
     @Test void languageCookieSelectsEnglishWithoutTranslatingProfileContent() throws Exception {
         var english = new jakarta.servlet.http.Cookie("fitpulse-language", "en");
         String home = mvc.perform(get("/")).andExpect(status().isOk())
@@ -109,7 +198,10 @@ class UiSimplificationIntegrationTest {
                         .with(user(account.getUsername()).roles("MEMBER")))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         assertThat(workout).contains("Home Starter", "Chair squat", "Leave 2–3 reps in reserve");
-        assertThat(workout).containsPattern("<details class=\"exercise-detail program-exercise\">\\s*<summary>Glute bridge</summary>")
+        assertThat(workout).containsPattern("<details class=\"exercise-detail program-exercise-card\">\\s*<summary><h4>Glute bridge</h4></summary>")
+                .containsPattern("<details class=\"program-exercise exercise-video-disclosure\">\\s*<summary>How to perform it\\?</summary>")
+                .containsPattern("(?s)<details class=\"program-exercise exercise-video-disclosure\">(?:(?!</details>|<iframe).)*</details>"
+                        + "\\s*<section class=\"exercise-video\">\\s*<details class=\"exercise-video-disclosure\">")
                 .contains("glute-bridge-start.webp", "glute-bridge-finish.webp", "Starting position", "End position")
                 .doesNotContain("chair-squat-start.webp");
         mvc.perform(get("/images/exercises/glute-bridge-start.webp")).andExpect(status().isOk());
@@ -118,7 +210,8 @@ class UiSimplificationIntegrationTest {
                 .andExpect(status().is3xxRedirection()).andReturn().getResponse().getRedirectedUrl();
         String copy = mvc.perform(get(copyUrl).with(user(account.getUsername()).roles("MEMBER")))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
-        assertThat(copy).contains("<summary>Глутеус мост</summary>", "glute-bridge-start.webp", "Начална позиция");
+        assertThat(copy).containsPattern("<details class=\"exercise-detail program-exercise-card\">\\s*<summary><h4>Глутеус мост</h4></summary>")
+                .contains("glute-bridge-start.webp", "Начална позиция");
         assertThat(program.getName()).isEqualTo("Старт у дома 3 дни");
 
         var meal = new MealPlanTemplate();
@@ -159,7 +252,9 @@ class UiSimplificationIntegrationTest {
         var guestHome = mvc.perform(get("/")).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);
         assertThat(guestHome).contains("href=\"/register?returnTo=", "href=\"/about\">Научи повече",
-                "href=\"/suggest-gym\">Предложи фитнес", "Откривай. Планирай. <span>Напредвай.");
+                "href=\"/support\"", "Откривай. Планирай. <span class=\"nav-slogan-accent\">Напредвай.");
+        assertThat(guestHome.indexOf("id=\"home-slogan\"")).isBetween(guestHome.indexOf("<nav "), guestHome.indexOf("</nav>"));
+        assertThat(guestHome).containsOnlyOnce("id=\"home-slogan\"");
 
         var memberHome = mvc.perform(get("/").with(user(account.getUsername()).roles("MEMBER")))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8);

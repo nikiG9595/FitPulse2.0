@@ -1,13 +1,18 @@
 <section class="exercise-video" th:fragment="player(video)" xmlns:th="http://www.thymeleaf.org">
-    <details class="exercise-video-disclosure" th:if="${video!=null}">
-        <summary>[[#{ui.exercise.demonstration}]] <span th:text="'· '+${video.durationSeconds}+#{ui.sec}"></span></summary>
-        <div class="exercise-video-frame">
-            <iframe th:data-external-src="${video.embedUrl}" th:title="#{ui.short.exercise.demonstration}" loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    <details class="exercise-video-disclosure" th:if="${video != null or programVideo == true}">
+        <summary><span>[[#{ui.exercise.demonstration}]] <span class="exercise-video-duration" th:if="${video != null}" th:text="'· '+${video.durationSeconds}+#{ui.sec}"></span></span></summary>
+        <div>
+            <th:block th:if="${video != null}">
+                <div class="exercise-video-frame">
+                    <iframe th:data-external-src="${video.embedUrl}" th:title="#{ui.short.exercise.demonstration}" loading="lazy"
+                            referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+                </div>
+                <button class="btn btn-outline-light media-video-settings" type="button" data-media-settings hidden
+                        th:text="#{legal.media.video}"></button>
+                <a class="link-pulse" th:href="${video.url}" target="_blank" rel="noopener noreferrer">[[#{ui.open.video.on.youtube}]]</a>
+            </th:block>
+            <p class="small module-muted" th:if="${video == null}">[[#{ui.a.suitable.video.under.90.seconds.has}]]</p>
         </div>
-        <button class="btn btn-outline-light media-video-settings" type="button" data-media-settings hidden
-                th:text="#{legal.media.video}"></button>
-        <a class="link-pulse" th:href="${video.url}" target="_blank" rel="noopener noreferrer">[[#{ui.open.video.on.youtube}]]</a>
     </details>
-    <p class="small module-muted" th:unless="${video!=null}">[[#{ui.a.suitable.video.under.90.seconds.has}]]</p>
+    <p class="small module-muted" th:if="${video == null and programVideo != true}">[[#{ui.a.suitable.video.under.90.seconds.has}]]</p>
 </section>

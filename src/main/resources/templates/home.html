@@ -1,22 +1,61 @@
 <!doctype html>
 <html lang="bg" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head('FitPulse 2.0')}"></head>
-<body class="home-page">
-<div th:replace="~{fragments/nav :: nav}"></div>
+<body class="home-page" th:classappend="${homeMember != null ? 'fp-member-home' : ''}">
+<div th:replace="~{fragments/nav :: nav(homeNavigation=true)}"></div>
 <main class="home-layout">
     <section class="home-hero" aria-labelledby="home-slogan">
-        <div class="home-hero-visual">
+        <picture class="home-hero-visual">
+            <source th:if="${homeMember != null}" media="(max-width: 767px)" th:srcset="@{/images/pwa/fitness-hero.jpg}">
             <img th:src="@{/css/images/HomePage.png}" src="/css/images/HomePage.png"
                  th:alt="#{ui.a.man.and.a.woman.train.with.2}" width="1672" height="941" fetchpriority="high">
-            <h1 id="home-slogan">[[#{ui.explore.plan}]] <span>[[#{ui.progress}]]</span></h1>
-        </div>
+        </picture>
         <div class="home-hero-content">
             <div class="home-hero-actions">
                 <a class="btn btn-pulse" sec:authorize="isAnonymous()" th:href="@{/register(returnTo='/profile')}" data-fixed-return>[[#{ui.get.started}]]</a>
                 <a class="btn btn-pulse" sec:authorize="isAuthenticated()" th:href="@{/profile}">[[#{ui.get.started}]]</a>
                 <a class="btn btn-outline-light" th:href="@{/about}">[[#{ui.learn.more}]]</a>
             </div>
+            <div class="fp-install-home fp-mobile-only" sec:authorize="isAnonymous()">
+                <button th:replace="~{fragments/pwa-install :: button}"></button>
+            </div>
         </div>
+    </section>
+</main>
+<main class="fp-mobile-only fp-mobile-home" th:if="${homeMember != null}">
+    <header class="fp-home-welcome">
+        <h1 th:text="#{mobile.greeting(${#strings.isEmpty(homeMember.displayName) ? homeMember.username : homeMember.displayName})}"></h1>
+        <p>[[#{mobile.motivation}]]</p>
+    </header>
+    <section class="fp-home-hero">
+        <h2>[[#{mobile.hero.title}]]</h2>
+        <div class="fp-hero-actions">
+            <a class="btn btn-pulse" th:href="@{/programs}">[[#{mobile.hero.action}]] <svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+            <button th:replace="~{fragments/pwa-install :: button}"></button>
+        </div>
+    </section>
+    <div class="fp-home-shortcuts">
+        <a th:href="@{/programs}">
+            <span class="fp-shortcut-top"><svg th:replace="~{fragments/icons :: icon('dumbbell')}"></svg><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></span>
+            <strong>[[#{ui.training.programs}]]</strong><span>[[#{mobile.training.description}]]</span>
+        </a>
+        <a th:href="@{/meal-plans}">
+            <span class="fp-shortcut-top"><svg th:replace="~{fragments/icons :: icon('utensils')}"></svg><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></span>
+            <strong>[[#{nav.meals}]]</strong><span>[[#{mobile.nutrition.description}]]</span>
+        </a>
+    </div>
+    <section class="fp-home-progress" th:data-progress-url="@{/progress/data(period='90')}">
+        <div class="fp-progress-title">
+            <svg th:replace="~{fragments/icons :: icon('progress')}"></svg><h2>[[#{nav.progress}]]</h2>
+            <a th:href="@{/progress}" th:aria-label="#{ui.view.progress}"><svg th:replace="~{fragments/icons :: icon('arrow')}"></svg></a>
+        </div>
+        <p data-progress-status aria-live="polite">[[#{mobile.progress.caption}]]</p>
+        <dl data-progress-values hidden>
+            <div data-progress-weight hidden><dt>[[#{mobile.latest.weight}]]</dt><dd></dd></div>
+            <div data-progress-workouts hidden><dt>[[#{mobile.completed.workouts}]]</dt><dd></dd></div>
+            <div data-progress-measurements hidden><dt>[[#{mobile.measurements}]]</dt><dd></dd></div>
+        </dl>
+        <p data-progress-empty hidden>[[#{mobile.progress.empty}]]</p>
     </section>
 </main>
 <div th:replace="~{fragments/footer :: footer(true)}"></div>

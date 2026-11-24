@@ -109,22 +109,64 @@
 /* Clear exercise cards and comfortable touch targets. */
 .plan-page .exercise-detail {padding:1.25rem;border:1px solid #ffffff18;border-radius:14px;background:#ffffff04;margin-bottom:1rem}
 .plan-page .exercise-detail h4 {font-size:clamp(1.2rem,2vw,1.5rem);font-weight:800;line-height:1.35;margin-bottom:1rem}
-.plan-page .program-exercise-card { padding:12px 14px; margin:8px 0; }
+:root body .plan-page .program-exercise-card {
+    border:1px solid var(--fp-border);
+    border-radius:8px;
+    background:transparent;
+    padding:0;
+    margin:8px 0;
+    container-type:inline-size;
+}
+.plan-page .session-exercises > .program-exercise-card + .program-exercise-card {
+    margin-block-start:18px;
+}
 .program-exercise-card .exercise-prescription { margin-bottom:0; }
-.program-exercise > summary {
+.program-exercise-card > summary {
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    min-height:44px;
-    padding:10px 0;
-    font-weight:750;
+    min-height:42px;
+    padding:6px 10px;
+    border-radius:7px;
     list-style:none;
     cursor:pointer;
     overflow-wrap:anywhere;
 }
-.program-exercise > summary::-webkit-details-marker { display:none; }
-.program-exercise > summary::after {
+.plan-page .program-exercise-card > summary h4 {
+    margin:0;
+    font-size:clamp(.95rem, 1.6vw, 1.1rem);
+    font-weight:750;
+}
+.program-exercise-card-content {
+    display:flow-root;
+    padding-inline:10px;
+}
+.program-exercise-card-content > :last-child { margin-bottom:10px; }
+.program-exercise-card :is(.program-exercise, .exercise-video) { margin-top:12px; }
+.program-exercise-card .exercise-video-disclosure > summary {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border-radius:4px;
+    list-style:none;
+    overflow-wrap:anywhere;
+}
+.program-exercise-card .exercise-video-disclosure > summary + div { display:flow-root; }
+@container (max-width:23rem) {
+    .program-exercise-card .exercise-video-disclosure > summary { min-block-size:3em; }
+}
+:root body .program-exercise-card > summary:focus-visible,
+:root body .program-exercise-card .exercise-video-disclosure > summary:focus-visible {
+    outline:2px solid var(--fp-focus);
+    outline-offset:-2px;
+}
+:root body .program-exercise-card:not([open]) > summary:focus-visible { outline-offset:0; }
+.program-exercise-card > summary::-webkit-details-marker,
+.program-exercise-card .exercise-video-disclosure > summary::-webkit-details-marker { display:none; }
+.program-exercise-card > summary::after,
+.program-exercise-card .exercise-video-disclosure > summary::after {
     content:"";
     width:9px;
     height:9px;
@@ -133,7 +175,8 @@
     border-bottom:2px solid var(--fp-accent-hover);
     transform:rotate(45deg);
 }
-.program-exercise[open] > summary::after { transform:rotate(-135deg); }
+.program-exercise-card[open] > summary::after,
+.program-exercise-card .exercise-video-disclosure[open] > summary::after { transform:rotate(-135deg); }
 .program-exercise-content { overflow:hidden; min-width:0; }
 .program-exercise-body h5 { font-size:1rem; font-weight:700; }
 .program-exercise-content .exercise-steps { margin:4px 0 8px; }
@@ -159,15 +202,16 @@
     .program-exercise-images { max-width:min(100%, 78vw); }
 }
 @media (prefers-reduced-motion: no-preference) {
-    .program-exercise > summary::after { transition:transform .2s ease; }
+    .program-exercise-card > summary::after,
+    .program-exercise-card .exercise-video-disclosure > summary::after { transition:transform .2s ease; }
     @supports selector(details::details-content) and (interpolate-size: allow-keywords) {
-        .program-exercise::details-content {
+        :is(.program-exercise-card, .program-exercise-card .exercise-video-disclosure)::details-content {
             block-size:0;
             overflow:clip;
             interpolate-size:allow-keywords;
             transition:block-size .23s ease, content-visibility .23s allow-discrete;
         }
-        .program-exercise[open]::details-content { block-size:auto; }
+        :is(.program-exercise-card, .program-exercise-card .exercise-video-disclosure)[open]::details-content { block-size:auto; }
     }
 }
 .measurement-picker {max-width:100%;min-width:0}

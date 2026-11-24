@@ -34,6 +34,15 @@
         </div>
     </header>
 
+    <section class="fp-mobile-only fp-profile-metrics" th:if="${personalDataSummary.height != null or personalDataSummary.weight != null or profileAge != null}">
+        <h2>[[#{ui.personal.details}]]</h2>
+        <dl>
+            <div th:if="${personalDataSummary.height != null}"><dt>[[#{mobile.height}]]</dt><dd>[[${#numbers.formatDecimal(personalDataSummary.height,1,0)}]] <span>[[#{mobile.cm}]]</span></dd></div>
+            <div th:if="${personalDataSummary.weight != null}"><dt>[[#{mobile.weight}]]</dt><dd>[[${#numbers.formatDecimal(personalDataSummary.weight,1,1)}]] <span>[[#{mobile.kg}]]</span></dd></div>
+            <div th:if="${profileAge != null}"><dt>[[#{mobile.age}]]</dt><dd>[[${profileAge}]] <span>[[#{mobile.years}]]</span></dd></div>
+        </dl>
+    </section>
+
     <section aria-labelledby="profile-tools-heading">
         <div class="section-heading profile-section-heading">
             <div>

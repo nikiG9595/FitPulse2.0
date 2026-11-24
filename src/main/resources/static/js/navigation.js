@@ -45,7 +45,10 @@
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.classList.contains('show')){event.preventDefault();open(false);toggle.focus();}});
     document.addEventListener('click',event=>{if(!menu.contains(event.target)&&!toggle.contains(event.target))open(false);});
     layout.addEventListener('focusout',()=>setTimeout(()=>{if(!layout.contains(document.activeElement))open(false);},0));
-    menu.addEventListener('click',event=>{if(event.target.closest('a,button')&&!expanded())open(false);});
+    menu.addEventListener('click',event=>{
+        const item = event.target.closest('a,button');
+        if (item && !item.closest('.fp-installed-preferences') && !expanded()) open(false);
+    });
     wide.addEventListener('change',()=>{open(false);align();});
     const path=window.location.pathname.replace(/\/$/,''), profile=menu.querySelector('[data-profile-link]');
     const root=profile?new URL(profile.href).pathname.replace(/\/profile\/?$/,''):'';

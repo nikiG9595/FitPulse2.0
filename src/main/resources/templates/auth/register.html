@@ -5,17 +5,6 @@
     <div id="terms-error" class="field-error" th:errors="*{termsAccepted}"></div>
 </div>
 <button class="btn btn-pulse w-100 mt-4">[[#{nav.register}]]</button></form>
-<p class="alert alert-danger mt-3" th:if="${param.googleTerms}">[[#{auth.google.terms}]]</p>
 <div th:replace="~{fragments/google-failure :: message}"></div>
-<form th:if="${@googleLogin.enabled}" class="mt-3" method="post" th:action="@{/register/google}">
-    <div th:replace="~{fragments/google-button :: divider}"></div>
-    <input type="hidden" name="termsVersion" th:value="${termsVersion}">
-    <div class="form-check">
-        <input class="form-check-input" id="google-terms" type="checkbox" name="termsAccepted" value="true" required>
-        <label class="form-check-label" for="google-terms">[[#{legal.terms.accept}]] <a th:href="@{/terms}" target="_blank" rel="noopener noreferrer">[[#{legal.terms.title}]]</a></label>
-    </div>
-    <button class="google-auth-button mt-2" type="submit">
-        <th:block th:replace="~{fragments/google-button :: label}"></th:block>
-    </button>
-</form>
+<div th:replace="~{fragments/google-button :: continueWithGoogle}"></div>
 <p class="mt-3">[[#{ui.having.trouble.signing.in.or.registering}]] <a th:href="@{/support}">[[#{ui.contact.us}]]</a></p><p class="mt-3">[[#{ui.already.have.an.account}]] <a th:href="@{/login(returnTo=${authReturnTo})}">[[#{nav.login}]]</a></p></div></main><div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

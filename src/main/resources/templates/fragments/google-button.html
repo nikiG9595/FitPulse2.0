@@ -5,3 +5,9 @@
     <img class="google-auth-icon" th:src="@{/images/google-g.svg}" alt="" width="20" height="20">
     <span th:text="#{auth.google}"></span>
 </th:block>
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="continueWithGoogle" th:if="${@googleLogin.enabled}">
+    <div th:replace="~{fragments/google-button :: divider}"></div>
+    <a class="google-auth-button" th:href="@{/oauth2/authorization/google}">
+        <th:block th:replace="~{fragments/google-button :: label}"></th:block>
+    </a>
+</div>

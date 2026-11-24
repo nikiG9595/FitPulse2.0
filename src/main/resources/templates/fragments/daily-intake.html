@@ -1,0 +1,80 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <section th:fragment="card" class="fp-intake" aria-labelledby="daily-intake-title"
+             th:with="planned=${intake.planned}, consumed=${intake.consumed}">
+        <div class="fp-intake-summary" th:if="${intake.plan != null}"
+             th:with="percent=${planned.calories > 0 ? consumed.calories / planned.calories * 100 : 0}">
+            <div class="fp-intake-ring" aria-hidden="true"
+                 th:style="'--fp-intake-progress:' + ${percent > 100 ? 100 : percent} + '%'">
+                <strong>[[${#numbers.formatDecimal(percent,1,0)}]]%</strong>
+            </div>
+            <div>
+                <h2 id="daily-intake-title">[[#{mobile.intake.title}]]</h2>
+                <time th:datetime="${intake.date}" th:text="${#temporals.format(intake.date,'EEEE, d MMMM')}"></time>
+                <p class="fp-intake-energy" aria-live="polite"><strong>[[${#numbers.formatDecimal(consumed.calories,1,0)}]]</strong>
+                    / [[${#numbers.formatDecimal(planned.calories,1,0)}]] [[#{mobile.intake.kcal}]]</p>
+                <p class="fp-intake-remaining">[[#{mobile.intake.remaining}]]
+                    <strong>[[${#numbers.formatDecimal(planned.calories > consumed.calories ? planned.calories - consumed.calories : 0,1,0)}]] [[#{mobile.intake.kcal}]]</strong></p>
+            </div>
+        </div>
+        <div th:if="${intake.plan == null}" class="fp-intake-empty">
+            <svg th:replace="~{fragments/icons :: icon('utensils')}"></svg>
+            <div><h2 id="daily-intake-title">[[#{mobile.intake.title}]]</h2>
+                <p>[[#{mobile.intake.empty}]]</p>
+                <a class="btn btn-pulse" href="#meal-plan-catalog">[[#{mobile.intake.choose}]]</a>
+            </div>
+        </div>
+        <th:block th:if="${intake.plan != null}">
+            <dl class="fp-intake-macros">
+                <div th:replace="~{fragments/daily-intake :: macro(#{ui.protein}, 'flame', ${consumed.protein}, ${planned.protein})}"></div>
+                <div th:replace="~{fragments/daily-intake :: macro(#{ui.carbohydrates}, 'bolt', ${consumed.carbs}, ${planned.carbs})}"></div>
+                <div th:replace="~{fragments/daily-intake :: macro(#{ui.fat}, 'drop', ${consumed.fat}, ${planned.fat})}"></div>
+            </dl>
+            <div class="fp-intake-plan">
+                <h3>[[#{mobile.intake.my.plan}]]</h3>
+                <form th:if="${#lists.size(intake.choices) > 1}" th:action="@{/meal-plans/intake/plan}" method="post">
+                    <select class="form-select" name="planId" id="fp-intake-plan" th:aria-label="#{mobile.intake.my.plan}">
+                        <option th:each="plan : ${intake.choices}" th:value="${plan.id}"
+                                th:selected="${plan.id == intake.plan.id}" th:text="${@uiText.mealCopyName(plan)}"></option>
+                    </select>
+                </form>
+                <a th:unless="${#lists.size(intake.choices) > 1}" th:href="@{/meal-plans/my/{id}(id=${intake.plan.id})}"
+                   th:text="${@uiText.mealCopyName(intake.plan)}"></a>
+            </div>
+            <p class="fp-intake-note" th:if="${intake.previousPortions > 0}">[[#{mobile.intake.previous.portions}]]</p>
+            <p class="fp-intake-note" th:if="${#lists.isEmpty(intake.meals)}">[[#{mobile.intake.no.meals}]]</p>
+            <article th:each="item : ${intake.meals}" class="fp-intake-meal" th:classappend="${item.eaten ? 'is-eaten' : ''}">
+                <img loading="lazy" decoding="async" width="52" height="52" alt="" th:src="@{${item.meal.image}}">
+                <details class="fp-intake-portion" th:id="'fp-intake-portion-' + ${item.index}">
+                    <summary><strong th:text="${@uiText.catalog(item.meal.label)}"></strong>
+                        <span>[[${#numbers.formatDecimal(item.totals.calories,1,0)}]] [[#{mobile.intake.kcal}]]</span></summary>
+                    <p th:text="${@uiText.catalog(item.meal.name)}"></p>
+                    <ul><li th:each="food : ${item.meal.ingredients}">
+                        <span th:text="${@uiText.catalog(food.name)}"></span>
+                        <span>[[${#numbers.formatDecimal(food.grams,1,1)}]] [[#{mobile.intake.grams}]]</span>
+                    </li></ul>
+                </details>
+                <form th:action="@{/meal-plans/intake/meal}" method="post">
+                    <input type="hidden" name="planId" th:value="${intake.plan.id}">
+                    <input type="hidden" name="date" th:value="${intake.date.toString()}">
+                    <input type="hidden" name="index" th:value="${item.index}">
+                    <input type="hidden" name="revision" th:value="${item.revision}">
+                    <label class="fp-intake-check">
+                        <input type="checkbox" name="eaten" value="true" th:checked="${item.eaten}"
+                               th:id="'fp-intake-eaten-' + ${item.index}"
+                               th:aria-label="#{mobile.intake.eaten.meal(${@uiText.catalog(item.meal.label)})}">
+                        <span>[[#{mobile.intake.eaten}]]</span>
+                    </label>
+                </form>
+            </article>
+        </th:block>
+    </section>
+
+    <div th:fragment="macro(label, icon, consumed, planned)" class="fp-intake-macro">
+        <dt><svg th:replace="~{fragments/icons :: icon(${icon})}"></svg><span th:text="${label}"></span></dt>
+        <dd><strong>[[${#numbers.formatDecimal(consumed,1,0)}]]</strong> /
+            [[${#numbers.formatDecimal(planned,1,0)}]] [[#{mobile.intake.grams}]]
+            <progress th:if="${planned > 0}" th:value="${consumed > planned ? planned : consumed}"
+                      th:max="${planned}" th:aria-label="${label}"></progress>
+        </dd>
+    </div>
+</th:block>

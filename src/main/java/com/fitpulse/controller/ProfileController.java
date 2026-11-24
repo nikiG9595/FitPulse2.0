@@ -36,6 +36,10 @@ public class ProfileController {
         session.removeAttribute("FITPULSE_NEW_USER");
         var storedProfile=userService.getCurrentUserProfileUpdateRequest();
         model.addAttribute("personalDataSummary",storedProfile);
+        if (storedProfile.getBirthDate() != null) {
+            model.addAttribute("profileAge", java.time.Period.between(
+                    storedProfile.getBirthDate(), java.time.LocalDate.now()).getYears());
+        }
         if(!model.containsAttribute("profileUpdateRequest")) model.addAttribute("profileUpdateRequest", storedProfile);
         model.addAttribute("profileComplete",storedProfile.getSex()!=null && storedProfile.getBirthDate()!=null && storedProfile.getHeight()!=null && storedProfile.getWeight()!=null);
         model.addAttribute("user", userService.getCurrentUser());

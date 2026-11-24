@@ -1,0 +1,25 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <button th:fragment="button" type="button" class="fp-install-button fp-mobile-only"
+            data-install-fitpulse aria-haspopup="dialog" aria-controls="fp-install-dialog" hidden>
+        <svg th:replace="~{fragments/icons :: icon('download')}"></svg>
+        <span>[[#{mobile.install}]]</span>
+    </button>
+    <dialog th:fragment="dialog" class="fp-install-dialog" id="fp-install-dialog" aria-labelledby="fp-install-title">
+        <header>
+            <span class="fp-install-icon"><svg th:replace="~{fragments/icons :: icon('download')}"></svg></span>
+            <h2 id="fp-install-title">[[#{mobile.install}]]</h2>
+        </header>
+        <ol data-install-ios hidden>
+            <li><svg th:replace="~{fragments/icons :: icon('compass')}"></svg><span>[[#{mobile.install.safari}]]</span></li>
+            <li><svg th:replace="~{fragments/icons :: icon('share')}"></svg><span>[[#{mobile.install.share}]]</span></li>
+            <li><svg th:replace="~{fragments/icons :: icon('add-square')}"></svg><span>[[#{mobile.install.home.screen}]]</span></li>
+            <li><svg th:replace="~{fragments/icons :: icon('check')}"></svg><span>[[#{mobile.install.add}]]</span></li>
+        </ol>
+        <ol data-install-browser hidden>
+            <li><svg th:replace="~{fragments/icons :: icon('more')}"></svg><span>[[#{mobile.install.menu}]]</span></li>
+            <li><svg th:replace="~{fragments/icons :: icon('add-square')}"></svg><span>[[#{mobile.install.menu.option}]]</span></li>
+            <li><svg th:replace="~{fragments/icons :: icon('compass')}"></svg><span>[[#{mobile.install.other.browser}]]</span></li>
+        </ol>
+        <button type="button" class="btn btn-pulse" data-install-close autofocus>[[#{mobile.install.done}]]</button>
+    </dialog>
+</th:block>

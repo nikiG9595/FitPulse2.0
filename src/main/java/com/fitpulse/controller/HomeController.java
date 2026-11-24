@@ -18,7 +18,10 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model, java.security.Principal principal) {
+        if (principal != null) {
+            model.addAttribute("homeMember", userService.getCurrentUser());
+        }
         return "home";
     }
 

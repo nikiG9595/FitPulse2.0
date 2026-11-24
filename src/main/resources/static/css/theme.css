@@ -332,7 +332,6 @@ html[lang="en"] .fitpulse-banner { position:relative;container-type:size;overflo
     padding-top: 24px;
 }
 
-.home-page .fit-nav .nav-slogan { display: none; }
 .home-page .home-intro {
     padding: calc(var(--fitpulse-header-height, 64px) + clamp(20px, 4vw, 44px)) 16px clamp(16px, 3vw, 32px);
 }

@@ -6,9 +6,18 @@
 <main class="container page library-page nutrition-catalog">
     <div class="alert alert-warning" th:if="${error}" th:text="${@uiText.label(error)}" role="alert"></div>
     <header class="library-header">
-        <div><span class="eyebrow">[[#{ui.eat.with.purpose}]]</span><h1>[[#{nav.meals}]]</h1></div>
+        <div><span class="eyebrow">[[#{ui.eat.with.purpose}]]</span><h1><span class="fp-desktop-label">[[#{nav.meals}]]</span><span class="fp-mobile-only">[[#{mobile.nutrition}]]</span></h1></div>
         <a class="btn btn-outline-dark" th:href="@{/meal-plans/my}">[[#{ui.my.meal.plans}]] <span aria-hidden="true">↗</span></a>
     </header>
+    <div class="fp-mobile-only fp-intake-host" th:data-intake-url="@{/meal-plans/intake}">
+        <div data-intake-content></div>
+        <p class="fp-intake-note" data-intake-status role="status" hidden>[[#{mobile.intake.error}]]</p>
+        <button type="button" class="btn btn-outline-light" data-intake-retry hidden>[[#{mobile.intake.retry}]]</button>
+    </div>
+    <div class="fp-mobile-only fp-goal-shortcuts" id="meal-plan-catalog" th:aria-label="#{ui.goal}">
+        <a th:href="@{/meal-plans(goal='FAT_LOSS')}" th:classappend="${goal != null and goal.name() == 'FAT_LOSS'} ? 'is-selected'" th:attr="aria-current=${goal != null and goal.name() == 'FAT_LOSS'} ? 'true' : null">[[#{mobile.fat.loss}]]</a>
+        <a th:href="@{/meal-plans(goal='MUSCLE')}" th:classappend="${goal != null and goal.name() == 'MUSCLE'} ? 'is-selected'" th:attr="aria-current=${goal != null and goal.name() == 'MUSCLE'} ? 'true' : null">[[#{mobile.muscle}]]</a>
+    </div>
     <section class="meal-catalog-personalization" aria-labelledby="meal-catalog-personalization-title">
         <svg th:replace="~{fragments/icons :: icon('target')}"></svg>
         <div>
@@ -32,4 +41,5 @@
     </section>
     <aside class="library-footnote"><svg th:replace="~{fragments/icons :: icon('meal')}"></svg><p>[[#{ui.meal.plans.are.general.examples.see.each}]]</p></aside>
 </main>
+<script th:src="@{/js/daily-intake.js}" defer></script>
 <div th:replace="~{fragments/footer :: footer(false)}"></div></body></html>

@@ -5,7 +5,8 @@
         <div class="nav-identity">
             <a class="navbar-brand" th:href="@{/}">Fit<span>Pulse</span></a>
         </div>
-        <span class="nav-slogan">[[#{ui.explore.plan.progress}]]</span>
+        <h1 th:if="${homeNavigation == true}" class="nav-slogan" id="home-slogan"><span>[[#{ui.explore.plan}]] <span class="nav-slogan-accent">[[#{ui.progress}]]</span></span></h1>
+        <span th:unless="${homeNavigation == true}" class="nav-slogan">[[#{ui.explore.plan.progress}]]</span>
         <div class="nav-actions">
             <th:block sec:authorize="isAuthenticated()">
                 <button th:replace="~{fragments/nav :: languageToggle}"></button>
@@ -47,14 +48,16 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" th:href="@{/about}">[[#{ui.about.fitpulse}]]</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/gyms}">[[#{ui.browse.gyms}]]</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">[[#{ui.training.programs}]]</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">[[#{nav.meals}]]</a></li>
+                <li class="nav-item fp-primary-menu-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/programs}">[[#{ui.training.programs}]]</a></li>
+                <li class="nav-item fp-primary-menu-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/meal-plans}">[[#{nav.meals}]]</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/support}">[[#{ui.help.and.feedback}]]</a></li><li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/trainers}">[[#{ui.trainers}]]</a></li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>[[#{nav.profile}]]</a></li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">[[#{nav.admin}]]</a></li>
+                <li class="nav-item fp-primary-menu-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/profile}" data-profile-link>[[#{nav.profile}]]</a></li>
+                <li class="nav-item fp-admin-menu-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}">[[#{nav.admin}]]</a></li>
                 <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login(returnTo=${authReturnTo})}">[[#{nav.login}]]</a></li>
                 <li class="nav-item" sec:authorize="isAnonymous()"><a class="btn btn-pulse btn-sm" th:href="@{/register(returnTo=${authReturnTo})}">[[#{nav.register}]]</a></li>
                 <li class="nav-item" sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post"><button class="btn btn-outline-light btn-sm" type="submit">[[#{nav.logout}]]</button></form></li>
+                <li class="fp-installed-preferences" sec:authorize="isAuthenticated()" hidden></li>
+                <li class="fp-mobile-only fp-install-menu-item" hidden><button th:replace="~{fragments/pwa-install :: button}"></button></li>
                 <li class="nav-item nav-preferences" sec:authorize="isAnonymous()">
                     <button th:replace="~{fragments/nav :: languageToggle}"></button>
                     <button th:replace="~{fragments/nav :: themeToggle}"></button>
@@ -66,6 +69,12 @@
     <script th:src="@{/js/navigation.js}" defer></script>
 
     <noscript><style>.fit-nav .navbar-collapse{display:block!important;position:static!important;grid-column:1/-1;width:100%!important}.fit-nav .navbar-toggler{display:none!important}</style></noscript>
+</nav>
+<nav class="fp-mobile-tabs fp-mobile-only" sec:authorize="isAuthenticated()" th:aria-label="#{mobile.navigation}">
+    <a th:href="@{/}" data-mobile-tab="home"><svg th:replace="~{fragments/icons :: icon('home')}"></svg><span>[[#{mobile.home}]]</span></a>
+    <a th:href="@{/programs}" data-mobile-tab="training"><svg th:replace="~{fragments/icons :: icon('dumbbell')}"></svg><span>[[#{mobile.training}]]</span></a>
+    <a th:href="@{/meal-plans}" data-mobile-tab="nutrition"><svg th:replace="~{fragments/icons :: icon('utensils')}"></svg><span>[[#{mobile.nutrition}]]</span></a>
+    <a th:href="@{/profile}" data-mobile-tab="profile"><svg th:replace="~{fragments/icons :: icon('user')}"></svg><span>[[#{mobile.profile}]]</span></a>
 </nav>
 <th:block th:if="${showFitPulseBanner}">
     <div th:replace="~{fragments/banner :: banner}"></div>

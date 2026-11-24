@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +36,7 @@ import java.util.UUID;
 public class GoogleLogin {
     private static final Logger log = LoggerFactory.getLogger(GoogleLogin.class);
     private static final String INTENT = GoogleLogin.class.getName();
+    private static final String SIGNUP = INTENT + ".signup";
     private final ClientRegistrationRepository clients;
     private final UserRepository users;
     private final PasswordEncoder passwords;
@@ -56,15 +58,47 @@ public class GoogleLogin {
     public boolean isEnabled() { return clients != null; }
     public ClientRegistrationRepository clients() { return clients; }
 
-    public String start(HttpServletRequest request, HttpServletResponse response, boolean signup, UUID linkTo) {
+    public String startLink(HttpServletRequest request, HttpServletResponse response, UUID linkTo) {
         var resolver = new DefaultOAuth2AuthorizationRequestResolver(clients, "/oauth2/authorization");
         var authorization = resolver.resolve(request, "google");
         requests.saveAuthorizationRequest(authorization, request, response);
-        request.getSession().setAttribute(INTENT, new Intent(authorization.getState(), signup, linkTo));
+        request.getSession().setAttribute(INTENT, new Intent(authorization.getState(), linkTo));
         return authorization.getAuthorizationRequestUri();
     }
 
-    private record Intent(String state, boolean signup, UUID linkTo) implements java.io.Serializable {}
+    private record Intent(String state, UUID linkTo) implements java.io.Serializable {}
+
+    public record PendingSignup(UUID id, String subject, String email, Instant expiresAt)
+            implements java.io.Serializable {}
+
+    public PendingSignup pendingSignup(HttpServletRequest request) {
+        var session = request.getSession(false);
+        if (session != null && session.getAttribute(SIGNUP) instanceof PendingSignup signup
+                && signup.expiresAt().isAfter(Instant.now())) {
+            return signup;
+        }
+        return null;
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public UsernamePasswordAuthenticationToken completeSignup(HttpServletRequest request, String signupId) {
+        PendingSignup signup = pendingSignup(request);
+        if (signup == null || !signup.id().toString().equals(signupId)) throw rejected("authorization_request_not_found");
+        request.getSession(false).removeAttribute(SIGNUP);
+        if (users.findByGoogleSubject(signup.subject()).isPresent()
+                || !users.findTop2ByEmailIgnoreCase(signup.email()).isEmpty()) throw rejected("account_exists");
+        User user = new User();
+        user.setUsername("google-" + UUID.randomUUID().toString().replace("-", "").substring(0, 22));
+        user.setEmail(signup.email());
+        user.setPassword(passwords.encode(UUID.randomUUID().toString()));
+        user.setRole(UserRole.MEMBER);
+        user.setGoogleSubject(signup.subject());
+        user.setWelcomeShown(false);
+        user.acceptTerms(LegalTerms.VERSION, Instant.now());
+        user = users.saveAndFlush(user);
+        return UsernamePasswordAuthenticationToken.authenticated(user.getUsername(), null,
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+    }
 
     private Intent intent(HttpServletRequest request) {
         var session = request.getSession(false);
@@ -96,16 +130,17 @@ public class GoogleLogin {
         };
         // Log the classified failure only. Provider error descriptions can contain sensitive data.
         log.warn("Google OAuth callback failed: reason={}, flow={}", reason,
-                intent == null ? "login" : intent.linkTo() == null ? "signup" : "link");
+                intent == null ? "login" : "link");
         String page = intent != null && intent.linkTo() != null ? "/profile/edit"
-                : "signup_required".equals(reason) || intent != null && intent.signup() ? "/register" : "/login";
-        response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + page + "?googleFailure=" + reason));
+                : "signup_required".equals(reason) ? "/register/google" : "/login";
+        String query = "signup_required".equals(reason) ? "" : "?googleFailure=" + reason;
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + page + query));
     }
 
     public String failureMessage(String[] values) {
         if (values == null || values.length != 1) return null;
         return switch (values[0]) {
-            case "signup_required", "account_exists", "email_unverified", "email_mismatch",
+            case "account_exists", "email_unverified", "email_mismatch",
                     "google_already_linked", "account_already_linked", "account_conflict",
                     "session", "denied", "configuration", "token_exchange", "identity", "provider" ->
                     "auth.google.failure." + values[0];
@@ -116,35 +151,30 @@ public class GoogleLogin {
     @org.springframework.transaction.annotation.Transactional
     public OidcUser authenticate(OidcUserRequest request) {
         var servletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        var session = servletRequest.getSession(false);
+        if (session != null) session.removeAttribute(SIGNUP);
         Intent intent = intent(servletRequest);
         OidcUser google = identities.loadUser(request);
         String subject = google.getSubject();
         if (subject == null || subject.isBlank() || subject.length() > 255) throw rejected("invalid_google_subject");
         try {
-            User user = resolveAccount(google, intent);
+            User user = resolveAccount(google, intent, servletRequest);
             return new FitPulseGooglePrincipal(user.getUsername(), user.getRole(), google);
         } catch (DataIntegrityViolationException e) {
             throw rejected("account_conflict");
         }
     }
 
-    private User resolveAccount(OidcUser google, Intent intent) {
+    private User resolveAccount(OidcUser google, Intent intent, HttpServletRequest request) {
         String subject = google.getSubject();
         var existing = users.findByGoogleSubject(subject);
-        if (intent == null || intent.linkTo() == null) {
+        if (intent == null) {
             if (existing.isPresent()) return existing.get();
             String email = verifiedEmail(google);
             if (!users.findTop2ByEmailIgnoreCase(email).isEmpty()) throw rejected("account_exists");
-            if (intent == null || !intent.signup()) throw rejected("signup_required");
-            User user = new User();
-            user.setUsername("google-" + UUID.randomUUID().toString().replace("-", "").substring(0, 22));
-            user.setEmail(email);
-            user.setPassword(passwords.encode(UUID.randomUUID().toString()));
-            user.setRole(UserRole.MEMBER);
-            user.setGoogleSubject(subject);
-            user.setWelcomeShown(false);
-            user.acceptTerms(LegalTerms.VERSION, Instant.now());
-            return users.saveAndFlush(user);
+            request.getSession().setAttribute(SIGNUP,
+                    new PendingSignup(UUID.randomUUID(), subject, email, Instant.now().plusSeconds(600)));
+            throw rejected("signup_required");
         }
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()

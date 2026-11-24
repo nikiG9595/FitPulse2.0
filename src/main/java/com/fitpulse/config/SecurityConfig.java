@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .requestMatchers("/support", "/about").permitAll()
                         .requestMatchers(HttpMethod.GET, "/terms", "/privacy", "/cookies", "/js/media-preferences.js").permitAll()
                         .requestMatchers(HttpMethod.HEAD, "/terms", "/privacy", "/cookies").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/manifest.webmanifest", "/service-worker.js", "/js/mobile-app.js").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/manifest.webmanifest", "/service-worker.js").permitAll()
                         .requestMatchers(HttpMethod.POST, "/gyms/*/favorite", "/gyms/*/review", "/reviews/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/gyms", "/gyms/**", "/js/weekly-menu.js", "/js/program-accordion.js").permitAll()
                         .requestMatchers(HttpMethod.HEAD, "/gyms", "/gyms/**").permitAll()
